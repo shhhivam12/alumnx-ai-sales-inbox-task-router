@@ -84,7 +84,7 @@ Each decision records:
 - `operation`: `create`, `update`, `skip`, or `noop`
 - `expected_task`: complete task payload for a create
 - `expected_patch`: minimal mutable field changes for an update
-- `task_key`: stable local key used to replay a thread before the shared API assigns a task ID
+- `task_key`: stable fixture key used to replay a thread before our Task API assigns a task ID
 - `rationale` and `evidence`: human-readable decision support
 - `confidence_range`: acceptable calibration band, not a required exact model score
 - `facets`: structured metadata useful for grounded analytics

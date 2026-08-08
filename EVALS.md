@@ -30,7 +30,7 @@ presented as manually reviewed quality claims:
 
 Model: `gemini-3.5-flash-lite`  
 Corpus: 250 generated messages / 200 threads  
-External writes: none; in-memory fake Task API and store only
+External writes: none; isolated in-memory task repository only
 
 | Metric | Result |
 |---|---:|

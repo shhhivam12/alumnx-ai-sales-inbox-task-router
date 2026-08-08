@@ -31,12 +31,6 @@ class Settings(BaseSettings):
     db_pool_max_size: int = Field(default=5, ge=1, le=20)
     db_pool_recycle_seconds: int = Field(default=300, ge=30)
 
-    task_api_mode: Literal["fake", "live"] = "fake"
-    task_api_base_url: str = ""
-    task_api_connect_timeout_seconds: float = Field(default=5, gt=0)
-    task_api_read_timeout_seconds: float = Field(default=30, gt=0)
-    task_api_max_retries: int = Field(default=4, ge=0, le=10)
-
     gemini_api_key: str = ""
     gemini_model: str = "gemini-3.5-flash-lite"
     gemini_temperature: float = Field(default=0.1, ge=0, le=1)
@@ -98,8 +92,6 @@ class Settings(BaseSettings):
                 raise ValueError("SUPABASE_DB_URL is required in production")
             if not self.gemini_api_key:
                 raise ValueError("GEMINI_API_KEY is required in production")
-            if self.task_api_mode != "live" or not self.task_api_base_url:
-                raise ValueError("live TASK_API_BASE_URL is required in production")
             if not self.cors_origins or "*" in self.cors_origins:
                 raise ValueError("production CORS must contain exact origins")
             if self.production_supabase_host and self.database_host != self.production_supabase_host.lower():

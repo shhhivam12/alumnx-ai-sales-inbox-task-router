@@ -30,6 +30,6 @@ def render_answer(plan: ChatPlan, data: dict) -> tuple[str, str]:
     if plan.intent == "list_priority_confidence": return f"There are {data['count']} high-priority decisions at or below confidence {data['confidence_lte']}.", "answered"
     if plan.intent == "count_subtypes": return f"There are {data['count']} alliance decisions. Missing subtype labels are reported as unavailable.", "answered"
     if plan.intent == "count_topic": return f"There are {data['count']} decisions with topic {data['topic']}.", "answered"
-    if plan.intent == "sum_deal_value": return f"The supported deal-value total is INR {format_inr(data['total_deal_value_inr'])}; {data['tasks_without_value']} of {data['task_count']} tasks have no stated value. The shared Task API has no open/closed status, so this uses current RFP tasks.", "answered"
+    if plan.intent == "sum_deal_value": return f"The supported deal-value total is INR {format_inr(data['total_deal_value_inr'])}; {data['tasks_without_value']} of {data['task_count']} tasks have no stated value. The required Task API has no open/closed status, so this uses current RFP tasks.", "answered"
     if plan.intent == "threads_with_updates": return f"There are {data['count']} threads with more than one confirmed update.", "answered"
     return "No supported answer is available.", "unsupported"

@@ -11,7 +11,7 @@ from psycopg import Connection
 from backend.app.config import LOCKED_CANDIDATE_ID
 from backend.app.db.pool import DatabasePool
 from backend.app.domain.email_models import NormalizedEmail
-from backend.app.domain.task_models import RoutingDecision
+from backend.app.domain.task_models import RoutingDecision, TaskPatch, TaskPayload, TaskRecord
 from backend.app.errors import AppError
 
 
@@ -32,6 +32,100 @@ class PostgresStore:
 
     def health(self) -> bool: return self.pool.health()
     def migration_ready(self) -> bool: return self.pool.migration_ready()
+
+    @staticmethod
+    def _task_row(row: dict[str, Any]) -> dict[str, Any]:
+        """Convert database-native dates/decimals into the public JSON contract."""
+        return TaskRecord.model_validate(row).model_dump(mode="json")
+
+    def list_tasks(
+        self,
+        candidate_id: str,
+        *,
+        thread_id: str | None = None,
+        source_email_id: str | None = None,
+        assignee_id: str | None = None,
+    ) -> list[dict[str, Any]]:
+        where, params = ["candidate_id=%s"], [candidate_id]
+        for field, value in (
+            ("thread_id", thread_id),
+            ("source_email_id", source_email_id),
+            ("assignee_id", assignee_id),
+        ):
+            if value:
+                where.append(f"{field}=%s")
+                params.append(value)
+        sql = "SELECT * FROM app_private.tasks WHERE " + " AND ".join(where) + " ORDER BY created_at,task_id"
+        with self._connection() as (conn, _), conn.cursor() as cur:
+            cur.execute(sql, params)
+            return [self._task_row(dict(row)) for row in cur.fetchall()]
+
+    def create_task(self, payload: TaskPayload) -> dict[str, Any]:
+        task_id = f"tsk_{uuid4().hex[:16]}"
+        values = payload.model_dump(mode="python")
+        with self._connection() as (conn, owns_connection), conn.cursor() as cur:
+            cur.execute(
+                """INSERT INTO app_private.tasks(
+                    task_id,candidate_id,source_email_id,thread_id,title,description,
+                    assignee_id,category,priority,due_date,deal_value_inr,company_name,
+                    confidence,created_at,updated_at
+                ) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,now(),now())
+                RETURNING *""",
+                (
+                    task_id, values["candidate_id"], values["source_email_id"],
+                    values["thread_id"], values["title"], values["description"],
+                    values["assignee_id"], values["category"], values["priority"],
+                    values["due_date"], values["deal_value_inr"], values["company_name"],
+                    values["confidence"],
+                ),
+            )
+            row = self._task_row(dict(cur.fetchone()))
+            if owns_connection:
+                conn.commit()
+            return row
+
+    def get_task(self, task_id: str) -> dict[str, Any] | None:
+        with self._connection() as (conn, _), conn.cursor() as cur:
+            cur.execute("SELECT * FROM app_private.tasks WHERE task_id=%s", (task_id,))
+            row = cur.fetchone()
+            return self._task_row(dict(row)) if row else None
+
+    def patch_task(self, task_id: str, patch: TaskPatch) -> dict[str, Any]:
+        changes = patch.model_dump(mode="python", exclude_unset=True)
+        allowed = {
+            "title", "description", "assignee_id", "category", "priority",
+            "due_date", "deal_value_inr", "company_name", "confidence",
+        }
+        fields = [field for field in changes if field in allowed]
+        assignments = ",".join(f"{field}=%s" for field in fields)
+        params = [changes[field] for field in fields] + [task_id]
+        with self._connection() as (conn, owns_connection), conn.cursor() as cur:
+            cur.execute(
+                f"UPDATE app_private.tasks SET {assignments},updated_at=now() WHERE task_id=%s RETURNING *",
+                params,
+            )
+            row = cur.fetchone()
+            if not row:
+                raise AppError("task_not_found", "task was not found", status_code=404)
+            if owns_connection:
+                conn.commit()
+            return self._task_row(dict(row))
+
+    def delete_task(self, task_id: str) -> bool:
+        with self._connection() as (conn, owns_connection), conn.cursor() as cur:
+            cur.execute("DELETE FROM app_private.tasks WHERE task_id=%s RETURNING task_id", (task_id,))
+            removed = cur.fetchone() is not None
+            if removed:
+                cur.execute(
+                    """UPDATE app_private.threads
+                    SET remote_task_id=NULL,current_task_snapshot=NULL,
+                        reconciliation_status='empty',updated_at=now()
+                    WHERE remote_task_id=%s""",
+                    (task_id,),
+                )
+            if owns_connection:
+                conn.commit()
+            return removed
 
     def start_run(self, client_batch_id: UUID | None, source: str, request_hash: str, count: int) -> str:
         run_id, group_id = uuid4(), None
@@ -105,6 +199,8 @@ class PostgresStore:
         result=[]
         for r in rows:
             row=dict(r); task=None
+            if row.get("confidence") is not None:
+                row["confidence"] = float(row["confidence"])
             if row.get("category"): task={k:row.get(k) for k in ("assignee_id","category","priority","due_date","deal_value_inr","company_name","confidence")} | {"source_email_id": row["email_id"], "thread_id":row["thread_id"]}
             row["task"],row["run_id"],row["client_batch_id"]=task,str(row["run_id"]),str(row["client_batch_id"]) if row.get("client_batch_id") else None
             result.append(row)

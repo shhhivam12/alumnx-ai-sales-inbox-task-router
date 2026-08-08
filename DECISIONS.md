@@ -12,11 +12,12 @@ Exact operational counts, update history, unique constraints, and per-thread loc
 fit Postgres. Development and production use separate hosted projects; no browser
 database access, Docker, or local Postgres is required.
 
-## 3. Practical external idempotency
+## 3. Idempotent ingestion over a deliberately non-deduplicating route
 
-The shared Task API has no idempotency key. A thread row lock, unique email records,
-remote preflight lookup, durable operation key, and post-timeout reconciliation avoid
-duplicates. A distributed transaction is impossible, so uncertain outcomes fail closed.
+The required public `POST /tasks` intentionally does not deduplicate. `/ingest` avoids
+duplicates with unique email records, a thread row lock, a task preflight lookup, and
+one Supabase transaction that stores the task and audit state together. Direct grader
+POSTs still create a fresh task each time, exactly as specified.
 
 ## 4. Gemini free-tier resilience
 
@@ -31,10 +32,10 @@ configuration-driven so measured evaluation can justify a temporary stronger mod
 Gemini selects only an allowlisted intent. Postgres computes every result and the
 backend renders deterministic prose plus `supporting_data`. Actions are refused.
 
-## 6. One external task per thread
+## 6. One task per ingested thread
 
 Multi-owner emails go to triage with all asks stated. Splitting would make reply
-reconciliation ambiguous because the external API has no parent-child task model.
+reconciliation ambiguous because the required API has no parent-child task model.
 
 ## 7. Rejected abstractions
 
@@ -50,4 +51,4 @@ smoke tests, and pre-submission checks mitigate but do not remove this free-tier
 
 One message with independent asks for several owners becomes a triage task rather
 than coordinated subtasks. A later product could add internal sub-intents and human
-splitting while retaining one external thread task.
+splitting while retaining one grader-visible thread task.

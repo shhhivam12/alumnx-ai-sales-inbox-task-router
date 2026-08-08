@@ -46,7 +46,7 @@ class DatabasePool:
     def migration_ready(self) -> bool:
         try:
             with self.connection() as connection, connection.cursor() as cursor:
-                cursor.execute("SELECT version_num FROM alembic_version WHERE version_num = '0001_initial'")
+                cursor.execute("SELECT version_num FROM alembic_version WHERE version_num = '0002_local_task_api'")
                 return cursor.fetchone() is not None
         except Exception:
             return False

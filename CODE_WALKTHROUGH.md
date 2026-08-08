@@ -9,7 +9,7 @@ explain the implementation.
 
 The browser sends a batch of emails to FastAPI; the backend safely reads the current
 message, asks Gemini for structured facts when needed, applies exact Python routing
-rules, creates or updates one remote task per thread, records the evidence in Postgres,
+rules, creates or updates one persistent task per thread, records the evidence in Postgres,
 and answers analytics questions only from stored facts.
 
 ```text
@@ -32,11 +32,11 @@ React browser
 - **Candidate ID:** the submission namespace. It is always
   `mahendrushivam123@gmail.com`.
 - **Decision:** our stored explanation of what one email meant.
-- **Task:** the current external work item visible through the shared Task API.
+- **Task:** the grader-visible work item stored by our own backend Task API.
 - **Ingest run:** one HTTP call to `/ingest`, containing at most 100 emails.
 - **Ingest group:** one logical browser batch. A 250-email batch contains three runs.
-- **Reconciliation:** checking local and remote state before POST or PATCH so retries do
-  not make duplicate tasks.
+- **Reconciliation:** checking stored email, thread, and task state before insert or
+  update so retries do not make duplicate tasks.
 - **Degraded mode:** safe deterministic extraction used when Gemini is unavailable.
 - **Grounded answer:** an answer whose numbers and IDs come from stored query results.
 
@@ -58,8 +58,8 @@ React browser
 - `main.py`: creates FastAPI, CORS, request-size protection, routes, and error handlers.
 - `config.py`: loads environment variables and fails early on unsafe configuration.
 - `errors.py`: converts application and validation errors into one JSON shape.
-- `dependencies.py`: creates the configured repository, Gemini extractor, Task API
-  client, reconciler, and ingestion service once per process.
+- `dependencies.py`: creates the configured repository, Gemini extractor, reconciler,
+  and ingestion service once per process.
 - `logging_config.py`: formats application logs as JSON without email bodies or secrets.
 
 ### `backend/app/domain`
@@ -83,7 +83,6 @@ Domain files contain business data and rules, not HTTP or database code.
 - `gemini_extractor.py`: prompt, structured schema call, batching, retry, repair/split,
   and degraded extraction.
 - `gemini_rate_limiter.py`: ensures calls respect the configured requests per minute.
-- `task_api_client.py`: fake and live implementations of the same Task API interface.
 - `reconciler.py`: decides create, adopt, update, no-op, or conflict under a thread lock.
 - `ingestion_service.py`: orchestrates a complete synchronous batch.
 - `stats_service.py`: calculates exact operational counts.
@@ -93,7 +92,7 @@ Domain files contain business data and rules, not HTTP or database code.
 
 ### `backend/app/repositories` and `backend/app/db`
 
-- `store.py`: thread-safe in-memory adapter for unit tests and fake local demos.
+- `store.py`: thread-safe in-memory adapter for credential-free unit tests.
 - `postgres_store.py`: persistent hosted Supabase adapter.
 - `pool.py`: small TLS Psycopg connection pool with health and migration checks.
 - `transaction.py`: rollback-safe transaction helper.
@@ -106,6 +105,7 @@ Each file owns one public API area:
 
 - `config.py`: read-only public app name, identity, and batch limit.
 - `ingest.py`: required synchronous ingestion endpoint.
+- `grader_tasks.py`: exact persistent `/tasks` CRUD and `/users` grader contract.
 - `tasks.py`: current tasks plus local evidence.
 - `stats.py`: scoped exact aggregates.
 - `decisions.py`: per-email results and human feedback.
@@ -138,8 +138,8 @@ Important safety checks:
 3. A Supabase value must be a `postgresql://...` connection string. A public
    `https://PROJECT.supabase.co` URL is rejected.
 4. TLS is added when `sslmode` is missing.
-5. Production requires Gemini, live Task API mode, an exact Task API URL, non-wildcard
-   CORS, and the expected production project reference.
+5. Production requires Gemini, Supabase, non-wildcard CORS, and the expected
+   production project reference.
 6. Tests reject the configured production project reference.
 
 `dependencies.py` checks whether `SUPABASE_DB_URL` is present. With a valid value it
@@ -252,24 +252,22 @@ and clamps the result. Low-confidence ambiguity remains triage.
 the placeholder when needed and executes `SELECT ... FOR UPDATE` inside one transaction.
 All reads and writes in that reconciliation use the same bound connection.
 
-Then it queries the shared Task API:
+Then it queries our persistent `tasks` table through the repository:
 
-- Zero remote tasks and no mapping -> POST one task.
-- One remote task and no mapping -> adopt it.
-- More than one remote task -> conflict and stop writes.
+- Zero matching tasks and no mapping -> insert one task.
+- One matching task and no mapping -> adopt it.
+- More than one matching task -> conflict and stop writes.
 - Existing task plus changed fields -> smallest allowed PATCH.
 - Existing task plus no changes -> no-op.
 - Previously mapped task disappears -> error; never silently recreate it.
 
-If POST times out, the client does not automatically POST again. The reconciler first
-queries by candidate, thread, and source email and adopts a discovered result. This is
-the core duplicate-prevention rule.
+Because the task insert and all audit rows share the same bound Postgres transaction,
+they commit or roll back together. There is no second organizer service or network gap.
 
 ### Step 11 — commit audit state
 
-The same successful transaction stores the immutable email, decision, current thread
-snapshot, and operation event. A later request can recover after a remote POST/database
-crash by finding and adopting the remote task before another POST.
+The same successful transaction stores the task, immutable email, decision, current
+thread snapshot, and operation event. A failed transaction leaves no half-created task.
 
 ## 6. Reply behavior
 
@@ -290,8 +288,10 @@ OOO, newsletter, bounce, or spam replies do not mutate an existing task.
 - `ingest_runs`: one `/ingest` delivery and its counters/errors.
 - `emails`: immutable received messages and safe normalized text.
 - `decisions`: one final classification per email.
-- `threads`: the current task snapshot and remote mapping per thread.
+- `threads`: the current task snapshot and task ID mapping per thread. The internal
+  `remote_task_id` column name is legacy wording; it now points to our own `tasks` row.
 - `task_events`: create/update/adopt/no-op history and before/after snapshots.
+- `tasks`: the exact grader-visible task records returned by `GET /tasks`.
 - `quality_feedback`: explicit human correctness/spurious labels.
 - `chat_audit`: question, validated plan, supporting data, and answer; never raw body.
 
@@ -314,7 +314,7 @@ email-count questions and current thread snapshots for current task/value questi
 
 “Send an email” is refused. Zero is stated explicitly. Spurious rate means confirmed
 human flags divided by unique processed emails; zero flags is never called perfect
-accuracy. “Open RFP” includes a caveat in review material because the shared API has no
+accuracy. “Open RFP” includes a caveat in review material because the required API has no
 open/closed status.
 
 ## 9. Frontend journey
@@ -335,11 +335,10 @@ Tables use horizontal scrolling on small screens. Email text is escaped by React
 
 Say:
 
-> The remote API does not deduplicate, so I treat idempotency as a reconciliation
-> problem. The email hash catches exact replays. A Postgres thread row lock serializes
-> concurrent writers. Before POST I query remote tasks by candidate and thread. After a
-> timeout I query again instead of blindly retrying. The local operation key records one
-> logical mutation across network attempts. Replies always PATCH the adopted remote ID.
+> The grader-facing POST route intentionally does not deduplicate, but ingestion must.
+> The email hash catches exact replays and a Postgres thread row lock serializes
+> concurrent writers. Under that lock I query our tasks table, then insert or update the
+> task and audit records in one transaction. Replies always update the adopted task ID.
 
 ## 11. How to explain Gemini versus deterministic rules
 
@@ -354,8 +353,8 @@ Say:
 
 - Unit tests: input, configuration, suppression, threshold/date boundaries, clearing,
   confidence/routing, chat intents, and Gemini failures.
-- Contract tests: exact Task API candidate, POST/PATCH fields, and no POST retry after
-  an ambiguous timeout.
+- Contract tests: exact Task API create/list/filter/patch/delete/users behavior,
+  candidate identity, enum errors, and deliberate direct-POST duplicates.
 - Dataset validator: frozen 250-message corpus and expected lifecycle.
 - Frontend tests: invalid input, raw/full payloads, duplicates, and 100/100/50 chunks.
 - Local API smoke: health, readiness, samples, full 250 ingestion, replay, tasks,
@@ -369,7 +368,8 @@ Say:
   project HTTPS URL.
 - `/ready` says migration missing: run `python scripts/migrate.py`.
 - Gemini is degraded: verify key/model/quota; logs contain event types, never bodies.
-- Duplicate remote tasks: stop writes, inspect the thread conflict, do not delete broadly.
+- Duplicate task rows: stop ingestion writes, inspect the thread conflict, and clean up
+  only exact development task IDs.
 - A replay shows `unchanged`: correct; it is processed but creates no new decision/task.
 - Chat number looks unexpected: open supporting data, then inspect decision history or
   current thread snapshot depending on question semantics.

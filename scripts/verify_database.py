@@ -12,6 +12,7 @@ EXPECTED_TABLES = {
     "ingest_runs",
     "quality_feedback",
     "task_events",
+    "tasks",
     "threads",
 }
 
@@ -56,7 +57,7 @@ def main() -> None:
         "all_rls_enabled": len(rls) == len(EXPECTED_TABLES) and all(row[1] for row in rls),
     }
     print(result)
-    if not result["tables_match"] or not result["all_rls_enabled"]:
+    if result["revision"] != "0002_local_task_api" or not result["tables_match"] or not result["all_rls_enabled"]:
         raise SystemExit("Database verification failed")
 
 

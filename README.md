@@ -16,13 +16,11 @@ grounded analytics chat whose numbers come from stored processing data.
 Cloudflare Pages (React preview/results/chat)
                     |
                     v
-Render (FastAPI validation, routing, reconciliation, chat)
-              |                         |
-              v                         v
-     Supabase Postgres            Shared Task API
-              ^
-              |
-       Gemini structured extraction
+Render (one FastAPI base URL)
+  |-- grader Task API: /tasks, /users
+  |-- app API: /ingest, /api/tasks, /api/stats, /api/chat
+  |-- Gemini structured extraction
+  `-- Supabase Postgres (tasks plus processing/audit history)
 ```
 
 ## Setup
@@ -49,8 +47,8 @@ session mode on port `5432` and keep `sslmode=require`. For development,
 `SUPABASE_MIGRATION_DB_URL` may be blank; the migration script then uses the same DB
 connection string.
 
-Docker and a local database are not required. Local task writes use the fake Task API
-unless `TASK_API_MODE=live` is explicitly configured.
+Docker and a local database are not required. The backend implements the Task API
+itself; its task rows and processing history both persist in hosted Supabase.
 
 ## Tests
 
@@ -68,12 +66,14 @@ hackathon requirement to evidence and remaining external work.
 
 ## Environment and API
 
-Only the backend owns `SUPABASE_DB_URL`, `GEMINI_API_KEY`, and `TASK_API_BASE_URL`.
-Development defaults to fake Task API mode. Production requires live mode, TLS
-Postgres, Gemini, and exact non-wildcard CORS origins.
+Only the backend owns `SUPABASE_DB_URL` and `GEMINI_API_KEY`. Production requires TLS
+Postgres, Gemini, the production project reference, and exact non-wildcard CORS origins.
 
 - `POST /ingest`: synchronously routes 1–100 emails.
-- `GET /api/tasks`: current remote tasks plus decision evidence.
+- `POST /tasks`, `PATCH /tasks/{id}`, `GET /tasks`, `DELETE /tasks/{id}`: exact
+  grader-facing persistent Task API.
+- `GET /users`: exact team roster.
+- `GET /api/tasks`: current persistent tasks plus decision evidence.
 - `GET /api/stats`: exact run, batch, or all-history aggregates.
 - `POST /api/chat`: allowlisted grounded analytics.
 - `GET /api/sample-emails?count=250`: email data without labels.
@@ -88,4 +88,4 @@ then apply it to production with `python scripts/migrate.py --production`.
 ## Known limitation
 
 A multi-owner email produces one triage task rather than coordinated subtasks because
-the shared API has one assignee and no parent-child relationship.
+the required Task API has one assignee and no parent-child relationship.

@@ -17,7 +17,6 @@ def main() -> None:
     marker = uuid4().hex
     email_id = f"db-smoke-email-{marker}"
     thread_id = f"db-smoke-thread-{marker}"
-    remote_task_id = f"db-smoke-task-{marker}"
     batch_id = uuid4()
     settings = Settings()
     pool = DatabasePool(settings)
@@ -51,23 +50,24 @@ def main() -> None:
         )
         decision = route_email(message, extraction, model_name="fixture-smoke")
         run_id = store.start_run(batch_id, "api", marker, 1)
-        remote = decision.task.model_dump(mode="json") | {"task_id": remote_task_id}
-        event = {
-            "id": str(uuid4()),
-            "operation_key": f"create:{email_id}",
-            "thread_id": thread_id,
-            "email_id": email_id,
-            "remote_task_id": remote_task_id,
-            "event_type": "create",
-            "status": "confirmed",
-            "before_snapshot": None,
-            "patch": None,
-            "after_snapshot": remote,
-            "attempt_count": 1,
-            "confirmed_at": datetime.now(timezone.utc).isoformat(),
-        }
         with store.thread_lock(thread_id):
             assert store.inspect_email(message) == "new"
+            remote = store.create_task(decision.task)
+            remote_task_id = remote["task_id"]
+            event = {
+                "id": str(uuid4()),
+                "operation_key": f"create:{email_id}",
+                "thread_id": thread_id,
+                "email_id": email_id,
+                "remote_task_id": remote_task_id,
+                "event_type": "create",
+                "status": "confirmed",
+                "before_snapshot": None,
+                "patch": None,
+                "after_snapshot": remote,
+                "attempt_count": 1,
+                "confirmed_at": datetime.now(timezone.utc).isoformat(),
+            }
             store.save_outcome(message, decision, run_id, remote, event)
         store.finish_run(
             run_id,
@@ -124,6 +124,10 @@ def main() -> None:
                 "DELETE FROM app_private.threads WHERE candidate_id=%s AND thread_id=%s",
                 (LOCKED_CANDIDATE_ID, thread_id),
             )
+            connection.execute(
+                "DELETE FROM app_private.tasks WHERE candidate_id=%s AND thread_id=%s",
+                (LOCKED_CANDIDATE_ID, thread_id),
+            )
             if run_id:
                 connection.execute("DELETE FROM app_private.ingest_runs WHERE id=%s", (run_id,))
             connection.execute(
@@ -138,16 +142,17 @@ def main() -> None:
                     (SELECT count(*) FROM app_private.threads WHERE thread_id=%s) +
                     (SELECT count(*) FROM app_private.task_events WHERE email_id=%s) +
                     (SELECT count(*) FROM app_private.quality_feedback WHERE email_id=%s) +
-                    (SELECT count(*) FROM app_private.chat_audit WHERE scope_id=%s)
+                    (SELECT count(*) FROM app_private.chat_audit WHERE scope_id=%s) +
+                    (SELECT count(*) FROM app_private.tasks WHERE thread_id=%s)
                     AS remaining
                 """,
-                (email_id, thread_id, email_id, email_id, str(batch_id)),
+                (email_id, thread_id, email_id, email_id, str(batch_id), thread_id),
             ).fetchone()["remaining"]
             assert remaining == 0, "smoke-test cleanup left scoped rows behind"
         pool.close()
     if smoke_passed:
         print(
-            "Supabase repository smoke passed: insert, lock, decision, event, "
+            "Supabase repository smoke passed: task, lock, decision, event, "
             "feedback, audit, reads, and exact cleanup."
         )
 

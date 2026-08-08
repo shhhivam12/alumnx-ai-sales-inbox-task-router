@@ -11,7 +11,7 @@ Use this as a reviewer checklist beside `PROBLEM_STATEMENT.md`. Status meanings:
 
 | Requirement | Status | Evidence |
 |---|---|---|
-| Candidate ID is lowercase and byte-identical | PASS | Config, API, Task client, UI, README all use `mahendrushivam123@gmail.com` |
+| Candidate ID is lowercase and byte-identical | PASS | Config, grader Task routes, app API, UI, and README use `mahendrushivam123@gmail.com` |
 | Wrong candidate rejected | PASS | Common error returns `candidate_id_mismatch` |
 | Frontend has no editable candidate copy | PASS | It reads `/api/config` and displays the value |
 
@@ -62,7 +62,7 @@ Use this as a reviewer checklist beside `PROBLEM_STATEMENT.md`. Status meanings:
 
 | Requirement | Status | Evidence |
 |---|---|---|
-| One external task per thread | PASS | Unique thread state and reconciliation |
+| One task per ingested thread | PASS | Thread row lock plus local task reconciliation |
 | Same email replay creates nothing | PASS | Unit and 250-email API replay smoke |
 | Same ID/different content conflicts | PASS | Store conflict check |
 | Reply uses PATCH | PASS | Reconciler and Task API contract |
@@ -70,20 +70,21 @@ Use this as a reviewer checklist beside `PROBLEM_STATEMENT.md`. Status meanings:
 | Explicit clear/set/unchanged | PASS | Reply models and clear-field tests |
 | Acknowledgement is no-op | PASS | Suppression and unit test |
 | Orphan reply rejected | PASS | 409 unit test |
-| Concurrent thread serialization | READY, EXTERNAL CHECK PENDING | Postgres `SELECT ... FOR UPDATE`; dedicated concurrent hosted test remains |
-| POST timeout avoids blind retry | PASS | Client contract test; reconciliation query |
-| Crash-after-POST adoption | READY, EXTERNAL CHECK PENDING | Code path exists; real/fake failure-injection integration remains |
-| Multiple remote tasks stop writes | PASS | Reconciler returns 409 conflict |
+| Concurrent thread serialization | PASS | Hosted two-writer test produced one `created`, one `unchanged`, and one task row |
+| Direct POST does not deduplicate | PASS | Contract test creates two IDs for the same payload |
+| Task and audit write are atomic | PASS | Both use the connection bound by the thread transaction |
+| Multiple task rows for one ingested thread stop writes | PASS | Reconciler returns 409 conflict |
 
 ## Persistence and Supabase
 
 | Requirement | Status | Evidence |
 |---|---|---|
 | Private Postgres schema | PASS | Applied and catalog-verified on development Supabase |
-| Required tables and indexes | PASS | Eight tables and 25 total explicit/constraint indexes verified |
-| RLS enabled and no browser policies | PASS | RLS verified on all eight private tables |
+| Required tables and indexes | PASS | Nine tables and 30 total explicit/constraint indexes verified |
+| Persistent grader Task API table | PASS | `app_private.tasks`; live create/read/cleanup smoke passed |
+| RLS enabled and no browser policies | PASS | RLS verified on all nine private tables |
 | TLS session pooler | PASS | Client-side TLS and Session pooler port 5432 verified |
-| Development migration apply/rollback/reapply | PASS | `0001_initial` applied, rolled back, reapplied, and reverified |
+| Current development migration | PASS | `0002_local_task_api` applied and reverified |
 | Production and test project guard | PASS | Project-reference checks in settings |
 | No Supabase secret/client in frontend | PASS | No `supabase-js` dependency or Vite secret |
 
@@ -99,7 +100,7 @@ Use this as a reviewer checklist beside `PROBLEM_STATEMENT.md`. Status meanings:
 | Rate limit/retry/jitter/Retry-After | PASS | Extractor and resilience tests |
 | Missing item repair and malformed split | PASS | Unit failure simulations |
 | Total outage degradation | PASS | Unit failure simulation |
-| Full live 250 synthetic regression | PASS | Completed with fake persistence/no Task API writes; results and limitations are in `EVALS.md` |
+| Full live 250 synthetic regression | PASS | Completed in isolated in-memory persistence; results and limitations are in `EVALS.md` |
 | Full live 60 human-reviewed evaluation | USER INPUT REQUIRED | Requires personally frozen blind labels |
 
 ## Stats and chat
@@ -136,7 +137,7 @@ Use this as a reviewer checklist beside `PROBLEM_STATEMENT.md`. Status meanings:
 |---|---|---|
 | Dataset validator | PASS | 250 messages, 200 threads, frozen expected lifecycle |
 | Backend unit tests | PASS | Configuration, routing, edge, chat, Gemini, lifecycle |
-| Task API contract tests | PASS | Exact candidate/create/patch/no-retry |
+| Task API contract tests | PASS | Exact create/list/filter/patch/delete/users, enum error, candidate, and direct duplicate behavior |
 | Frontend build/tests | PASS | Vite production build and Vitest |
 | Local 250 API smoke and replay | PASS | `scripts/local_api_smoke_test.py` |
 | Visible browser workflow | PASS | Preview, route, decisions, chat, responsive pass |
@@ -158,10 +159,9 @@ Use this as a reviewer checklist beside `PROBLEM_STATEMENT.md`. Status meanings:
 
 ## What is needed from the user now
 
-The Supabase development connection is complete. The kickoff shared
-`TASK_API_BASE_URL` is needed before live Task API integration. It is not required for
-the current GitHub-ready fake-mode baseline. The 60-message blind worksheet also still
-requires personal labels before final evaluation claims.
+The Supabase development connection and persistent Task API are complete. No organizer
+Task API URL or key is needed. The 60-message blind worksheet still requires personal
+labels before final evaluation claims.
 
 ## Intentionally postponed until deployment
 
@@ -169,5 +169,5 @@ requires personal labels before final evaluation claims.
 - Render and Cloudflare deployment.
 - Exact deployed CORS verification.
 - Cold-start-after-idle tests.
-- Live shared Task API creation/cleanup.
+- Public grader Task API contract smoke on the deployed Render URL.
 - Public URLs, repository URL, and video URL.

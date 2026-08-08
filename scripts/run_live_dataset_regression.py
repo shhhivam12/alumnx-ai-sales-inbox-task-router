@@ -13,7 +13,6 @@ from backend.app.repositories.store import MemoryStore
 from backend.app.services.gemini_extractor import GeminiExtractor
 from backend.app.services.ingestion_service import IngestionService
 from backend.app.services.reconciler import Reconciler
-from backend.app.services.task_api_client import FakeTaskApi
 
 CANDIDATE_ID = "mahendrushivam123@gmail.com"
 ROOT = Path(__file__).resolve().parents[1]
@@ -38,7 +37,7 @@ def main() -> None:
     if not key:
         raise SystemExit("GEMINI_API_KEY is required")
     settings = Settings(
-        supabase_db_url="", supabase_migration_db_url="", task_api_mode="fake",
+        supabase_db_url="", supabase_migration_db_url="",
         gemini_api_key=key, gemini_model=env.get("GEMINI_MODEL") or "gemini-3.5-flash-lite",
         gemini_requests_per_minute=int(env.get("GEMINI_REQUESTS_PER_MINUTE") or 5),
         gemini_max_retries=2,
@@ -47,8 +46,8 @@ def main() -> None:
     expected = json.loads((ROOT / "data/ground_truth/expected_decisions.json").read_text(encoding="utf-8"))["decisions"]
     expected_by_id = {item["email_id"]: item for item in expected}
     expected_state = oracle_states(expected)
-    store = MemoryStore(); api = FakeTaskApi()
-    service = IngestionService(settings, store, GeminiExtractor(settings), Reconciler(store, api))
+    store = MemoryStore()
+    service = IngestionService(settings, store, GeminiExtractor(settings), Reconciler(store))
     batch_id = uuid4()
     responses = []
     for offset in range(0, len(emails), 100):

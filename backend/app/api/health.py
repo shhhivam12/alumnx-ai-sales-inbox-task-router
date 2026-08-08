@@ -18,7 +18,7 @@ def ready(response: Response, settings: Settings = Depends(get_settings), store:
         "configuration": "ok",
         "database": "ok" if store.health() else "error",
         "migration": "ok" if store.migration_ready() else "missing",
-        "task_api": "configured" if settings.task_api_mode == "fake" or settings.task_api_base_url else "missing",
+        "task_api": "local_persistent",
         "gemini": "configured" if settings.gemini_api_key else "degraded",
     }
     is_ready = all(value not in {"error", "missing"} for value in components.values())

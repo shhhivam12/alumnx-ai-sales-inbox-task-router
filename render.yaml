@@ -13,8 +13,6 @@ services:
         value: production
       - key: CANDIDATE_ID
         value: mahendrushivam123@gmail.com
-      - key: TASK_API_MODE
-        value: live
       - key: SUPABASE_DB_URL
         sync: false
       - key: SUPABASE_MIGRATION_DB_URL
@@ -26,8 +24,6 @@ services:
       - key: DEVELOPMENT_SUPABASE_PROJECT_REF
         sync: false
       - key: PRODUCTION_SUPABASE_PROJECT_REF
-        sync: false
-      - key: TASK_API_BASE_URL
         sync: false
       - key: GEMINI_API_KEY
         sync: false

@@ -15,11 +15,10 @@ This file is the locked implementation contract. The challenge statement in
 
 ## Non-negotiable behavior
 
-1. Normalize and validate the candidate ID, then send the configured value on every
-   shared Task API request.
+1. Normalize and validate the candidate ID on every grader Task API and ingestion request.
 2. `/ingest` accepts 1-100 emails and returns only after all required Task API writes
    have succeeded or definitively failed.
-3. One candidate/thread maps to at most one external task. Replies patch that task;
+3. One candidate/thread maps to at most one task created by `/ingest`. Replies patch that task;
    repeated deliveries never create duplicates.
 4. Suppress out-of-office messages, delivery failures, newsletters, and high-confidence
    unsolicited vendor spam. Triage is only for actionable ambiguity.
@@ -27,8 +26,8 @@ This file is the locked implementation contract. The challenge statement in
    amount/date roles, confidence, POST/PATCH decisions, and all arithmetic.
 6. Missing or unsupported company, due date, or deal value remains `null`.
 7. Chat uses allowlisted database queries and always returns `supporting_data`.
-8. Browser code never receives Gemini or database credentials and never calls either
-   Gemini or the shared Task API directly.
+8. Browser code never receives Gemini or database credentials. It calls only our
+   FastAPI backend, which also implements the grader-facing Task API.
 
 ## Routing precedence
 
@@ -58,12 +57,13 @@ Alembic creates the private Postgres schema and these tables:
 - `decisions`
 - `threads`
 - `task_events`
+- `tasks`
 - `quality_feedback`
 - `chat_audit`
 
-Unique candidate/email and candidate/thread constraints, a per-thread row lock, a
-durable operation key, Task API preflight lookup, and post-timeout reconciliation
-provide practical exactly-once behavior across the non-idempotent external API.
+The public `POST /tasks` deliberately permits duplicates, exactly as the grader spec
+requires. `/ingest` provides idempotency through unique email records, per-thread row
+locks, a task preflight lookup, and an atomic task-plus-audit transaction.
 
 ## Gemini contract
 
@@ -117,17 +117,17 @@ Gate: worked examples, invalid fixtures, boundary tests, and exact oracle replay
 
 ### Phase 3 — Task API and ingestion
 
-Implement fake/live clients, synchronous ingestion, candidate/thread locking, durable
-events, adoption, ambiguous-POST recovery, smallest PATCH, immutable source identity,
-task proxy, and batch decisions. Gate: replay/concurrency/reply/timeout behavior and
-exact counters.
+Implement the persistent grader routes (`/tasks` and `/users`), synchronous ingestion,
+candidate/thread locking, durable events, task adoption, smallest PATCH, immutable
+source identity, enriched `/api/tasks`, and batch decisions. Gate: exact direct API
+contract plus replay/concurrency/reply behavior and counters.
 
 ### Phase 4 — Gemini extraction
 
 Implement email-ID-keyed schema output, micro-batches, rate limiting, Retry-After,
 jittered retries, repair, missing-item retry, split fallback, focused verification,
 injection boundaries, and conservative degradation. Gate: failure simulations and a
-live development sample with no live Task API writes during prompt tuning.
+live development sample with isolated development task rows during prompt tuning.
 
 ### Phase 5 — statistics and grounded chat
 
@@ -152,7 +152,7 @@ confidence calibration. Exercise all edge families and preserve three honest fai
 ### Phase 8 — deployment and submission
 
 Migrate production, deploy Render/Cloudflare, set exact CORS, test cold readiness,
-one/full/replay/reply ingests and grounded/refusal chat, audit remote counts, finalize
+one/full/replay/reply ingests and grounded/refusal chat, audit persistent task counts, finalize
 URLs/docs/video, and verify candidate identity byte-for-byte.
 
 ## Edge-case invariant registry
@@ -167,6 +167,6 @@ URLs/docs/video, and verify candidate identity byte-for-byte.
   non-INR values without conversion.
 - Facts: Indian units, relative dates from `received_at`, 71/72/73 hours, end-of-day,
   meeting/event/OOO decoys, superseded quotes, amount roles, conflicts, and clearing.
-- Consistency/failure: replay, concurrency, timeout/adoption, missing/conflicting remote
-  mappings, transient PATCH, enum rejection, immutable source, malformed/partial/rate-
+- Consistency/failure: replay, concurrency, missing/conflicting task mappings,
+  transaction rollback, enum rejection, immutable source, malformed/partial/rate-
   limited Gemini, outage, stable scoped chat, null sums, zeroes, and refusal.

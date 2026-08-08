@@ -94,7 +94,8 @@ Schema:
 
 ### **3.3 Task API**
 
-Base URL published at kickoff as `TASK_API_BASE_URL`. No authentication required.
+Build and deploy this API yourself as part of the FastAPI backend. The grader calls
+the deployed backend base URL directly. No authentication is required.
 
 ### **3.4 Your own Gemini API key**
 
@@ -126,9 +127,21 @@ These rules will not cover every email in the dataset. Some are genuinely ambigu
 
 ---
 
-## **5\. The Task API**
+## **5\. The Task API — Build and Deploy This Yourself**
 
-All requests and responses are `application/json`. No auth headers.
+This is not an organizer-hosted service. It is a specification you implement as part
+of your own backend and deploy publicly. All requests and responses are
+`application/json`. No auth headers.
+
+The grader expects one backend base URL handling both API groups:
+
+- Task API: `POST /tasks`, `PATCH /tasks/{id}`, `GET /tasks`,
+  `DELETE /tasks/{id}`, and `GET /users`.
+- App API: `POST /ingest`, `GET /api/tasks`, `GET /api/stats`, and
+  `POST /api/chat`.
+
+Task data must be persistent. In-memory-only storage loses data on restart and is
+unscoreable.
 
 ### **5.1 `POST /tasks` — create a task**
 
@@ -447,12 +460,12 @@ Must be synchronous — return `200` only after every task has actually been wri
 
 ### **7.2 A backend service (required)**
 
-You must stand up your own backend. It is the thing your conversational interface talks to — **neither should call the shared Task API or Gemini directly from the browser.** At minimum it exposes:
+You must stand up your own backend. It is the thing your conversational interface talks to — **the browser must call neither Gemini nor Supabase directly.** At minimum it exposes:
 
 | Endpoint | Purpose |
 | ----- | ----- |
 | `POST /ingest` | As in §7.1. |
-| `GET /api/tasks` | Proxies `GET /tasks?candidate_id=...` from the shared Task API, optionally joined with your own stored classification metadata (e.g. why something was skipped, since the Task API has no concept of "skipped"). |
+| `GET /api/tasks` | Reads the backend's persistent tasks and joins your own stored classification metadata (e.g. why something was skipped, since the Task API has no concept of "skipped"). |
 | `GET /api/stats` | Aggregate counts: processed / created / updated / skipped / spurious-flagged, broken down by category and by run. This is what your `/api/stats` responses and chat answers read from. |
 | `POST /api/chat` | The conversational endpoint — see §7.3. |
 
@@ -570,7 +583,7 @@ Grading is fully automated for the routing logic, plus a manual pass on the conv
 
 ### **8.1 Automated runs**
 
-* **Run 1 — Accuracy**: a fresh, unseen batch of \~60 emails is posted to your `/ingest`. The script reads `GET /tasks?candidate_id={your email}` on the shared Task API and aligns every task to an answer key on `source_email_id`.  
+* **Run 1 — Accuracy**: a fresh, unseen batch of \~60 emails is posted to your `/ingest`. The script reads `GET /tasks?candidate_id={your email}` on the same deployed backend and aligns every task to an answer key on `source_email_id`.
 * **Run 2 — Idempotency**: the identical batch is posted again. Task count must not change.  
 * **Run 3 — Thread reconciliation**: a second batch containing replies on Run 1's threads is posted. Task count must grow only by genuinely new threads; replies must show as updates.
 
@@ -654,4 +667,3 @@ Some of the ambiguity in this brief is intentional; some is accidental. If somet
 For live updates and clarifications during the 48 hours, join the WhatsApp group: https://chat.whatsapp.com/IqvSblln3sbDHO5sHVXFPJ
 
 *Alumnx AI Labs · FDE Intern Hiring Drive · 8th August 2026*
-

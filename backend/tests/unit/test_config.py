@@ -16,4 +16,4 @@ def test_database_url_requires_tls_automatically() -> None:
 
 def test_production_requires_live_dependencies() -> None:
     with pytest.raises(ValidationError):
-        Settings(app_env="production", supabase_db_url="", gemini_api_key="", task_api_mode="fake")
+        Settings(app_env="production", supabase_db_url="", gemini_api_key="")

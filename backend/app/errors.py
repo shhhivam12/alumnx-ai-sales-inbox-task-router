@@ -6,6 +6,8 @@ from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
+from backend.app.domain.enums import AssigneeId, Category, Priority
+
 
 class AppError(Exception):
     def __init__(
@@ -43,11 +45,26 @@ def install_error_handlers(app: FastAPI) -> None:
         return JSONResponse(status_code=exc.status_code, content=exc.body())
 
     @app.exception_handler(RequestValidationError)
-    async def handle_validation(_: Request, exc: RequestValidationError) -> JSONResponse:
+    async def handle_validation(request: Request, exc: RequestValidationError) -> JSONResponse:
         first = exc.errors()[0] if exc.errors() else {}
         path = ".".join(str(part) for part in first.get("loc", []) if part != "body") or None
         message = first.get("msg", "Request validation failed")
         candidate_error = path == "candidate_id" and "submission identity" in message
+        enum_values = {
+            "assignee_id": [item.value for item in AssigneeId],
+            "category": [item.value for item in Category],
+            "priority": [item.value for item in Priority],
+        }
+        if request.url.path.startswith("/tasks") and path in enum_values and first.get("type") == "enum":
+            return JSONResponse(
+                status_code=400,
+                content={
+                    "error": "invalid_enum_value",
+                    "field": path,
+                    "received": first.get("input"),
+                    "allowed": enum_values[path],
+                },
+            )
         return JSONResponse(
             status_code=400,
             content={

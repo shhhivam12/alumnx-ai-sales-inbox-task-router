@@ -8,7 +8,7 @@ from typing import Any
 from uuid import UUID, uuid4
 
 from backend.app.domain.email_models import NormalizedEmail
-from backend.app.domain.task_models import RoutingDecision
+from backend.app.domain.task_models import RoutingDecision, TaskPatch, TaskPayload
 from backend.app.errors import AppError
 
 
@@ -25,6 +25,7 @@ class MemoryStore:
         self.groups: dict[str, dict[str, Any]] = {}
         self.feedback: dict[str, dict[str, Any]] = {}
         self.chat_audit: list[dict[str, Any]] = []
+        self.tasks: dict[str, dict[str, Any]] = {}
         self._locks: defaultdict[str, RLock] = defaultdict(RLock)
         self._global = RLock()
 
@@ -33,6 +34,57 @@ class MemoryStore:
 
     def migration_ready(self) -> bool:
         return True
+
+    def list_tasks(
+        self,
+        candidate_id: str,
+        *,
+        thread_id: str | None = None,
+        source_email_id: str | None = None,
+        assignee_id: str | None = None,
+    ) -> list[dict[str, Any]]:
+        with self._global:
+            rows = [row for row in self.tasks.values() if row["candidate_id"] == candidate_id]
+            if thread_id:
+                rows = [row for row in rows if row["thread_id"] == thread_id]
+            if source_email_id:
+                rows = [row for row in rows if row["source_email_id"] == source_email_id]
+            if assignee_id:
+                rows = [row for row in rows if row["assignee_id"] == assignee_id]
+            return deepcopy(sorted(rows, key=lambda row: (row["created_at"], row["task_id"])))
+
+    def create_task(self, payload: TaskPayload) -> dict[str, Any]:
+        with self._global:
+            now = datetime.now(timezone.utc).isoformat()
+            row = payload.model_dump(mode="json") | {
+                "task_id": f"tsk_{uuid4().hex[:16]}",
+                "created_at": now,
+                "updated_at": now,
+            }
+            self.tasks[row["task_id"]] = row
+            return deepcopy(row)
+
+    def get_task(self, task_id: str) -> dict[str, Any] | None:
+        with self._global:
+            return deepcopy(self.tasks.get(task_id))
+
+    def patch_task(self, task_id: str, patch: TaskPatch) -> dict[str, Any]:
+        with self._global:
+            if task_id not in self.tasks:
+                raise AppError("task_not_found", "task was not found", status_code=404)
+            self.tasks[task_id].update(patch.model_dump(mode="json", exclude_unset=True))
+            self.tasks[task_id]["updated_at"] = datetime.now(timezone.utc).isoformat()
+            return deepcopy(self.tasks[task_id])
+
+    def delete_task(self, task_id: str) -> bool:
+        with self._global:
+            removed = self.tasks.pop(task_id, None)
+            if not removed:
+                return False
+            for thread in self.threads.values():
+                if thread.get("remote_task_id") == task_id:
+                    thread.update(remote_task_id=None, current_task_snapshot=None)
+            return True
 
     def start_run(self, client_batch_id: UUID | None, source: str, request_hash: str, count: int) -> str:
         with self._global:
