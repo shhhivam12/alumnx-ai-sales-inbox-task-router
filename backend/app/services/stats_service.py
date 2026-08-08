@@ -13,6 +13,7 @@ class StatsService:
     def get(self, scope_type: str = "all", scope_id: str | None = None) -> dict[str, Any]:
         decisions = self.store.list_decisions(scope_type, scope_id)
         runs = self.store.list_runs(scope_type, scope_id)
+        thread_ids = {decision["thread_id"] for decision in decisions}
         emails = len({d["email_id"] for d in decisions})
         operations = Counter(d["operation"] for d in decisions)
         categories = Counter((d.get("task") or {}).get("category") for d in decisions if d.get("task"))
@@ -20,10 +21,10 @@ class StatsService:
         priorities = Counter((d.get("task") or {}).get("priority") for d in decisions if d.get("task"))
         skips = Counter(d.get("skip_reason") for d in decisions if d.get("skip_reason"))
         spurious = sum(1 for f in self.store.list_feedback() if f["label"] == "spurious" and any(d["email_id"] == f["email_id"] for d in decisions))
-        update_counts = Counter(e["thread_id"] for e in self.store.list_events() if e["event_type"] == "update" and e["status"] == "confirmed")
+        update_counts = Counter(e["thread_id"] for e in self.store.list_events() if e["thread_id"] in thread_ids and e["event_type"] == "update" and e["status"] == "confirmed")
         return {
             "unique_processed": emails,
-            "current_tasks": sum(1 for thread in self.store.list_threads() if thread.get("current_task_snapshot")),
+            "current_tasks": sum(1 for thread in self.store.list_threads() if thread["thread_id"] in thread_ids and thread.get("current_task_snapshot")),
             "delivery_attempts": sum(r.get("received_count", 0) for r in runs),
             "created": operations["create"], "updated": operations["update"], "skipped": operations["skip"],
             "noop": operations["noop"], "unchanged": sum(r.get("unchanged", 0) for r in runs),

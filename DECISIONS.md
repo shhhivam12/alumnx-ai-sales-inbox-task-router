@@ -9,8 +9,13 @@ side effects remain deterministic and testable.
 ## 2. Hosted Supabase Postgres
 
 Exact operational counts, update history, unique constraints, and per-thread locking
-fit Postgres. Development and production use separate hosted projects; no browser
-database access, Docker, or local Postgres is required.
+fit Postgres. This submission uses one hosted Supabase project, with scoped test IDs
+and exact cleanup before grading; no browser database access, Docker, or local Postgres
+is required.
+
+The normal test configuration still blocks production by default. The one hosted
+concurrency test opts in explicitly, creates UUID-scoped rows, and deletes only those
+exact rows. Live semantic corpus tests use an in-memory repository.
 
 ## 3. Idempotent ingestion over a deliberately non-deduplicating route
 

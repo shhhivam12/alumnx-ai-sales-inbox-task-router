@@ -21,8 +21,8 @@ class TaskPayload(BaseModel):
     category: Category
     priority: Priority
     due_date: date | None
-    deal_value_inr: int | None = Field(ge=0)
-    company_name: str | None
+    deal_value_inr: int | None = Field(strict=True, ge=0)
+    company_name: str | None = Field(max_length=256)
     confidence: float = Field(ge=0, le=1)
 
     @field_validator("candidate_id")
@@ -33,7 +33,7 @@ class TaskPayload(BaseModel):
             raise ValueError("candidate_id does not match the configured submission identity")
         return normalized
 
-    @field_validator("source_email_id", "thread_id")
+    @field_validator("source_email_id", "thread_id", "title")
     @classmethod
     def identifiers_nonblank(cls, value: str) -> str:
         if not value.strip():
@@ -50,8 +50,8 @@ class TaskPatch(BaseModel):
     category: Category | None = None
     priority: Priority | None = None
     due_date: date | None = None
-    deal_value_inr: int | None = Field(default=None, ge=0)
-    company_name: str | None = None
+    deal_value_inr: int | None = Field(default=None, strict=True, ge=0)
+    company_name: str | None = Field(default=None, max_length=256)
     confidence: float | None = Field(default=None, ge=0, le=1)
 
     @model_validator(mode="after")

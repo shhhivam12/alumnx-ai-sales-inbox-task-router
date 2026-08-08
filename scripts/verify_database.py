@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import argparse
+
 from dotenv import dotenv_values
 import psycopg
 
@@ -18,6 +20,13 @@ EXPECTED_TABLES = {
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--require-empty",
+        action="store_true",
+        help="also fail when any application table contains rows",
+    )
+    args = parser.parse_args()
     values = dotenv_values(".env")
     url = values.get("SUPABASE_MIGRATION_DB_URL") or values.get("SUPABASE_DB_URL")
     if not url:
@@ -47,6 +56,10 @@ def main() -> None:
             """,
             ("app_private",),
         ).fetchall()
+        row_counts = {
+            table: connection.execute(f"SELECT count(*) FROM app_private.{table}").fetchone()[0]
+            for table in sorted(EXPECTED_TABLES)
+        }
 
     result = {
         "revision": revision[0] if revision else None,
@@ -55,10 +68,14 @@ def main() -> None:
         "index_count": len(indexes),
         "rls_table_count": len(rls),
         "all_rls_enabled": len(rls) == len(EXPECTED_TABLES) and all(row[1] for row in rls),
+        "row_counts": row_counts,
+        "all_application_tables_empty": all(count == 0 for count in row_counts.values()),
     }
     print(result)
     if result["revision"] != "0002_local_task_api" or not result["tables_match"] or not result["all_rls_enabled"]:
         raise SystemExit("Database verification failed")
+    if args.require_empty and not result["all_application_tables_empty"]:
+        raise SystemExit("Database is initialized but application tables are not empty")
 
 
 if __name__ == "__main__":

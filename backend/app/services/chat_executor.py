@@ -55,7 +55,7 @@ def execute_plan(store: MemoryStore, plan: ChatPlan, scope: ChatScope) -> dict[s
         values = [task.get("deal_value_inr") for task in tasks]
         return {"category": plan.categories[0] if plan.categories else None, "total_deal_value_inr": sum(v for v in values if v is not None), "tasks_without_value": sum(v is None for v in values), "task_count": len(tasks)}
     if plan.intent == "threads_with_updates":
-        counts = Counter(e["thread_id"] for e in store.list_events() if e["event_type"] == "update" and e["status"] == "confirmed")
+        counts = Counter(e["thread_id"] for e in store.list_events() if e["thread_id"] in thread_ids and e["event_type"] == "update" and e["status"] == "confirmed")
         items = [{"thread_id": tid, "update_count": count} for tid, count in counts.items() if count > 1]
         return {"count": len(items), "items": items}
     return {}

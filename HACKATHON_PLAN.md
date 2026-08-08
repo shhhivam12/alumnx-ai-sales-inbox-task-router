@@ -106,8 +106,9 @@ frontend build, no secrets, and no Docker.
 ### Phase 1 — contracts, configuration, and Supabase
 
 Implement strict models/enums, startup guards, TLS pool, Alembic schema/index/RLS,
-repository adapters, liveness, readiness, and public config. Gate: development
-migration rollback/reapply, production safety tests, and stable OpenAPI.
+repository adapters, liveness, readiness, and public config. Gate: migration
+apply/reapply on the single hosted project, production safety tests, and
+stable OpenAPI. Tests use explicit UUID scope and exact cleanup.
 
 ### Phase 2 — deterministic domain engine
 
@@ -127,7 +128,7 @@ contract plus replay/concurrency/reply behavior and counters.
 Implement email-ID-keyed schema output, micro-batches, rate limiting, Retry-After,
 jittered retries, repair, missing-item retry, split fallback, focused verification,
 injection boundaries, and conservative degradation. Gate: failure simulations and a
-live development sample with isolated development task rows during prompt tuning.
+live sample using in-memory task persistence during prompt tuning.
 
 ### Phase 5 — statistics and grounded chat
 

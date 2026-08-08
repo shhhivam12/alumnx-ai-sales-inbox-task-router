@@ -78,7 +78,7 @@ def _parse_deadlines(text: str, received: datetime) -> list[DeadlineMention]:
     role: str | None = None
     if any(token in lower for token in ("submit", "submission", "bid closes", "bid due", "proposals must", "proposal by")):
         role = "submission"
-    elif any(token in lower for token in ("confirm by", "confirmation by", "approve the profile by", "response deadline")):
+    elif any(token in lower for token in ("confirm by", "confirmation by", "approve the profile by", "response deadline", "board review")):
         role = "confirmation"
     elif any(token in lower for token in ("payment must", "payment due")):
         role = "payment"
@@ -89,6 +89,18 @@ def _parse_deadlines(text: str, received: datetime) -> list[DeadlineMention]:
     if "tomorrow" in lower:
         resolved = (received + timedelta(days=1)).replace(hour=23, minute=59, second=0, microsecond=0)
         return [DeadlineMention(resolved_at=resolved, role=role, evidence="tomorrow")]
+    hinglish_day = re.search(r"\b(?:board review\s+)?(\d{1,2})(?:st|nd|rd|th)?\s*ko\b", lower)
+    if hinglish_day:
+        day = int(hinglish_day.group(1))
+        try:
+            resolved = received.replace(day=day, hour=23, minute=59, second=0, microsecond=0)
+            if resolved < received:
+                year = received.year + (1 if received.month == 12 else 0)
+                month = 1 if received.month == 12 else received.month + 1
+                resolved = resolved.replace(year=year, month=month)
+            return [DeadlineMention(resolved_at=resolved, role=role, evidence=hinglish_day.group(0))]
+        except ValueError:
+            return []
     hours_match = re.search(r"within\s+(\d+)\s+hours", lower)
     if hours_match:
         hours = int(hours_match.group(1))
@@ -158,8 +170,16 @@ def heuristic_extract(message: NormalizedEmail) -> ExtractionResult:
             if intent == Intent.RESELLER and ("not a reseller" in lower or "not proposing a partnership" in lower):
                 continue
             intents.append(intent); owners.append(AssigneeId.KARAN)
-    if any(token in lower for token in ("demo", "trial", "product walkthrough", "pricing request", "licences", "purchase", "quote", "quotation")):
-        intents.append(Intent.DIRECT_PURCHASE if any(token in lower for token in ("purchase", "licences", "quote", "quotation", "pricing")) else Intent.DEMO_REQUEST)
+    demo_signal = any(token in lower for token in ("demo", "trial", "product walkthrough"))
+    purchase_signal = any(token in lower for token in (
+        "pricing request", "licences", "purchase", "quote", "quotation",
+        "product chahiye", "humko aapka product",
+    ))
+    if demo_signal or purchase_signal:
+        # A demo remains an SMB enquiry when price is merely requested alongside
+        # it. Treat it as a purchase only when the message contains a stronger
+        # procurement signal such as licences, purchase, quote, or quotation.
+        intents.append(Intent.DEMO_REQUEST if demo_signal else Intent.DIRECT_PURCHASE)
         owners.append(AssigneeId.ROHIT)
 
     # Acknowledgements and deterministic suppressions are handled earlier.
@@ -271,6 +291,9 @@ class GeminiExtractor:
             if result is None:
                 result = heuristic_extract(message)
                 result.reasoning_summary = f"Degraded deterministic extraction: {result.reasoning_summary}"
+            # Truncation is an application-known fact. Do not depend on the model to
+            # echo it, because confidence must be reduced whenever evidence was cut.
+            result.content_truncated = message.content_truncated
             final.append(result)
         return final
 

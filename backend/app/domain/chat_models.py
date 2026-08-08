@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 from backend.app.config import LOCKED_CANDIDATE_ID
 
@@ -30,12 +30,13 @@ class ChatRequest(BaseModel):
     query: str = Field(min_length=1, max_length=2000)
     scope: ChatScope = Field(default_factory=ChatScope)
 
-    @model_validator(mode="after")
-    def candidate_matches(self) -> "ChatRequest":
-        self.candidate_id = self.candidate_id.strip().lower()
-        if self.candidate_id != LOCKED_CANDIDATE_ID:
-            raise ValueError("candidate_id mismatch")
-        return self
+    @field_validator("candidate_id")
+    @classmethod
+    def candidate_matches(cls, value: str) -> str:
+        normalized = value.strip().lower()
+        if normalized != LOCKED_CANDIDATE_ID:
+            raise ValueError("candidate_id does not match the configured submission identity")
+        return normalized
 
 
 class ChatPlan(BaseModel):

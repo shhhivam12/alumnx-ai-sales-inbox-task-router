@@ -12,7 +12,9 @@ def calculate_confidence(
     company_from_domain: bool = False,
     degraded: bool = False,
 ) -> float:
-    if extraction.skip_reason:
+    if assignee == AssigneeId.TRIAGE and extraction.multiple_material_asks:
+        base = 0.42
+    elif extraction.skip_reason:
         base = 0.96
     elif assignee == AssigneeId.TRIAGE:
         base = 0.45
@@ -33,7 +35,7 @@ def calculate_confidence(
         base -= 0.08
     if extraction.content_truncated:
         base -= 0.08
-    if extraction.multiple_material_asks:
+    if extraction.multiple_material_asks and assignee != AssigneeId.TRIAGE:
         base -= 0.18
     if degraded:
         base = min(base - 0.20, 0.65 if hard_rule else 0.30)

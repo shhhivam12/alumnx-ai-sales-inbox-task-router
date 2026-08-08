@@ -38,8 +38,9 @@ python scripts/verify_database.py
 python -m scripts.supabase_smoke_test
 ```
 
-After bootstrap and before migration, fill `.env` with the hosted development
-Supabase URL and Gemini key.
+After bootstrap and before migration, fill `.env` with the hosted Supabase connection
+and Gemini key. This project uses one Supabase project; automated tests either stay
+in memory or use unique IDs with exact cleanup.
 
 `SUPABASE_DB_URL` means the Postgres connection string from **Supabase Dashboard →
 Connect → Session pooler**, not the `https://PROJECT.supabase.co` project URL. Choose
@@ -62,7 +63,8 @@ npm --prefix frontend run build
 See `HACKATHON_PLAN.md` for locked behavior, `DECISIONS.md` for tradeoffs, and
 `EVALS.md` for the honest evaluation protocol. `CODE_WALKTHROUGH.md` explains the
 implementation in beginner language; `REQUIREMENTS_REVIEW.md` maps every major
-hackathon requirement to evidence and remaining external work.
+hackathon requirement to evidence and remaining external work. `TEST_REPORT.md`
+records the final local/production-configured verification evidence.
 
 ## Environment and API
 
@@ -82,8 +84,9 @@ Postgres, Gemini, the production project reference, and exact non-wildcard CORS 
 ## Deployment
 
 Render uses `render.yaml`. Cloudflare Pages builds `frontend/`; replace the placeholder
-Render host in `frontend/public/_redirects`. Rehearse the migration on development,
-then apply it to production with `python scripts/migrate.py --production`.
+Render host in `frontend/public/_redirects`. Before deployment, set the exact production
+project host/reference and apply the already-tested migration with
+`python scripts/migrate.py --production`.
 
 ## Known limitation
 

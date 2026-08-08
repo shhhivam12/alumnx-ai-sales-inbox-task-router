@@ -23,10 +23,9 @@ class Settings(BaseSettings):
 
     supabase_db_url: str = ""
     supabase_migration_db_url: str = ""
-    development_supabase_host: str = ""
     production_supabase_host: str = ""
-    development_supabase_project_ref: str = ""
     production_supabase_project_ref: str = ""
+    allow_production_test_database: bool = False
     db_pool_min_size: int = Field(default=1, ge=0, le=5)
     db_pool_max_size: int = Field(default=5, ge=1, le=20)
     db_pool_recycle_seconds: int = Field(default=300, ge=30)
@@ -96,17 +95,16 @@ class Settings(BaseSettings):
                 raise ValueError("production CORS must contain exact origins")
             if self.production_supabase_host and self.database_host != self.production_supabase_host.lower():
                 raise ValueError("production database host does not match the configured production host")
-            if self.development_supabase_host and self.database_host == self.development_supabase_host.lower():
-                raise ValueError("production may not point at the development Supabase project")
             if not self.production_supabase_project_ref:
                 raise ValueError("PRODUCTION_SUPABASE_PROJECT_REF is required in production")
             if self.database_project_ref != self.production_supabase_project_ref.lower():
                 raise ValueError("production database does not match PRODUCTION_SUPABASE_PROJECT_REF")
-            if self.development_supabase_project_ref and self.database_project_ref == self.development_supabase_project_ref.lower():
-                raise ValueError("production may not point at the development Supabase project")
-        if self.app_env == "test" and self.production_supabase_host and self.database_host == self.production_supabase_host.lower():
-            raise ValueError("tests may not target the production Supabase project")
-        if self.app_env == "test" and self.production_supabase_project_ref and self.database_project_ref == self.production_supabase_project_ref.lower():
+        if (
+            self.app_env == "test"
+            and self.production_supabase_host
+            and self.database_host == self.production_supabase_host.lower()
+            and not self.allow_production_test_database
+        ):
             raise ValueError("tests may not target the production Supabase project")
         return self
 

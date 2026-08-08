@@ -17,11 +17,7 @@ services:
         sync: false
       - key: SUPABASE_MIGRATION_DB_URL
         sync: false
-      - key: DEVELOPMENT_SUPABASE_HOST
-        sync: false
       - key: PRODUCTION_SUPABASE_HOST
-        sync: false
-      - key: DEVELOPMENT_SUPABASE_PROJECT_REF
         sync: false
       - key: PRODUCTION_SUPABASE_PROJECT_REF
         sync: false

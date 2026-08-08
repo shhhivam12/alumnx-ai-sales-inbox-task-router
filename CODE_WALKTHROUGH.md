@@ -140,7 +140,8 @@ Important safety checks:
 4. TLS is added when `sslmode` is missing.
 5. Production requires Gemini, Supabase, non-wildcard CORS, and the expected
    production project reference.
-6. Tests reject the configured production project reference.
+6. Tests reject the configured production project by default. The single hosted
+   concurrency test requires an explicit opt-in and removes only its UUID-scoped rows.
 
 `dependencies.py` checks whether `SUPABASE_DB_URL` is present. With a valid value it
 creates `PostgresStore`; credential-free tests use `MemoryStore`. Production cannot
@@ -357,10 +358,11 @@ Say:
   candidate identity, enum errors, and deliberate direct-POST duplicates.
 - Dataset validator: frozen 250-message corpus and expected lifecycle.
 - Frontend tests: invalid input, raw/full payloads, duplicates, and 100/100/50 chunks.
-- Local API smoke: health, readiness, samples, full 250 ingestion, replay, tasks,
-  decisions, stats, feedback, and all ten chat questions.
-- Browser pass: visible preview, explicit routing, result/evidence table, grounded chat,
-  and responsive layout.
+- Production API matrix: health, readiness, persistent Task CRUD, ingestion, replay,
+  replies, tasks, decisions, stats, feedback, all ten chat questions, invalid payloads,
+  size limits, CORS, and exact cleanup.
+- Browser pass: visible 250-email preview, explicit routing, and sequential 100/100/50
+  requests. Mobile-specific testing was intentionally skipped for this baseline.
 
 ## 13. Common debugging path
 

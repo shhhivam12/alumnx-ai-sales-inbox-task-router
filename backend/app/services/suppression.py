@@ -12,13 +12,19 @@ def deterministic_suppression(message: NormalizedEmail) -> ExtractionResult | No
     body = message.latest_reply_body.lower()
     sender = str(message.email.from_email).lower()
     joined = f"{subject}\n{body}"
+    buyer_or_collaboration_signal = any(token in joined for token in (
+        "we need a demo", "we want to buy", "we would like to buy", "we'd like to buy",
+        "we want to evaluate", "we would like to evaluate", "we'd like to evaluate",
+        "please share pricing", "please send pricing", "for our own staff", "for our team",
+        "sponsor your newsletter", "advertise in your newsletter", "co-host", "collaborate with",
+    ))
 
     ooo_subject = any(token in subject for token in ("out of office", "automatic reply", "annual leave", "ooo"))
     ooo_body = any(token in body for token in (
         "out of office", "annual leave", "will not be forwarded", "office se bahar",
         "limited email access",
     ))
-    if ooo_subject and ooo_body:
+    if ooo_subject and ooo_body and not buyer_or_collaboration_signal:
         return ExtractionResult(
             email_id=message.email.email_id,
             actionability=Actionability.NON_ACTIONABLE,
@@ -44,7 +50,7 @@ def deterministic_suppression(message: NormalizedEmail) -> ExtractionResult | No
 
     broadcast = any(token in joined for token in ("newsletter", "issue #", "monthly digest", "read online"))
     opt_out = any(token in body for token in ("unsubscribe", "manage preferences", "forward to a friend"))
-    if broadcast and opt_out:
+    if broadcast and opt_out and not buyer_or_collaboration_signal:
         return ExtractionResult(
             email_id=message.email.email_id,
             actionability=Actionability.NON_ACTIONABLE,
@@ -57,10 +63,15 @@ def deterministic_suppression(message: NormalizedEmail) -> ExtractionResult | No
     vendor_phrases = (
         "we offer content marketing", "secure pr backlinks", "verified leads",
         "appointment-setting services", "seo audit subscription", "offshore development shop",
-        "book a sales call", "not ranking on page one", "buy our placement package",
+        "book a sales call", "not ranking on page one", "not ranking on page 1",
+        "isn't ranking on page 1", "is not ranking on page 1", "buy our placement package",
     )
     direct_sale = sum(1 for phrase in vendor_phrases if phrase in body)
-    if direct_sale >= 1 and any(token in body for token in ("we offer", "we sell", "buy our", "book", "pricing", "subscription")):
+    sales_cta = any(token in body for token in (
+        "we offer", "we sell", "buy our", "book", "pricing", "subscription",
+        "free audit", "quick 15 min call", "quick 15-minute call",
+    ))
+    if direct_sale >= 1 and sales_cta and not buyer_or_collaboration_signal:
         return ExtractionResult(
             email_id=message.email.email_id,
             actionability=Actionability.NON_ACTIONABLE,

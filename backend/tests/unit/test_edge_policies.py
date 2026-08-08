@@ -111,3 +111,180 @@ def test_acknowledgement_is_noop_on_existing_task() -> None:
     assert suppressed.actionability == Actionability.NON_ACTIONABLE
     prior = {"source_email_id": "original", "assignee_id": "u_rohit", "category": "smb_enquiry", "priority": "medium", "confidence": .8}
     assert route_email(message, suppressed, prior_task=prior).operation == Operation.NOOP
+
+
+def test_threshold_crossing_range_routes_triage_without_fabricated_value() -> None:
+    message = normalize_email(email(
+        "Delta Marine expects the project to land somewhere between 8 and 14 lakh depending on modules.",
+        subject="Need quote, value range still open",
+    ))
+    noisy = extraction(Intent.DIRECT_PURCHASE, value=1_400_000)
+    decision = route_email(message, noisy)
+    assert decision.task.assignee_id == AssigneeId.TRIAGE
+    assert decision.task.category == Category.TRIAGE
+    assert decision.task.deal_value_inr is None
+
+
+def test_deterministic_deadline_and_low_priority_phrases_override_model_omissions() -> None:
+    urgent_message = normalize_email(email(
+        "We need an answer within 50 hours. Leadership has not aligned internally on sponsorship or procurement.",
+        subject="Urgent: connect us to the correct team",
+    ))
+    urgent = ExtractionResult(
+        email_id=urgent_message.email.email_id,
+        actionability=Actionability.ACTIONABLE,
+        primary_intents=[Intent.MARKETING_SPONSORSHIP, Intent.DIRECT_PURCHASE],
+        multiple_material_asks=True,
+        reasoning_summary="Unresolved owners.",
+    )
+    urgent_task = route_email(urgent_message, urgent).task
+    assert urgent_task.priority.value == "high"
+    assert urgent_task.due_date == (RECEIVED + timedelta(hours=50)).date()
+
+    routine_message = normalize_email(email(
+        "Would you consider a referral agreement? No active deal is attached.",
+        subject="Referral partnership",
+    ))
+    routine_task = route_email(routine_message, extraction(Intent.REFERRAL)).task
+    assert routine_task.priority.value == "low"
+
+    meeting_message = normalize_email(email(
+        "Could we get a product demo next week? It is only a meeting preference and nothing is urgent.",
+        subject="Product demo next week",
+    ))
+    meeting_task = route_email(meeting_message, extraction(Intent.DEMO_REQUEST)).task
+    assert meeting_task.priority.value == "low"
+    assert meeting_task.due_date is None
+
+
+def test_hinglish_product_budget_cannot_be_misread_as_dealer_alliance() -> None:
+    message = normalize_email(email(
+        "Bhai, humko aapka product chahiye for our dealer network. Budget approx 1.2 cr allocated hai.",
+        subject="Dealer network ke liye product chahiye",
+    ))
+    noisy = ExtractionResult(
+        email_id=message.email.email_id,
+        actionability=Actionability.ACTIONABLE,
+        primary_intents=[Intent.RESELLER],
+        amounts=[AmountMention(
+            value_inr=12_000_000,
+            original_currency="INR",
+            original_text="1.2 cr",
+            role="deal_budget",
+            evidence="1.2 cr",
+        )],
+        reasoning_summary="Model confused dealer network with reseller intent.",
+    )
+    task = route_email(message, noisy).task
+    assert task.assignee_id == AssigneeId.AARTI
+    assert task.category == Category.ENTERPRISE_RFP
+
+
+def test_field_only_reply_preserves_owner_even_when_model_repeats_wrong_intent() -> None:
+    message = normalize_email(email(
+        "Please correct the customer name in your record to Delta Marine Private Limited.",
+        subject="Re: Quote needed",
+        index=1,
+        reply=True,
+    ))
+    noisy = ExtractionResult(
+        email_id=message.email.email_id,
+        actionability=Actionability.ACTIONABLE,
+        primary_intents=[Intent.FORMAL_RFP],
+        reply_changes=ReplyChanges(company=FieldChange(action="set", value="Delta Marine Private Limited")),
+        organization_name="Delta Marine Private Limited",
+        reasoning_summary="Company correction only.",
+    )
+    prior = {
+        "source_email_id": "original",
+        "assignee_id": "u_rohit",
+        "category": "smb_enquiry",
+        "priority": "low",
+        "confidence": 0.9,
+        "deal_value_inr": 200_000,
+        "company_name": "Delta Marine",
+        "description": "Original quote",
+    }
+    task = route_email(message, noisy, prior_task=prior).task
+    assert task.assignee_id == AssigneeId.ROHIT
+    assert task.category == Category.SMB_ENQUIRY
+    assert task.company_name == "Delta Marine Private Limited"
+
+
+def test_unconfirmed_public_sector_opportunity_remains_triage() -> None:
+    message = normalize_email(email(
+        "We advise an unnamed public entity, but this is not yet an official tender. "
+        "We may either prime the bid or purchase licences.",
+        subject="Confidential public-sector opportunity",
+    ))
+    noisy = extraction(Intent.RESELLER)
+    task = route_email(message, noisy).task
+    assert task.assignee_id == AssigneeId.TRIAGE
+    assert task.category == Category.TRIAGE
+
+
+def test_explicit_inr_amounts_are_recovered_when_model_omits_them() -> None:
+    rfp_message = normalize_email(email(
+        "Meridian Steel invites proposals. Indicative budget is Rs. 25 lakhs.",
+        subject="Enterprise RFP",
+    ))
+    rfp = ExtractionResult(
+        email_id=rfp_message.email.email_id,
+        actionability=Actionability.ACTIONABLE,
+        primary_intents=[Intent.FORMAL_RFP],
+        reasoning_summary="Model omitted amount.",
+    )
+    assert route_email(rfp_message, rfp).task.deal_value_inr == 2_500_000
+
+    tender_message = normalize_email(email(
+        "Government PSU tender. Estimated value: Rs. 6,50,000.",
+        subject="Tender",
+    ))
+    tender = ExtractionResult(
+        email_id=tender_message.email.email_id,
+        actionability=Actionability.ACTIONABLE,
+        primary_intents=[Intent.TENDER],
+        is_government_or_psu=True,
+        reasoning_summary="Model omitted amount.",
+    )
+    assert route_email(tender_message, tender).task.deal_value_inr == 650_000
+
+    crore_message = normalize_email(email(
+        "Bhai, humko aapka product chahiye. Budget approx 1.2 cr allocated hai.",
+        subject="Product requirement",
+    ))
+    crore = ExtractionResult(
+        email_id=crore_message.email.email_id,
+        actionability=Actionability.ACTIONABLE,
+        primary_intents=[Intent.RESELLER],
+        reasoning_summary="Model omitted amount and confused intent.",
+    )
+    crore_task = route_email(crore_message, crore).task
+    assert crore_task.deal_value_inr == 12_000_000
+    assert crore_task.assignee_id == AssigneeId.AARTI
+
+
+def test_invoice_and_alliance_pipeline_amounts_are_not_deal_values_when_recovered() -> None:
+    finance_message = normalize_email(email(
+        "Invoice INV-1 for INR 1,18,000 is overdue.",
+        subject="Invoice",
+    ))
+    finance = ExtractionResult(
+        email_id=finance_message.email.email_id,
+        actionability=Actionability.ACTIONABLE,
+        primary_intents=[Intent.FINANCE_INVOICE],
+        reasoning_summary="Invoice.",
+    )
+    assert route_email(finance_message, finance).task.deal_value_inr is None
+
+    alliance_message = normalize_email(email(
+        "Referral partnership with a downstream pipeline of 25 lakh.",
+        subject="Partnership",
+    ))
+    alliance = ExtractionResult(
+        email_id=alliance_message.email.email_id,
+        actionability=Actionability.ACTIONABLE,
+        primary_intents=[Intent.REFERRAL],
+        reasoning_summary="Alliance.",
+    )
+    assert route_email(alliance_message, alliance).task.deal_value_inr is None

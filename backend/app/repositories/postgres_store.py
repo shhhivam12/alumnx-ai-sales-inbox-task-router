@@ -194,7 +194,7 @@ class PostgresStore:
         where, params = ["d.candidate_id=%s"], [LOCKED_CANDIDATE_ID]
         if scope_type == "run": where.append("e.first_seen_run_id=%s"); params.append(scope_id)
         if scope_type == "batch": where.append("g.client_batch_id=%s"); params.append(scope_id)
-        sql = """SELECT d.*,e.first_seen_run_id AS run_id,g.client_batch_id FROM app_private.decisions d JOIN app_private.emails e ON e.id=d.email_row_id JOIN app_private.ingest_runs r ON r.id=e.first_seen_run_id LEFT JOIN app_private.ingest_groups g ON g.id=r.group_id WHERE """ + " AND ".join(where)
+        sql = """SELECT d.*,e.first_seen_run_id AS run_id,g.client_batch_id FROM app_private.decisions d JOIN app_private.emails e ON e.id=d.email_row_id JOIN app_private.ingest_runs r ON r.id=e.first_seen_run_id LEFT JOIN app_private.ingest_groups g ON g.id=r.group_id WHERE """ + " AND ".join(where) + " ORDER BY e.thread_id,e.message_index,d.created_at"
         with self.pool.connection() as conn, conn.cursor() as cur: cur.execute(sql, params); rows=cur.fetchall()
         result=[]
         for r in rows:
@@ -216,7 +216,11 @@ class PostgresStore:
         if scope_type=="batch":sql+=" AND g.client_batch_id=%s";params.append(scope_id)
         with self.pool.connection() as c,c.cursor() as x:x.execute(sql,params);return [dict(r) for r in x.fetchall()]
     def set_feedback(self,email_id:str,label:str,note:str|None)->dict[str,Any]:
-        with self.pool.connection() as c,c.cursor() as x:x.execute("INSERT INTO app_private.quality_feedback(id,candidate_id,email_id,label,note,created_at) VALUES(%s,%s,%s,%s,%s,now()) ON CONFLICT(candidate_id,email_id) DO UPDATE SET label=EXCLUDED.label,note=EXCLUDED.note RETURNING *",(uuid4(),LOCKED_CANDIDATE_ID,email_id,label,note));row=dict(x.fetchone());c.commit();return row
+        with self.pool.connection() as c,c.cursor() as x:
+            x.execute("SELECT 1 FROM app_private.decisions WHERE candidate_id=%s AND email_id=%s",(LOCKED_CANDIDATE_ID,email_id))
+            if not x.fetchone():
+                raise AppError("decision_not_found","email decision not found",status_code=404)
+            x.execute("INSERT INTO app_private.quality_feedback(id,candidate_id,email_id,label,note,created_at) VALUES(%s,%s,%s,%s,%s,now()) ON CONFLICT(candidate_id,email_id) DO UPDATE SET label=EXCLUDED.label,note=EXCLUDED.note RETURNING *",(uuid4(),LOCKED_CANDIDATE_ID,email_id,label,note));row=dict(x.fetchone());c.commit();return row
     def list_feedback(self)->list[dict[str,Any]]:
         with self.pool.connection() as c,c.cursor() as x:x.execute("SELECT * FROM app_private.quality_feedback WHERE candidate_id=%s",(LOCKED_CANDIDATE_ID,));return [dict(r) for r in x.fetchall()]
     def add_chat_audit(self,row:dict[str,Any])->None:

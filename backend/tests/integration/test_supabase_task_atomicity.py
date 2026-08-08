@@ -23,15 +23,19 @@ from backend.app.services.reconciler import Reconciler
 
 pytestmark = pytest.mark.skipif(
     os.environ.get("RUN_SUPABASE_TESTS") != "1",
-    reason="set RUN_SUPABASE_TESTS=1 to exercise the hosted development project",
+    reason="set RUN_SUPABASE_TESTS=1 to exercise the hosted project with scoped cleanup",
 )
 
 
 def test_concurrent_identical_ingest_creates_one_atomic_task() -> None:
     root = Path(__file__).resolve().parents[3]
     url = dotenv_values(root / ".env").get("SUPABASE_DB_URL")
-    assert url, "development SUPABASE_DB_URL is required"
-    settings = Settings(supabase_db_url=str(url), supabase_migration_db_url="")
+    assert url, "SUPABASE_DB_URL is required"
+    settings = Settings(
+        supabase_db_url=str(url),
+        supabase_migration_db_url="",
+        allow_production_test_database=True,
+    )
     pool = DatabasePool(settings)
     store = PostgresStore(pool)
     marker = uuid4().hex

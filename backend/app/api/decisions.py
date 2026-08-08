@@ -1,4 +1,5 @@
 from typing import Literal
+from uuid import UUID
 
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel, Field
@@ -15,8 +16,8 @@ class FeedbackRequest(BaseModel):
 
 
 @router.get("/batches/{client_batch_id}/decisions")
-def batch_decisions(client_batch_id: str, store: MemoryStore = Depends(get_store)) -> dict:
-    rows = store.list_decisions("batch", client_batch_id)
+def batch_decisions(client_batch_id: UUID, store: MemoryStore = Depends(get_store)) -> dict:
+    rows = store.list_decisions("batch", str(client_batch_id))
     return {"items": rows, "total": len(rows)}
 
 

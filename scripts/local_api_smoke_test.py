@@ -5,12 +5,18 @@ from pathlib import Path
 from uuid import uuid4
 
 import httpx
+from dotenv import dotenv_values
 
 ROOT = Path(__file__).resolve().parents[1]
 CANDIDATE_ID = "mahendrushivam123@gmail.com"
 
 
 def main() -> None:
+    if str(dotenv_values(ROOT / ".env").get("APP_ENV") or "").lower() == "production":
+        raise SystemExit(
+            "Refusing an unscoped 250-email smoke run against production. "
+            "Use scripts/run_production_api_matrix.py, which guarantees exact cleanup."
+        )
     base = "http://127.0.0.1:8000"
     emails = json.loads((ROOT / "data/inbox.json").read_text(encoding="utf-8"))
     batch_id = str(uuid4())

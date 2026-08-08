@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, StrictBool, field_validator, model_validator
 
 from backend.app.config import LOCKED_CANDIDATE_ID
 
@@ -14,7 +14,7 @@ class EmailMessage(BaseModel):
 
     email_id: str = Field(min_length=1, max_length=128)
     thread_id: str = Field(min_length=1, max_length=128)
-    message_index: int = Field(ge=0)
+    message_index: int = Field(strict=True, ge=0)
     from_name: str = Field(max_length=256)
     from_email: EmailStr
     to: EmailStr
@@ -23,7 +23,7 @@ class EmailMessage(BaseModel):
     body: str = Field(max_length=250_000)
     received_at: datetime
     attachments: list[str] = Field(max_length=50)
-    is_reply: bool
+    is_reply: StrictBool
 
     @field_validator("email_id", "thread_id")
     @classmethod

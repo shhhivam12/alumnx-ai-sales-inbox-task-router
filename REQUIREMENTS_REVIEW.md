@@ -6,6 +6,7 @@ Use this as a reviewer checklist beside `PROBLEM_STATEMENT.md`. Status meanings:
 - **READY, EXTERNAL CHECK PENDING:** code exists; needs a real service connection.
 - **USER INPUT REQUIRED:** cannot be completed without a value or human judgment.
 - **DEPLOYMENT LATER:** intentionally reserved for final production testing.
+- **SKIPPED BY USER:** deliberately excluded from the baseline scope.
 
 ## Submission identity
 
@@ -79,13 +80,14 @@ Use this as a reviewer checklist beside `PROBLEM_STATEMENT.md`. Status meanings:
 
 | Requirement | Status | Evidence |
 |---|---|---|
-| Private Postgres schema | PASS | Applied and catalog-verified on development Supabase |
+| Private Postgres schema | PASS | Applied and catalog-verified on the production Supabase project |
 | Required tables and indexes | PASS | Nine tables and 30 total explicit/constraint indexes verified |
 | Persistent grader Task API table | PASS | `app_private.tasks`; live create/read/cleanup smoke passed |
 | RLS enabled and no browser policies | PASS | RLS verified on all nine private tables |
 | TLS session pooler | PASS | Client-side TLS and Session pooler port 5432 verified |
-| Current development migration | PASS | `0002_local_task_api` applied and reverified |
-| Production and test project guard | PASS | Project-reference checks in settings |
+| Current production migration | PASS | `0002_local_task_api` applied idempotently and reverified |
+| Production project identity guard | PASS | Startup requires the configured production project reference |
+| Clean grader starting state | PASS | All nine application tables verified empty after exact test cleanup |
 | No Supabase secret/client in frontend | PASS | No `supabase-js` dependency or Vite secret |
 
 ## Gemini
@@ -100,7 +102,9 @@ Use this as a reviewer checklist beside `PROBLEM_STATEMENT.md`. Status meanings:
 | Rate limit/retry/jitter/Retry-After | PASS | Extractor and resilience tests |
 | Missing item repair and malformed split | PASS | Unit failure simulations |
 | Total outage degradation | PASS | Unit failure simulation |
-| Full live 250 synthetic regression | PASS | Completed in isolated in-memory persistence; results and limitations are in `EVALS.md` |
+| All 12 official worked examples live | PASS | 12/12 through FastAPI, Gemini, production Supabase, exact cleanup |
+| Live adversarial edge matrix | PASS | 24/24, zero errors and zero degraded outputs; in-memory persistence |
+| Full live 250 synthetic regression | PASS | Exact 156/49/42/3 lifecycle; semantic metrics and limitations in `EVALS.md` |
 | Full live 60 human-reviewed evaluation | USER INPUT REQUIRED | Requires personally frozen blind labels |
 
 ## Stats and chat
@@ -127,7 +131,8 @@ Use this as a reviewer checklist beside `PROBLEM_STATEMENT.md`. Status meanings:
 | Prompt injection treated as data | PASS | System boundary, no tools, typed schema |
 | Parameterized SQL | PASS | Psycopg placeholders throughout repository |
 | Structured logs without bodies/secrets | PASS | JSON formatter and safe event fields |
-| Exact production CORS | PASS | Production startup validation |
+| Exact local production-mode CORS | PASS | Exact localhost origin accepted; foreign origin rejected |
+| Deployed Cloudflare CORS | DEPLOYMENT LATER | Replace localhost with the final Pages origin |
 | No Docker/local Postgres | PASS | Scripts and docs use hosted Supabase |
 | No LangChain/LangGraph/LangSmith/RAG/MCP | PASS | No dependencies or runtime code |
 
@@ -136,11 +141,12 @@ Use this as a reviewer checklist beside `PROBLEM_STATEMENT.md`. Status meanings:
 | Requirement | Status | Evidence |
 |---|---|---|
 | Dataset validator | PASS | 250 messages, 200 threads, frozen expected lifecycle |
-| Backend unit tests | PASS | Configuration, routing, edge, chat, Gemini, lifecycle |
+| Backend unit/integration/contract tests | PASS | 137 tests passed, including hosted concurrency |
 | Task API contract tests | PASS | Exact create/list/filter/patch/delete/users, enum error, candidate, and direct duplicate behavior |
-| Frontend build/tests | PASS | Vite production build and Vitest |
-| Local 250 API smoke and replay | PASS | `scripts/local_api_smoke_test.py` |
-| Visible browser workflow | PASS | Preview, route, decisions, chat, responsive pass |
+| Production HTTP API matrix | PASS | Every public API group, invalid requests, replay/reply/chat/CORS, exact cleanup |
+| Frontend build/tests | PASS | Vite production build and 4 Vitest assertions |
+| Desktop browser workflow | PASS | Playwright verifies preview-before-route and sequential 100/100/50 |
+| Mobile-specific test | SKIPPED BY USER | Not a baseline priority; desktop/table overflow behavior remains |
 | Hosted Supabase repository smoke | PASS | Insert/lock/decision/event/feedback/audit/read/targeted cleanup passed |
 | Frozen manual 60 labels | USER INPUT REQUIRED | Must be personally labelled, not generated |
 | Honest metrics/confusion/calibration | USER INPUT REQUIRED | Run only after labels are frozen |
@@ -159,13 +165,13 @@ Use this as a reviewer checklist beside `PROBLEM_STATEMENT.md`. Status meanings:
 
 ## What is needed from the user now
 
-The Supabase development connection and persistent Task API are complete. No organizer
+The single Supabase production project and persistent Task API are complete. No organizer
 Task API URL or key is needed. The 60-message blind worksheet still requires personal
-labels before final evaluation claims.
+labels before final evaluation claims. Deployment credentials/origins are needed only
+when the final Render and Cloudflare phase begins.
 
 ## Intentionally postponed until deployment
 
-- Production Supabase migration.
 - Render and Cloudflare deployment.
 - Exact deployed CORS verification.
 - Cold-start-after-idle tests.
