@@ -1,0 +1,5 @@
+/api/* https://YOUR-RENDER-SERVICE.onrender.com/api/:splat 200
+/ingest https://YOUR-RENDER-SERVICE.onrender.com/ingest 200
+/health https://YOUR-RENDER-SERVICE.onrender.com/health 200
+/ready https://YOUR-RENDER-SERVICE.onrender.com/ready 200
+/* /index.html 200

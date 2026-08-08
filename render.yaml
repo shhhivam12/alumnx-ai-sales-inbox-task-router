@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: alumnx-ai-sales-inbox-task-router
+    runtime: python
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: APP_ENV
+        value: production
+      - key: CANDIDATE_ID
+        value: mahendrushivam123@gmail.com
+      - key: TASK_API_MODE
+        value: live
+      - key: SUPABASE_DB_URL
+        sync: false
+      - key: SUPABASE_MIGRATION_DB_URL
+        sync: false
+      - key: DEVELOPMENT_SUPABASE_HOST
+        sync: false
+      - key: PRODUCTION_SUPABASE_HOST
+        sync: false
+      - key: DEVELOPMENT_SUPABASE_PROJECT_REF
+        sync: false
+      - key: PRODUCTION_SUPABASE_PROJECT_REF
+        sync: false
+      - key: TASK_API_BASE_URL
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: FRONTEND_ORIGINS
+        sync: false

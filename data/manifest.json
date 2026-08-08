@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0.0",
+  "generator_seed": 20260808,
+  "message_count": 250,
+  "thread_count": 200,
+  "initial_message_count": 200,
+  "reply_count": 50,
+  "operation_counts": {
+    "create": 156,
+    "noop": 3,
+    "skip": 49,
+    "update": 42
+  },
+  "initial_scenario_counts": {
+    "alliances": 22,
+    "bounce": 6,
+    "enterprise": 34,
+    "finance": 26,
+    "marketing": 26,
+    "newsletter": 10,
+    "ooo": 12,
+    "smb": 30,
+    "spam": 16,
+    "triage": 18
+  },
+  "final_task_count": 156,
+  "final_category_counts": {
+    "alliances": 21,
+    "enterprise_rfp": 39,
+    "finance": 26,
+    "marketing": 27,
+    "smb_enquiry": 27,
+    "triage": 16
+  },
+  "batch_files": [
+    "batch_001.json",
+    "batch_002.json",
+    "batch_003.json"
+  ],
+  "batch_sizes": [
+    100,
+    100,
+    50
+  ],
+  "eval_count": 60,
+  "files": {
+    "data/inbox.json": "974d82563abcdf8ed3b84fc0a0bee8d5d1d4065eec0ad9ea52af29098597555c",
+    "data/team_roster.json": "f2709de3822edf2c1caf8451b8d8337b018ec178efe050da9cc6785308c44b22",
+    "data/ground_truth/expected_decisions.json": "be86f07b4e8356140add068b8541675242d03213b4ed12a09aaa7c9dd4c6fa81",
+    "data/ground_truth/expected_tasks.json": "5335e6a7db42e39884d0fc0e2b8c51f47e54468af8e764634b81b1e25e2bb3b4",
+    "data/eval/eval_60.json": "7907f6aaa58f2a1274de72536a94d8660b94cb367203698b87892d469109ffd9",
+    "data/fixtures/invalid_ingest_cases.json": "a81c9dbedd8becc174c67154cf7b5cae7b9af5b1c4af9260f9b5e65ce9759e9b",
+    "data/batches/batch_001.json": "a4af561a4009411b32e726df5b3a866a323c3a392778fae7355efe9d31c9b170",
+    "data/batches/batch_002.json": "1670101392c28071e935724c35ab5d99bcc3c8a5eae40144a1a2d65656ba5fdf",
+    "data/batches/batch_003.json": "63070194b686fdbc98a4d1e0a581d93100ad31bd3e2f532e8eb68b23cd1641ca"
+  }
+}

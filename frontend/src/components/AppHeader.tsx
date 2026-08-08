@@ -1,0 +1,2 @@
+import type {Config} from '../types'
+export function AppHeader({config,status}:{config:Config|null,status:string}){return <header><div><p className="eyebrow">ALUMNX AI LABS · HACKATHON</p><h1>{config?.app_name??'Alumnx AI Sales inbox task router'}</h1><p className="lede">Turn a noisy sales inbox into accountable work—with every routing decision inspectable.</p></div><div className="identity"><span className={`status ${status}`}>{status}</span><small>Submission identity</small><strong>{config?.candidate_id??'Loading…'}</strong></div></header>}

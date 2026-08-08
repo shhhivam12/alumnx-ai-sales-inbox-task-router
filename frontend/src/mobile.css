@@ -1,0 +1,13 @@
+@media (max-width: 800px) {
+  h1 {
+    font-size: 2rem;
+    line-height: 0.96;
+    overflow-wrap: anywhere;
+    letter-spacing: -0.045em;
+    max-width: 330px;
+  }
+
+  .lede {
+    font-size: 0.95rem;
+  }
+}

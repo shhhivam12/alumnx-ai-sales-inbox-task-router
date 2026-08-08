@@ -1,0 +1,3 @@
+import json
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[1];source=json.loads((ROOT/"data/eval/eval_60.json").read_text(encoding="utf-8"));items=source if isinstance(source,list) else source.get("items",source.get("emails",[]));blind=[{"email":item.get("email",item),"human_label":{"operation":"","assignee_id":"","category":"","priority":"","due_date":None,"deal_value_inr":None,"company_name":None,"confidence_expectation":""}} for item in items];target=ROOT/"artifacts/manual_eval_blind.json";target.parent.mkdir(exist_ok=True);target.write_text(json.dumps(blind,indent=2,ensure_ascii=False),encoding="utf-8");print(target)
