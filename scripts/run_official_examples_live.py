@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 from uuid import uuid4
 
@@ -13,6 +14,7 @@ from dotenv import dotenv_values
 
 ROOT = Path(__file__).resolve().parents[1]
 CANDIDATE_ID = "mahendrushivam123@gmail.com"
+BASE_URL = os.environ.get("BACKEND_URL", "http://127.0.0.1:8000").rstrip("/")
 
 
 def email(prefix: str, number: int, body: str, **overrides) -> dict:
@@ -109,7 +111,7 @@ def main() -> None:
     rows, expected, reply = cases(prefix)
     run_ids: list[str] = []
     results: list[dict] = []
-    with httpx.Client(base_url="http://127.0.0.1:8000", timeout=300) as client:
+    with httpx.Client(base_url=BASE_URL, timeout=900) as client:
         try:
             first = client.post("/ingest", json={"candidate_id": CANDIDATE_ID, "client_batch_id": batch_id, "source": "api", "emails": rows})
             first.raise_for_status()
@@ -128,7 +130,7 @@ def main() -> None:
             cleanup(prefix, batch_id, run_ids)
 
     results.sort(key=lambda row: row["example"])
-    report = {"model": dotenv_values(ROOT / ".env").get("GEMINI_MODEL"), "passed": sum(row["passed"] for row in results), "total": 12, "results": results, "cleanup_verified": True}
+    report = {"base_url": BASE_URL, "model": dotenv_values(ROOT / ".env").get("GEMINI_MODEL"), "passed": sum(row["passed"] for row in results), "total": 12, "results": results, "cleanup_verified": True}
     target = ROOT / "artifacts" / "official_examples_live.json"
     target.parent.mkdir(exist_ok=True)
     target.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")

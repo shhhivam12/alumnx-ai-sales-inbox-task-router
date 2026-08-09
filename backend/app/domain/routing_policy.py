@@ -29,12 +29,18 @@ ACTIONABLE_DEADLINE_ROLES = {"submission", "confirmation", "payment", "media_res
 
 
 def _select_value(extraction: ExtractionResult) -> int | None:
+    def is_inr(currency: str | None) -> bool:
+        if not currency:
+            return True
+        normalized = re.sub(r"[^A-Z₹]", "", currency.strip().upper())
+        return normalized in {"INR", "RS", "RUPEE", "RUPEES", "INDIANRUPEE", "INDIANRUPEES", "₹"}
+
     candidates = [
         item.value_inr
         for item in extraction.amounts
         if item.value_inr is not None
         and item.role in {"deal_budget", "sponsorship_package"}
-        and (not item.original_currency or item.original_currency.strip().upper() in {"INR", "RS", "RUPEE", "RUPEES", "₹"})
+        and is_inr(item.original_currency)
     ]
     return candidates[-1] if candidates else None
 
@@ -221,6 +227,29 @@ def _normalize_extraction_policy(message: NormalizedEmail, extraction: Extractio
     actionable_deadline = any(
         item.resolved_at and item.role in ACTIONABLE_DEADLINE_ROLES for item in normalized.deadlines
     )
+    if not actionable_deadline:
+        board_review_day = re.search(
+            r"(?i)\bboard\s+review\s+(\d{1,2})(?:st|nd|rd|th)?\s*ko\b",
+            current,
+        )
+        if board_review_day:
+            day = int(board_review_day.group(1))
+            try:
+                resolved = message.email.received_at.replace(
+                    day=day, hour=23, minute=59, second=0, microsecond=0
+                )
+                if resolved < message.email.received_at:
+                    next_month = 1 if message.email.received_at.month == 12 else message.email.received_at.month + 1
+                    next_year = message.email.received_at.year + (1 if next_month == 1 else 0)
+                    resolved = resolved.replace(year=next_year, month=next_month)
+                normalized.deadlines.append(DeadlineMention(
+                    resolved_at=resolved,
+                    role="confirmation",
+                    evidence=board_review_day.group(0),
+                ))
+                actionable_deadline = True
+            except ValueError:
+                pass
     if not actionable_deadline:
         within_hours = re.search(r"(?i)\bwithin\s+(\d{1,3})\s+hours?\b", current)
         if within_hours:

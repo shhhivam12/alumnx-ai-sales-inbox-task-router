@@ -264,6 +264,30 @@ def test_explicit_inr_amounts_are_recovered_when_model_omits_them() -> None:
     assert crore_task.assignee_id == AssigneeId.AARTI
 
 
+def test_model_currency_punctuation_and_omitted_hinglish_board_deadline() -> None:
+    item = normalize_email(email(
+        "Budget approx 1.2 cr allocated hai. Thoda jaldi, board review 20th ko hai.",
+        subject="Product requirement",
+    ))
+    extracted = ExtractionResult(
+        email_id=item.email.email_id,
+        actionability=Actionability.ACTIONABLE,
+        primary_intents=[Intent.DIRECT_PURCHASE],
+        intent_direction="buying_from_us",
+        amounts=[AmountMention(
+            value_inr=12_000_000,
+            original_currency="Rs.",
+            original_text="1.2 cr",
+            role="deal_budget",
+            evidence="1.2 cr",
+        )],
+        reasoning_summary="Model returned the value but omitted the board-review deadline.",
+    )
+    task = route_email(item, extracted).task
+    assert task.deal_value_inr == 12_000_000
+    assert task.due_date.isoformat() == "2026-08-20"
+
+
 def test_invoice_and_alliance_pipeline_amounts_are_not_deal_values_when_recovered() -> None:
     finance_message = normalize_email(email(
         "Invoice INV-1 for INR 1,18,000 is overdue.",
