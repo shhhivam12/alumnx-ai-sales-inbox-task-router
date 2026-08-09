@@ -19,13 +19,16 @@ class DatabasePool:
             min_size=settings.db_pool_min_size,
             max_size=settings.db_pool_max_size,
             max_lifetime=settings.db_pool_recycle_seconds,
-            kwargs={"row_factory": dict_row, "autocommit": False},
+            # Free shared poolers can need more than the library's 30-second
+            # default during a cold connection or multi-address failover.
+            timeout=90,
+            kwargs={"row_factory": dict_row, "autocommit": False, "connect_timeout": 10},
             open=False,
             check=ConnectionPool.check_connection,
         )
 
     def open(self) -> None:
-        self.pool.open(wait=True)
+        self.pool.open(wait=True, timeout=90)
 
     def close(self) -> None:
         self.pool.close()
