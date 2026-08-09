@@ -1,6 +1,8 @@
 import type {Config,Email,IngestResult,Decision} from '../types'
 
-async function request<T>(path:string, init?:RequestInit):Promise<T>{const response=await fetch(path,init);const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data?.error?.message||`Request failed (${response.status})`);return data}
+const API_BASE_URL=(import.meta.env.VITE_API_BASE_URL||'').replace(/\/+$/,'')
+
+async function request<T>(path:string, init?:RequestInit):Promise<T>{const response=await fetch(`${API_BASE_URL}${path}`,init);const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data?.error?.message||`Request failed (${response.status})`);return data}
 export const getConfig=()=>request<Config>('/api/config')
 export const getReady=()=>request<{status:string}>('/ready')
 export const getSamples=(count=250)=>request<{emails:Email[]}>(`/api/sample-emails?count=${count}`)
