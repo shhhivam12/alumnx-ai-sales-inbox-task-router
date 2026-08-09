@@ -1,10 +1,10 @@
 # Alumnx AI Sales inbox task router
 
-**Candidate ID:** `mahendrushivam123@gmail.com`  
-**Backend URL:** _add after deployment_  
-**Frontend URL:** _add after deployment_  
-**Repository URL:** https://github.com/shhhivam12/alumnx-ai-sales-inbox-task-router  
-**Video URL:** _add after recording_
+- **Candidate ID:** `mahendrushivam123@gmail.com`
+- **Backend URL:** https://alumnx-ai-sales-inbox-task-router.onrender.com
+- **Frontend URL:** https://alumnx-ai-sales-inbox-task-router.vercel.app
+- **Repository URL:** https://github.com/shhhivam12/alumnx-ai-sales-inbox-task-router
+- **Video URL:** _add after recording_
 
 The application converts a messy sales inbox into correctly assigned tasks, updates
 one task per email thread, records everything it intentionally skips, and exposes a
@@ -13,7 +13,7 @@ grounded analytics chat whose numbers come from stored processing data.
 ## Architecture
 
 ```text
-Cloudflare Pages (React preview/results/chat)
+Vercel (React preview/results/chat)
                     |
                     v
 Render (one FastAPI base URL)
@@ -60,11 +60,13 @@ npm --prefix frontend test
 npm --prefix frontend run build
 ```
 
-See `HACKATHON_PLAN.md` for locked behavior, `DECISIONS.md` for tradeoffs, and
-`EVALS.md` for the honest evaluation protocol. `CODE_WALKTHROUGH.md` explains the
-implementation in beginner language; `REQUIREMENTS_REVIEW.md` maps every major
-hackathon requirement to evidence and remaining external work. `TEST_REPORT.md`
-records the final local/production-configured verification evidence.
+See `DECISIONS.md` for the required technical tradeoffs and `EVALS.md` for the
+honest evaluation protocol and recorded failure cases.
+
+Current verified baseline: 153 backend tests pass (one hosted test is opt-in), all
+frontend tests/build checks pass, all 12 official examples pass publicly, and the
+eight-group public API matrix passes with exact cleanup. Human-reviewed evaluation and
+the submission video are intentionally still marked as user work rather than fabricated.
 
 ## Environment and API
 
@@ -83,10 +85,12 @@ Postgres, Gemini, the production project reference, and exact non-wildcard CORS 
 
 ## Deployment
 
-Render uses `render.yaml`. Cloudflare Pages builds `frontend/`; replace the placeholder
-Render host in `frontend/public/_redirects`. Before deployment, set the exact production
-project host/reference and apply the already-tested migration with
-`python scripts/migrate.py --production`.
+Render uses `render.yaml` and serves the FastAPI backend. Vercel builds `frontend/`
+with the Vite preset, `frontend` as its root directory, and `dist` as its output.
+Set Vercel's public `VITE_API_BASE_URL` to the backend URL above without a trailing
+slash. Render's `FRONTEND_ORIGINS` must be the exact Vercel origin above; never use a
+wildcard. Apply the tested production migration immediately before deploying the
+matching backend revision with `python scripts/migrate.py --production`.
 
 ## Known limitation
 

@@ -16,7 +16,7 @@ containing at least three genuine failures.
 ## Failure Cases I Did Not Fix
 
 The required human-blind evaluation has not been completed. The following are honest
-unfixed exact-match failures from the **synthetic 250-message regression** run on
+remaining exact-match differences from the **synthetic 250-message regression** run on
 9 August 2026 and are not presented as manually reviewed quality claims:
 
 1. `em_00029` returned the explicit current name `NTPC Limited`; the synthetic oracle
@@ -37,17 +37,19 @@ External writes: none; isolated in-memory task repository only
 
 | Metric | Result |
 |---|---:|
-| Operation accuracy | 100.00% |
-| Owner/category accuracy | 94.44% |
-| Priority exact match | 94.95% |
-| Due-date exact match | 98.48% |
-| Deal-value exact match | 97.98% |
+| Operation accuracy | 99.60% |
+| Owner/category accuracy | 100.00% |
+| Priority exact match | 98.48% |
+| Due-date exact match | 99.49% |
+| Deal-value exact match | 100.00% |
 | Company exact/null match | 98.48% |
 | Degraded outputs | 0 |
 
-The measured run exactly produced 156 creates, 49 skips, 42 updates, and 3 no-ops.
-It recorded all remaining field mismatches in the ignored local artifact. Subsequent
-narrow rule-backed fixes were verified by the 12/12 official live suite and 24/24 live
-adversarial suite, but the 250-message percentage table above was not relabelled or
-silently recomputed. These metrics remain a development signal only. They must not be
-used as the final hackathon evaluation until the 60 blind labels are personally frozen.
+That full run produced 155 creates, 50 skips, 42 updates, and 3 no-ops before the final
+award-nomination rescue. A focused live-Gemini rerun then verified the corrected award
+create, exact 71-hour IST priority, both downstream reply priorities, and the corrected
+`tomorrow EOD` date. The corpus oracle now validates the intended 156/49/42/3 lifecycle.
+The full percentage table was not silently recomputed after those focused fixes.
+
+These synthetic metrics remain a development signal only. They must not be used as the
+final hackathon evaluation until the 60 blind labels are personally frozen.

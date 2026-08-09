@@ -34,8 +34,11 @@ configuration-driven so measured evaluation can justify a temporary stronger mod
 
 ## 5. Grounded read-only chat
 
-Gemini selects only an allowlisted intent. Postgres computes every result and the
-backend renders deterministic prose plus `supporting_data`. Actions are refused.
+A deterministic natural-language planner maps supported questions to an allowlisted
+intent. Postgres computes every result and the backend first renders deterministic
+prose plus `supporting_data`. Gemini may improve wording, but it receives only the
+validated plan, supporting data, and grounded draft; any changed number or missing
+subject is rejected. Actions and unsupported questions fail closed.
 
 ## 6. One task per ingested thread
 
