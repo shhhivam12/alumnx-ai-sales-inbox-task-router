@@ -7,12 +7,23 @@ import sys
 from pathlib import Path
 from urllib.parse import urlparse
 
-from dotenv import dotenv_values
-
 ROOT = Path(__file__).resolve().parents[1]
+VENV_PYTHON = ROOT / ".venv" / ("Scripts/python.exe" if sys.platform == "win32" else "bin/python")
+
+
+def ensure_virtualenv() -> None:
+    """Re-run this script with the project interpreter created by bootstrap."""
+    if not VENV_PYTHON.exists():
+        raise SystemExit("Virtual environment not found. Run scripts/bootstrap.py with Python 3.12 first.")
+    if Path(sys.executable).resolve() != VENV_PYTHON.resolve():
+        completed = subprocess.run([str(VENV_PYTHON), str(Path(__file__).resolve()), *sys.argv[1:]], cwd=ROOT)
+        raise SystemExit(completed.returncode)
 
 
 def main() -> None:
+    ensure_virtualenv()
+    from dotenv import dotenv_values
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--production", action="store_true")
     parser.add_argument(

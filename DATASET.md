@@ -1,6 +1,6 @@
 # Sales Inbox Agent Dataset
 
-See [`HACKATHON_PLAN.md`](HACKATHON_PLAN.md) for the full product, architecture, implementation, evaluation, deployment, and submission plan.
+See [`README.md`](README.md) for the application architecture, local setup, repository structure, verification, and deployment workflow.
 
 ## Quick Start
 
