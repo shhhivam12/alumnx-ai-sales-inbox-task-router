@@ -577,7 +577,7 @@ def main() -> int:
         else:
             for name, path in TRACKED_FILES.items():
                 try:
-                    actual = hashlib.sha256(path.read_bytes()).hexdigest()
+                    actual = hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
                 except OSError as exc:
                     error(f"manifest.files.{name}", f"cannot hash file ({exc})")
                     continue
