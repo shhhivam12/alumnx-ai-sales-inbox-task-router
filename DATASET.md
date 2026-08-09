@@ -1,7 +1,5 @@
 # Sales Inbox Agent Dataset
 
-This directory is an isolated, deterministic dataset package for the Alumnx AI Labs Sales Inbox Agent challenge. It does not depend on or modify the project in the parent directory.
-
 See [`HACKATHON_PLAN.md`](HACKATHON_PLAN.md) for the full product, architecture, implementation, evaluation, deployment, and submission plan.
 
 ## Quick Start

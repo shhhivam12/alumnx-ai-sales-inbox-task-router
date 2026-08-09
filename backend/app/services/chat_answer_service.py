@@ -1,15 +1,17 @@
 from __future__ import annotations
 
 from collections import Counter
+from datetime import datetime
 import json
 import logging
 import re
 from typing import Any
+from zoneinfo import ZoneInfo
 
 from pydantic import BaseModel, Field
 
 from backend.app.config import Settings
-from backend.app.domain.chat_models import ChatPlan
+from backend.app.domain.chat_models import ANALYTICS_FIELDS, ChatPlan
 
 
 logger = logging.getLogger(__name__)
@@ -58,6 +60,46 @@ class ChatAnswerService:
                 self._client = genai.Client(api_key=settings.gemini_api_key)
             except ImportError:
                 logger.warning("Gemini SDK unavailable; using grounded chat templates")
+
+    def plan(self, question: str, fallback: ChatPlan) -> ChatPlan:
+        """Let Gemini select a validated read-only plan, never SQL or facts."""
+        if not self._client or fallback.intent != "unsupported":
+            return fallback
+        schema_summary = {dataset: sorted(fields) for dataset, fields in ANALYTICS_FIELDS.items()}
+        prompt = (
+            "Translate the user's analytics question into one read-only structured plan. "
+            "Return intent=analytics with an analytics object, or intent=unsupported when the requested fact is not in the schema. "
+            "Never invent a field, value, fact, count, SQL fragment, or write action. Choose current_tasks for the current task state; "
+            "choose decisions for one row per processed email and skipped-email facts; choose threads for message/update history; "
+            "choose events for task event history; choose feedback for human labels; choose runs for ingestion counters. "
+            "Use assignee IDs u_aarti, u_rohit, u_meera, u_karan, u_divya, or u_triage when names are mentioned. "
+            "Valid categories are enterprise_rfp, smb_enquiry, marketing, alliances, finance, and triage. "
+            "Valid priorities are high, medium, and low. Low confidence means confidence <= 0.54. "
+            "For list queries select only relevant fields and use a maximum limit of 20. "
+            f"Today's date in Asia/Kolkata is {datetime.now(ZoneInfo('Asia/Kolkata')).date().isoformat()}.\n"
+            f"ALLOWLISTED_SCHEMA: {json.dumps(schema_summary, sort_keys=True)}\n"
+            f"USER_QUESTION: {question}"
+        )
+        try:
+            response = self._client.models.generate_content(
+                model=self.settings.gemini_model,
+                contents=prompt,
+                config={
+                    "temperature": 0,
+                    "max_output_tokens": min(2048, self.settings.gemini_max_output_tokens),
+                    "response_mime_type": "application/json",
+                    "response_json_schema": ChatPlan.model_json_schema(),
+                },
+            )
+            parsed = getattr(response, "parsed", None)
+            result = ChatPlan.model_validate(parsed) if parsed is not None else ChatPlan.model_validate_json(response.text)
+            if result.intent not in {"analytics", "unsupported", "out_of_scope"}:
+                logger.warning("Gemini chat planner emitted a non-analytics intent; using safe fallback")
+                return fallback
+            return result
+        except Exception:
+            logger.warning("Gemini chat planning failed validation; using safe fallback", exc_info=True)
+            return fallback
 
     def phrase(self, plan: ChatPlan, supporting_data: dict[str, Any], grounded_answer: str) -> str:
         if not self._client or plan.intent in {"out_of_scope", "unsupported"}:

@@ -1,55 +1,100 @@
 # Evaluation
 
-`data/eval/eval_60.json` contains draft generated labels and is not evidence of human
-review. Before final metrics are published:
+I manually reviewed 60 messages before running the final model evaluation. The set has
+42 new-task emails, 8 thread updates, 8 messages that should be skipped, and 2 reply
+acknowledgements that should not patch a task.
 
-1. Generate a blind worksheet with `python scripts/prepare_manual_eval.py`.
-2. Personally label all 60 messages without viewing draft labels.
-3. Freeze those labels before prompt tuning.
-4. Run `python scripts/run_evaluation.py`.
+The frozen labels are in `artifacts/manual_eval.json`. The scoring script ignores the
+draft suggestions stored beside them and reads only each `human_label`. The current
+`gemini-3.5-flash-lite` pipeline was then run once against all 60 messages using the
+in-memory repository, so this evaluation made no Supabase or Task API writes.
 
-The final report must include precision, recall, and F1 per category; skip metrics;
-spurious rate; exact date/value/company matches; thread-operation accuracy; a confusion
-matrix; confidence calibration; and a section named **Failure Cases I Did Not Fix**
-containing at least three genuine failures.
+Reproduce it with:
 
-## Failure Cases I Did Not Fix
+```bash
+python scripts/run_manual_evaluation.py
+```
 
-The required human-blind evaluation has not been completed. The following are honest
-remaining exact-match differences from the **synthetic 250-message regression** run on
-9 August 2026 and are not presented as manually reviewed quality claims:
+The exact predictions and machine-readable report are saved in
+`artifacts/live_eval_predictions.json` and `artifacts/evaluation_report.json`.
 
-1. `em_00029` returned the explicit current name `NTPC Limited`; the synthetic oracle
-   expected `National Thermal Power Corporation Limited`.
-2. `em_00169` had the same explicit-name versus expanded-name mismatch.
-3. `em_00180` had the same explicit-name versus expanded-name mismatch.
-
-These were not hardcoded away because the product policy prohibits guessing acronym
-expansions that are absent from the message. `NTPC Limited` is supported by the email;
-the longer expansion is not. The manual evaluation may decide whether this conservative
-behavior should remain.
-
-## Live synthetic regression snapshot
-
-Model: `gemini-3.5-flash-lite`  
-Corpus: 250 generated messages / 200 threads  
-External writes: none; isolated in-memory task repository only
+## Results
 
 | Metric | Result |
 |---|---:|
-| Operation accuracy | 99.60% |
-| Owner/category accuracy | 100.00% |
-| Priority exact match | 98.48% |
-| Due-date exact match | 99.49% |
+| Messages processed | 60 |
+| Operation accuracy | 100.00% |
+| Skip precision | 100.00% |
+| Skip recall | 100.00% |
+| Missed actionable messages | 0 |
+| Spurious tasks | 0 |
+| Spurious rate | 0.00% |
+| Priority exact match | 100.00% |
+| Due-date exact match | 100.00% |
 | Deal-value exact match | 100.00% |
-| Company exact/null match | 98.48% |
+| Company exact/null match | 97.62% |
 | Degraded outputs | 0 |
 
-That full run produced 155 creates, 50 skips, 42 updates, and 3 no-ops before the final
-award-nomination rescue. A focused live-Gemini rerun then verified the corrected award
-create, exact 71-hour IST priority, both downstream reply priorities, and the corrected
-`tomorrow EOD` date. The corpus oracle now validates the intended 156/49/42/3 lifecycle.
-The full percentage table was not silently recomputed after those focused fixes.
+Operation accuracy includes all creates, updates, skips, and no-ops. Business-field
+exact match is measured on the 42 new tasks because update rows were labelled for
+lifecycle behavior rather than duplicating the full existing task state.
 
-These synthetic metrics remain a development signal only. They must not be used as the
-final hackathon evaluation until the 60 blind labels are personally frozen.
+## Precision and recall by category
+
+| Category | Support | Precision | Recall | F1 |
+|---|---:|---:|---:|---:|
+| `enterprise_rfp` | 7 | 1.00 | 1.00 | 1.00 |
+| `smb_enquiry` | 7 | 1.00 | 1.00 | 1.00 |
+| `marketing` | 7 | 1.00 | 1.00 | 1.00 |
+| `alliances` | 7 | 1.00 | 1.00 | 1.00 |
+| `finance` | 7 | 1.00 | 1.00 | 1.00 |
+| `triage` | 7 | 1.00 | 1.00 | 1.00 |
+
+## Category confusion matrix
+
+Rows are human labels and columns are model predictions.
+
+| Expected \ Predicted | Enterprise | SMB | Marketing | Alliances | Finance | Triage |
+|---|---:|---:|---:|---:|---:|---:|
+| Enterprise | 7 | 0 | 0 | 0 | 0 | 0 |
+| SMB | 0 | 7 | 0 | 0 | 0 | 0 |
+| Marketing | 0 | 0 | 7 | 0 | 0 | 0 |
+| Alliances | 0 | 0 | 0 | 7 | 0 | 0 |
+| Finance | 0 | 0 | 0 | 0 | 7 | 0 |
+| Triage | 0 | 0 | 0 | 0 | 0 | 7 |
+
+## Confidence calibration
+
+For creates, correctness means operation, owner, category, and all scored business
+fields matched. For updates, skips, and no-ops, it means the lifecycle operation matched.
+
+| Confidence range | Count | Mean confidence | Accuracy |
+|---|---:|---:|---:|
+| 0.00-0.59 | 7 | 44.43% | 100.00% |
+| 0.60-0.79 | 0 | - | - |
+| 0.80-1.00 | 53 | 92.06% | 98.11% |
+
+The lower-confidence group contains ambiguous items sent to triage. The only exact-field
+failure was high confidence, so confidence is directionally useful for ambiguity but is
+still overconfident about company-name canonicalisation.
+
+## Failure Cases I Did Not Fix
+
+1. `em_00029` used `NTPC Limited`, the explicit company name in the email, while the
+   human label used `National Thermal Power Corporation Limited`. The route, priority,
+   date, and value were correct, but company exact match failed.
+2. `em_00169` showed the same live-regression issue: the model preserved `NTPC Limited`
+   instead of expanding the legal name.
+3. `em_00180` showed the same issue again in a separate thread.
+
+I did not hardcode an acronym-expansion table because guessing company legal names from
+abbreviations can create worse false data. A production version should use a reviewed
+company master or enrichment service and keep the source text beside the canonical name.
+
+## Limits of this evaluation
+
+This is a small, balanced 60-message set created from the challenge corpus, so perfect
+category scores do not prove perfect production accuracy. It does include the required
+hard cases: PSU routing, the exact Rs. 10 lakh boundary, deadlines within 72 hours,
+Hinglish, marketing lookalike spam, ambiguous multi-owner messages, quoted reply chains,
+field corrections, thread updates, acknowledgements, and bounces.

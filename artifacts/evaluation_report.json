@@ -1,0 +1,115 @@
+{
+  "evaluation_type": "frozen human-reviewed 60-message set",
+  "model": "gemini-3.5-flash-lite",
+  "evaluated_at": "2026-08-09T16:18:34.000Z",
+  "emails": 60,
+  "operations": {
+    "create": 42,
+    "update": 8,
+    "skip": 8,
+    "noop": 2
+  },
+  "operation_accuracy": 1.0,
+  "category_metrics": {
+    "enterprise_rfp": {
+      "support": 7,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "smb_enquiry": {
+      "support": 7,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "marketing": {
+      "support": 7,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "alliances": {
+      "support": 7,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "finance": {
+      "support": 7,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "triage": {
+      "support": 7,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    }
+  },
+  "skip_precision": 1.0,
+  "skip_recall": 1.0,
+  "spurious_count": 0,
+  "spurious_rate": 0.0,
+  "missed_count": 0,
+  "create_field_exact_match": {
+    "priority": 1.0,
+    "due_date": 1.0,
+    "deal_value_inr": 1.0,
+    "company_name": 0.9762
+  },
+  "confusion_matrix": {
+    "enterprise_rfp": {
+      "enterprise_rfp": 7
+    },
+    "smb_enquiry": {
+      "smb_enquiry": 7
+    },
+    "marketing": {
+      "marketing": 7
+    },
+    "alliances": {
+      "alliances": 7
+    },
+    "finance": {
+      "finance": 7
+    },
+    "triage": {
+      "triage": 7
+    }
+  },
+  "confidence_calibration": [
+    {
+      "range": "0.0-0.6",
+      "count": 7,
+      "mean_confidence": 0.4443,
+      "accuracy": 1.0
+    },
+    {
+      "range": "0.8-1.0",
+      "count": 53,
+      "mean_confidence": 0.9206,
+      "accuracy": 0.9811
+    }
+  ],
+  "degraded_count": 0,
+  "mismatch_count": 1,
+  "mismatches": [
+    {
+      "email_id": "em_00029",
+      "field": "company_name",
+      "expected": "National Thermal Power Corporation Limited",
+      "actual": "NTPC Limited"
+    }
+  ],
+  "ingest_response": {
+    "run_id": "de439bee-eae7-4d22-9065-8ded64208ac3",
+    "processed": 60,
+    "tasks_created": 42,
+    "tasks_updated": 8,
+    "skipped": 8,
+    "unchanged": 0,
+    "errors": []
+  }
+}

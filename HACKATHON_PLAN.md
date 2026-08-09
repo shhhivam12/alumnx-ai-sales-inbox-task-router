@@ -6,7 +6,7 @@
 - Backend: Python 3.12, FastAPI, Pydantic v2, HTTPX
 - Database: hosted Supabase Postgres through the session pooler with TLS
 - Frontend: React, TypeScript, Vite
-- Deployment: Render backend and Cloudflare Pages frontend
+- Deployment: Render backend and Vercel frontend
 - LLM: official Google GenAI SDK with schema-constrained extraction; the configurable
   default is the lower-cost `gemini-3.5-flash-lite`
 
@@ -53,6 +53,7 @@ Alembic creates the private Postgres schema and these tables:
 
 - `ingest_groups`
 - `ingest_runs`
+- `ingest_deliveries`
 - `emails`
 - `decisions`
 - `threads`
@@ -152,7 +153,7 @@ confidence calibration. Exercise all edge families and preserve three honest fai
 
 ### Phase 8 — deployment and submission
 
-Migrate production, deploy Render/Cloudflare, set exact CORS, test cold readiness,
+Migrate production, deploy Render/Vercel, set exact CORS, test cold readiness,
 one/full/replay/reply ingests and grounded/refusal chat, audit persistent task counts, finalize
 URLs/docs/video, and verify candidate identity byte-for-byte.
 

@@ -23,7 +23,7 @@ test('invalid JSON never invokes ingest and preview precedes routing',async()=>{
   expect(fetchMock.mock.calls.some(c=>String(c[0]).endsWith('/ingest'))).toBe(false)
 })
 
-test('editing a routed preview clears the stale current-batch chat scope',async()=>{
+test('editing a routed preview locks chat and clears the completed batch',async()=>{
   const fetchMock=vi.fn(async(input:RequestInfo|URL)=>{
     const url=String(input)
     if(url.endsWith('/api/config'))return new Response(JSON.stringify(config),{status:200})
@@ -39,9 +39,9 @@ test('editing a routed preview clears the stale current-batch chat scope',async(
   fireEvent.change(editor,{target:{value:JSON.stringify([email])}})
   fireEvent.click(screen.getByText('Preview JSON'))
   fireEvent.click(screen.getByRole('button',{name:'Route emails'}))
-  await waitFor(()=>expect(screen.getByLabelText('Chat scope')).toHaveValue('batch'))
+  await waitFor(()=>expect(screen.getByText('Current batch ready')).toBeVisible())
 
   fireEvent.change(editor,{target:{value:JSON.stringify([{...email,email_id:'e2'}])}})
-  await waitFor(()=>expect(screen.getByLabelText('Chat scope')).toHaveValue('all'))
-  expect(screen.getByRole('option',{name:'Current batch'})).toBeDisabled()
+  await waitFor(()=>expect(screen.getByText('Unlocks after routing')).toBeVisible())
+  expect(screen.queryByLabelText('Chat question')).not.toBeInTheDocument()
 })

@@ -27,6 +27,7 @@ def chat(
     answer_service: ChatAnswerService = Depends(get_chat_answer_service),
 ) -> ChatResponse:
     plan = plan_question(payload.query)
+    plan = answer_service.plan(payload.query, plan)
     data = execute_plan(store, plan, payload.scope)
     answer, status = render_answer(plan, data)
     answer = answer_service.phrase(plan, data, answer)

@@ -1,0 +1,3682 @@
+{
+    "schema_version": "1.0.0",
+    "file_type": "human_evaluation",
+    "review_status": "complete",
+    "created_at": "2026-08-09T10:12:45.000Z",
+    "summary": {
+        "total": 60,
+        "human_reviewed": 60
+    },
+    "items": [
+        {
+            "email": {
+                "email_id": "em_00006",
+                "thread_id": "th_0006",
+                "message_index": 0,
+                "from_name": "Arjun Rao",
+                "from_email": "arjun.rao@orbitfoods.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "RFP - Enterprise document management platform",
+                "body": "Dear Team, Orbit Foods invites proposals for a DMS covering four plants and 1,200 users. Indicative budget is Rs. 25 lakhs. Proposals must reach us by 12 August 2026. Regards, Arjun Rao, Procurement.",
+                "received_at": "2026-08-01T12:10:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_aarti",
+                "category": "enterprise_rfp",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": "2026-08-12",
+                "deal_value_inr": 2500000,
+                "company_name": "Orbit Foods",
+                "confidence_expectation": "high",
+                "notes": "order above 25 lakhs to arti",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:17:10.749Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00006",
+                "thread_id": "th_0006",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00006",
+                    "thread_id": "th_0006",
+                    "title": "RFP - Enterprise document management platform",
+                    "description": "Formal enterprise RFP with an explicit INR 25 lakh budget.",
+                    "assignee_id": "u_aarti",
+                    "category": "enterprise_rfp",
+                    "priority": "medium",
+                    "due_date": "2026-08-12",
+                    "deal_value_inr": 2500000,
+                    "company_name": "Orbit Foods",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0006",
+                "rationale": "Formal enterprise RFP with an explicit INR 25 lakh budget.",
+                "evidence": [
+                    "invites proposals",
+                    "Rs. 25 lakhs"
+                ],
+                "facets": {
+                    "topics": [
+                        "proposal",
+                        "procurement"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company",
+                    "procurement_type": "formal_procurement"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00011",
+                "thread_id": "th_0011",
+                "message_index": 0,
+                "from_name": "Sneha Pillai",
+                "from_email": "sneha.pillai@railyardlogistics.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "RFP - Enterprise document management platform",
+                "body": "Dear Team, Railyard Logistics invites proposals for a DMS covering four plants and 1,200 users. Indicative budget is Rs. 25 lakhs. Proposals must reach us by 12 August 2026. Regards, Sneha Pillai, Procurement.",
+                "received_at": "2026-08-01T16:05:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_aarti",
+                "category": "enterprise_rfp",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": "2026-08-12",
+                "deal_value_inr": 2500000,
+                "company_name": "Railyard Logistics",
+                "confidence_expectation": "high",
+                "notes": "order above 25 lakhs to arti",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:18:37.806Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00011",
+                "thread_id": "th_0011",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00011",
+                    "thread_id": "th_0011",
+                    "title": "RFP - Enterprise document management platform",
+                    "description": "Formal enterprise RFP with an explicit INR 25 lakh budget.",
+                    "assignee_id": "u_aarti",
+                    "category": "enterprise_rfp",
+                    "priority": "medium",
+                    "due_date": "2026-08-12",
+                    "deal_value_inr": 2500000,
+                    "company_name": "Railyard Logistics",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0011",
+                "rationale": "Formal enterprise RFP with an explicit INR 25 lakh budget.",
+                "evidence": [
+                    "invites proposals",
+                    "Rs. 25 lakhs"
+                ],
+                "facets": {
+                    "topics": [
+                        "proposal",
+                        "procurement"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company",
+                    "procurement_type": "formal_procurement"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00014",
+                "thread_id": "th_0014",
+                "message_index": 0,
+                "from_name": "Aditya Ghosh",
+                "from_email": "aditya.ghosh@cobaltfinserve.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "RFI: customer service transformation",
+                "body": "Cobalt Finserve is conducting an RFI for a customer-service transformation across 18 offices. Budget has not yet been approved. Please return the attached response sheet by 15 Aug 2026.",
+                "received_at": "2026-08-01T18:26:00+05:30",
+                "attachments": [
+                    "RFI_Response_Sheet.xlsx",
+                    "Requirements_v3.pdf"
+                ],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_aarti",
+                "category": "enterprise_rfp",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": "2026-08-15",
+                "deal_value_inr": null,
+                "company_name": "Cobalt Finserve",
+                "confidence_expectation": "high",
+                "notes": "RFI goes to arti, normal priority",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:19:28.154Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00014",
+                "thread_id": "th_0014",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00014",
+                    "thread_id": "th_0014",
+                    "title": "RFI: customer service transformation",
+                    "description": "A formal RFI belongs to enterprise even without a stated value.",
+                    "assignee_id": "u_aarti",
+                    "category": "enterprise_rfp",
+                    "priority": "medium",
+                    "due_date": "2026-08-15",
+                    "deal_value_inr": null,
+                    "company_name": "Cobalt Finserve",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0014",
+                "rationale": "A formal RFI belongs to enterprise even without a stated value.",
+                "evidence": [
+                    "conducting an RFI"
+                ],
+                "facets": {
+                    "topics": [
+                        "proposal",
+                        "procurement"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company",
+                    "procurement_type": "formal_procurement"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00015",
+                "thread_id": "th_0015",
+                "message_index": 0,
+                "from_name": "Gaurav Sethi",
+                "from_email": "gaurav.sethi@statebanktechnologyservices.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Limited tender - records automation",
+                "body": "A public-sector banking subsidiary invites limited tender bids for records automation. Estimated procurement is Rs. 9 lakh. Closing time: 04-08-2026 20:13 IST.",
+                "received_at": "2026-08-01T19:13:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_aarti",
+                "category": "enterprise_rfp",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": "2026-08-04",
+                "deal_value_inr": 900000,
+                "company_name": "State Bank Technology Services",
+                "confidence_expectation": "high",
+                "notes": "public sector tender goes to arti",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:20:52.794Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00015",
+                "thread_id": "th_0015",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00015",
+                    "thread_id": "th_0015",
+                    "title": "Limited tender - records automation",
+                    "description": "Public-sector tender routes to enterprise; the deadline is just outside 72 hours.",
+                    "assignee_id": "u_aarti",
+                    "category": "enterprise_rfp",
+                    "priority": "medium",
+                    "due_date": "2026-08-04",
+                    "deal_value_inr": 900000,
+                    "company_name": "State Bank Technology Services",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0015",
+                "rationale": "Public-sector tender routes to enterprise; the deadline is just outside 72 hours.",
+                "evidence": [
+                    "public-sector",
+                    "limited tender"
+                ],
+                "facets": {
+                    "topics": [
+                        "proposal",
+                        "procurement"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "psu",
+                    "procurement_type": "formal_procurement"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00023",
+                "thread_id": "th_0023",
+                "message_index": 0,
+                "from_name": "Rohan Deshmukh",
+                "from_email": "rohan.deshmukh@vertexdiagnostics.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Proposal confirmation needed tomorrow",
+                "body": "Our sourcing committee at Vertex Diagnostics needs your final enterprise proposal by tomorrow EOD. Commercial value will be decided after the technical evaluation.",
+                "received_at": "2026-08-02T01:29:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_aarti",
+                "category": "enterprise_rfp",
+                "priority": "high",
+                "skip_reason": "",
+                "due_date": "2026-08-03",
+                "deal_value_inr": null,
+                "company_name": "Vertex Diagnostics",
+                "confidence_expectation": "high",
+                "notes": "enterprise proposal due tomorrow to arti",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:24:30.237Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00023",
+                "thread_id": "th_0023",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00023",
+                    "thread_id": "th_0023",
+                    "title": "Proposal confirmation needed tomorrow",
+                    "description": "Enterprise proposal has an explicit tomorrow-EOD deadline.",
+                    "assignee_id": "u_aarti",
+                    "category": "enterprise_rfp",
+                    "priority": "high",
+                    "due_date": "2026-08-03",
+                    "deal_value_inr": null,
+                    "company_name": "Vertex Diagnostics",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0023",
+                "rationale": "Enterprise proposal has an explicit tomorrow-EOD deadline.",
+                "evidence": [
+                    "final enterprise proposal by tomorrow EOD"
+                ],
+                "facets": {
+                    "topics": [
+                        "proposal",
+                        "procurement"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company",
+                    "procurement_type": "formal_procurement"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00027",
+                "thread_id": "th_0027",
+                "message_index": 0,
+                "from_name": "Tanya Sen",
+                "from_email": "tanya.sen@redwoodagritech.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "RFI: customer service transformation",
+                "body": "Redwood Agritech is conducting an RFI for a customer-service transformation across 18 offices. Budget has not yet been approved. Please return the attached response sheet by 16 Aug 2026.",
+                "received_at": "2026-08-02T04:37:00+05:30",
+                "attachments": [
+                    "RFI_Response_Sheet.xlsx",
+                    "Requirements_v3.pdf"
+                ],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_aarti",
+                "category": "enterprise_rfp",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": "2026-08-16",
+                "deal_value_inr": null,
+                "company_name": "Redwood Agritech",
+                "confidence_expectation": "high",
+                "notes": "RFP - aarti",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:25:49.035Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00027",
+                "thread_id": "th_0027",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00027",
+                    "thread_id": "th_0027",
+                    "title": "RFI: customer service transformation",
+                    "description": "A formal RFI belongs to enterprise even without a stated value.",
+                    "assignee_id": "u_aarti",
+                    "category": "enterprise_rfp",
+                    "priority": "medium",
+                    "due_date": "2026-08-16",
+                    "deal_value_inr": null,
+                    "company_name": "Redwood Agritech",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0027",
+                "rationale": "A formal RFI belongs to enterprise even without a stated value.",
+                "evidence": [
+                    "conducting an RFI"
+                ],
+                "facets": {
+                    "topics": [
+                        "proposal",
+                        "procurement"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company",
+                    "procurement_type": "formal_procurement"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00029",
+                "thread_id": "th_0029",
+                "message_index": 0,
+                "from_name": "Kavya Nair",
+                "from_email": "kavya.nair@nationalthermalpowercorporationlimited.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "eProcurement tender for workflow automation",
+                "body": "NTPC Limited, a Government of India PSU, seeks sealed technical and commercial bids for workflow automation. Tender value is about 8 lakh. Bid closes on 12/08/2026.",
+                "received_at": "2026-08-02T06:11:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_aarti",
+                "category": "enterprise_rfp",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": "2026-08-12",
+                "deal_value_inr": 800000,
+                "company_name": "National Thermal Power Corporation Limited",
+                "confidence_expectation": "high",
+                "notes": "rfp - assign to aarti",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:27:16.260Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00029",
+                "thread_id": "th_0029",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00029",
+                    "thread_id": "th_0029",
+                    "title": "eProcurement tender for workflow automation",
+                    "description": "Government PSU tender routes to enterprise regardless of value.",
+                    "assignee_id": "u_aarti",
+                    "category": "enterprise_rfp",
+                    "priority": "medium",
+                    "due_date": "2026-08-12",
+                    "deal_value_inr": 800000,
+                    "company_name": "National Thermal Power Corporation Limited",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0029",
+                "rationale": "Government PSU tender routes to enterprise regardless of value.",
+                "evidence": [
+                    "Government of India PSU",
+                    "Tender value is about 8 lakh"
+                ],
+                "facets": {
+                    "topics": [
+                        "proposal",
+                        "procurement"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "psu",
+                    "procurement_type": "formal_procurement"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00010",
+                "thread_id": "th_0010",
+                "message_index": 0,
+                "from_name": "Vikram Iyer",
+                "from_email": "vikram.iyer@deltamarine.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Quote needed before internal approval",
+                "body": "We need a quote for 20 seats, expected spend Rs 2 lakh. Please send it before 04 Aug 2026 14:18 IST for our approval meeting.",
+                "received_at": "2026-08-01T15:18:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_rohit",
+                "category": "smb_enquiry",
+                "priority": "high",
+                "skip_reason": "",
+                "due_date": "2026-08-04",
+                "deal_value_inr": 200000,
+                "company_name": "Delta Marine",
+                "confidence_expectation": "high",
+                "notes": "rohit quote due within 72 hours",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:27:50.764Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00010",
+                "thread_id": "th_0010",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00010",
+                    "thread_id": "th_0010",
+                    "title": "Quote needed before internal approval",
+                    "description": "Below-threshold quote request with an actionable deadline inside 72 hours.",
+                    "assignee_id": "u_rohit",
+                    "category": "smb_enquiry",
+                    "priority": "high",
+                    "due_date": "2026-08-04",
+                    "deal_value_inr": 200000,
+                    "company_name": "Delta Marine",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0010",
+                "rationale": "Below-threshold quote request with an actionable deadline inside 72 hours.",
+                "evidence": [
+                    "expected spend Rs 2 lakh",
+                    "Please send it before"
+                ],
+                "facets": {
+                    "topics": [
+                        "product_enquiry"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00018",
+                "thread_id": "th_0018",
+                "message_index": 0,
+                "from_name": "Lakshmi Krishnan",
+                "from_email": "lakshmi.krishnan@railyardlogistics.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Annual plan enquiry",
+                "body": "Railyard Logistics needs an annual plan for 60 users. Saat lakh tak budget hai, implementation included hona chahiye. Please call after 3 pm.",
+                "received_at": "2026-08-01T21:34:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_rohit",
+                "category": "smb_enquiry",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": 700000,
+                "company_name": "Railyard Logistics",
+                "confidence_expectation": "high",
+                "notes": "below threshold to rohit",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:28:19.099Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00018",
+                "thread_id": "th_0018",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00018",
+                    "thread_id": "th_0018",
+                    "title": "Annual plan enquiry",
+                    "description": "Hinglish enquiry states a INR 7 lakh budget.",
+                    "assignee_id": "u_rohit",
+                    "category": "smb_enquiry",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": 700000,
+                    "company_name": "Railyard Logistics",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0018",
+                "rationale": "Hinglish enquiry states a INR 7 lakh budget.",
+                "evidence": [
+                    "Saat lakh tak budget"
+                ],
+                "facets": {
+                    "topics": [
+                        "product_enquiry"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00028",
+                "thread_id": "th_0028",
+                "message_index": 0,
+                "from_name": "Rahul Bhat",
+                "from_email": "rahul.bhat@monsoonmedia.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Product evaluation - budget approved",
+                "body": "Monsoon Media has exactly INR 10,00,000 approved for this purchase, inclusive of implementation. Could we schedule a product walkthrough?",
+                "received_at": "2026-08-02T05:24:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_rohit",
+                "category": "smb_enquiry",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": 1000000,
+                "company_name": "Monsoon Media",
+                "confidence_expectation": "high",
+                "notes": "small ticket to rohit",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:29:17.042Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00028",
+                "thread_id": "th_0028",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00028",
+                    "thread_id": "th_0028",
+                    "title": "Product evaluation - budget approved",
+                    "description": "A deal exactly at the threshold belongs to SMB.",
+                    "assignee_id": "u_rohit",
+                    "category": "smb_enquiry",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": 1000000,
+                    "company_name": "Monsoon Media",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0028",
+                "rationale": "A deal exactly at the threshold belongs to SMB.",
+                "evidence": [
+                    "exactly INR 10,00,000"
+                ],
+                "facets": {
+                    "topics": [
+                        "product_enquiry"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00038",
+                "thread_id": "th_0038",
+                "message_index": 0,
+                "from_name": "Nandita Reddy",
+                "from_email": "nandita.reddy@zenithcloudpartners.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Product evaluation - budget approved",
+                "body": "Zenith Cloud Partners has exactly INR 10,00,000 approved for this purchase, inclusive of implementation. Could we schedule a product walkthrough?",
+                "received_at": "2026-08-02T13:14:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_rohit",
+                "category": "smb_enquiry",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": 1000000,
+                "company_name": "Zenith Cloud Partners",
+                "confidence_expectation": "high",
+                "notes": "exactly 10 lakh still goes to rohit",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:29:57.233Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00038",
+                "thread_id": "th_0038",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00038",
+                    "thread_id": "th_0038",
+                    "title": "Product evaluation - budget approved",
+                    "description": "A deal exactly at the threshold belongs to SMB.",
+                    "assignee_id": "u_rohit",
+                    "category": "smb_enquiry",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": 1000000,
+                    "company_name": "Zenith Cloud Partners",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0038",
+                "rationale": "A deal exactly at the threshold belongs to SMB.",
+                "evidence": [
+                    "exactly INR 10,00,000"
+                ],
+                "facets": {
+                    "topics": [
+                        "product_enquiry"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00044",
+                "thread_id": "th_0044",
+                "message_index": 0,
+                "from_name": "Gaurav Sethi",
+                "from_email": "gaurav.sethi@cloudmintsoftware.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Can we see the product?",
+                "body": "We are a bootstrapped team of 18 at CloudMint Software. Product looks useful for our sales ops. Koi demo slot mil sakta hai kya? Budget abhi final nahi hai.",
+                "received_at": "2026-08-02T17:56:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_rohit",
+                "category": "smb_enquiry",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "CloudMint Software",
+                "confidence_expectation": "high",
+                "notes": "smb enquiry rohit",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:30:34.626Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00044",
+                "thread_id": "th_0044",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00044",
+                    "thread_id": "th_0044",
+                    "title": "Can we see the product?",
+                    "description": "Small business demo enquiry with no reliable value.",
+                    "assignee_id": "u_rohit",
+                    "category": "smb_enquiry",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "CloudMint Software",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0044",
+                "rationale": "Small business demo enquiry with no reliable value.",
+                "evidence": [
+                    "bootstrapped team of 18",
+                    "demo slot"
+                ],
+                "facets": {
+                    "topics": [
+                        "product_enquiry"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00062",
+                "thread_id": "th_0062",
+                "message_index": 0,
+                "from_name": "Kabir Verma",
+                "from_email": "kabir.verma@vantagecloudservices.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Trial account for a small team",
+                "body": "Could you enable a trial for 12 people at Vantage Cloud Services? We are only exploring options and there is no rush or approved budget yet.",
+                "received_at": "2026-08-03T08:02:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_rohit",
+                "category": "smb_enquiry",
+                "priority": "low",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "Vantage Cloud Services",
+                "confidence_expectation": "high",
+                "notes": "below threshold to rohit",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:30:58.213Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00062",
+                "thread_id": "th_0062",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00062",
+                    "thread_id": "th_0062",
+                    "title": "Trial account for a small team",
+                    "description": "Low-urgency small-team trial request.",
+                    "assignee_id": "u_rohit",
+                    "category": "smb_enquiry",
+                    "priority": "low",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "Vantage Cloud Services",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0062",
+                "rationale": "Low-urgency small-team trial request.",
+                "evidence": [
+                    "trial for 12 people",
+                    "no rush"
+                ],
+                "facets": {
+                    "topics": [
+                        "product_enquiry"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00064",
+                "thread_id": "th_0064",
+                "message_index": 0,
+                "from_name": "Shreya Das",
+                "from_email": "shreya.das@westbridgehealth.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Quotation for twelve users",
+                "body": "Please send Westbridge Health a quotation for 12 named users. We can spend up to 1.8 lac this financial year. GST can be shown separately.",
+                "received_at": "2026-08-03T09:36:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_rohit",
+                "category": "smb_enquiry",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": 180000,
+                "company_name": "Westbridge Health",
+                "confidence_expectation": "high",
+                "notes": "small deal rohit",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:31:53.235Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00064",
+                "thread_id": "th_0064",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00064",
+                    "thread_id": "th_0064",
+                    "title": "Quotation for twelve users",
+                    "description": "Small quotation request; GST is pricing context rather than a finance request.",
+                    "assignee_id": "u_rohit",
+                    "category": "smb_enquiry",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": 180000,
+                    "company_name": "Westbridge Health",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0064",
+                "rationale": "Small quotation request; GST is pricing context rather than a finance request.",
+                "evidence": [
+                    "up to 1.8 lac"
+                ],
+                "facets": {
+                    "topics": [
+                        "product_enquiry"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00020",
+                "thread_id": "th_0020",
+                "message_index": 0,
+                "from_name": "Ankit Bose",
+                "from_email": "ankit.bose@alturaenergy.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Co-host a webinar on AI operations?",
+                "body": "The community team at Altura Energy would like to co-host a September webinar with your subject-matter experts. This is editorial collaboration, not a paid lead-gen service.",
+                "received_at": "2026-08-01T23:08:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_meera",
+                "category": "marketing",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "Altura Energy",
+                "confidence_expectation": "high",
+                "notes": "webinar collaboration goes to meera",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:33:35.838Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00020",
+                "thread_id": "th_0020",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00020",
+                    "thread_id": "th_0020",
+                    "title": "Co-host a webinar on AI operations?",
+                    "description": "Webinar collaboration belongs to Marketing.",
+                    "assignee_id": "u_meera",
+                    "category": "marketing",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "Altura Energy",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0020",
+                "rationale": "Webinar collaboration belongs to Marketing.",
+                "evidence": [
+                    "co-host",
+                    "webinar",
+                    "not a paid lead-gen service"
+                ],
+                "facets": {
+                    "topics": [
+                        "marketing_collaboration"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company",
+                    "marketing_subtype": "webinar"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00032",
+                "thread_id": "th_0032",
+                "message_index": 0,
+                "from_name": "Rahul Bhat",
+                "from_email": "rahul.bhat@coralpay.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Media comment request",
+                "body": "I am writing a feature for CoralPay's business publication. Could your CEO comment on enterprise AI adoption by 04 Aug, 4 pm?",
+                "received_at": "2026-08-02T08:32:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_meera",
+                "category": "marketing",
+                "priority": "high",
+                "skip_reason": "",
+                "due_date": "2026-08-04",
+                "deal_value_inr": null,
+                "company_name": "CoralPay",
+                "confidence_expectation": "high",
+                "notes": "marketing collab meera",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:37:13.358Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00032",
+                "thread_id": "th_0032",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00032",
+                    "thread_id": "th_0032",
+                    "title": "Media comment request",
+                    "description": "PR/media request with a deadline inside 72 hours.",
+                    "assignee_id": "u_meera",
+                    "category": "marketing",
+                    "priority": "high",
+                    "due_date": "2026-08-04",
+                    "deal_value_inr": null,
+                    "company_name": "CoralPay",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0032",
+                "rationale": "PR/media request with a deadline inside 72 hours.",
+                "evidence": [
+                    "writing a feature",
+                    "Could your CEO comment"
+                ],
+                "facets": {
+                    "topics": [
+                        "marketing_collaboration"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company",
+                    "marketing_subtype": "media"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00039",
+                "thread_id": "th_0039",
+                "message_index": 0,
+                "from_name": "Zoya Mirza",
+                "from_email": "zoya.mirza@stratusaviation.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Joint customer story proposal",
+                "body": "Our communications team at Stratus Aviation wants to publish a joint customer success story with your brand. Legal approvals can follow later.",
+                "received_at": "2026-08-02T14:01:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_meera",
+                "category": "marketing",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "Stratus Aviation",
+                "confidence_expectation": "high",
+                "notes": "marketing req to meera",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:37:50.230Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00039",
+                "thread_id": "th_0039",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00039",
+                    "thread_id": "th_0039",
+                    "title": "Joint customer story proposal",
+                    "description": "Joint content and PR collaboration belongs to Marketing.",
+                    "assignee_id": "u_meera",
+                    "category": "marketing",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "Stratus Aviation",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0039",
+                "rationale": "Joint content and PR collaboration belongs to Marketing.",
+                "evidence": [
+                    "joint customer success story"
+                ],
+                "facets": {
+                    "topics": [
+                        "marketing_collaboration"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company",
+                    "marketing_subtype": "content"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00041",
+                "thread_id": "th_0041",
+                "message_index": 0,
+                "from_name": "Neha Kapoor",
+                "from_email": "neha.kapoor@monsoonmedia.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Co-host a webinar on AI operations?",
+                "body": "The community team at Monsoon Media would like to co-host a September webinar with your subject-matter experts. This is editorial collaboration, not a paid lead-gen service.",
+                "received_at": "2026-08-02T15:35:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_meera",
+                "category": "marketing",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "Monsoon Media",
+                "confidence_expectation": "high",
+                "notes": "meera handles marketing",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:38:09.104Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00041",
+                "thread_id": "th_0041",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00041",
+                    "thread_id": "th_0041",
+                    "title": "Co-host a webinar on AI operations?",
+                    "description": "Webinar collaboration belongs to Marketing.",
+                    "assignee_id": "u_meera",
+                    "category": "marketing",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "Monsoon Media",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0041",
+                "rationale": "Webinar collaboration belongs to Marketing.",
+                "evidence": [
+                    "co-host",
+                    "webinar",
+                    "not a paid lead-gen service"
+                ],
+                "facets": {
+                    "topics": [
+                        "marketing_collaboration"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company",
+                    "marketing_subtype": "webinar"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00052",
+                "thread_id": "th_0052",
+                "message_index": 0,
+                "from_name": "Neha Kapoor",
+                "from_email": "neha.kapoor@crescentauto.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Sponsor deck attached - Bengaluru CX Forum",
+                "body": "Please find the Crescent Auto CX Forum sponsor deck. Platinum presence costs 6 lakh. Confirm by 10 August 2026 if interested.",
+                "received_at": "2026-08-03T00:12:00+05:30",
+                "attachments": [
+                    "CX_Forum_Sponsor_Deck.pdf"
+                ],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_meera",
+                "category": "marketing",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": "2026-08-10",
+                "deal_value_inr": 600000,
+                "company_name": "Crescent Auto",
+                "confidence_expectation": "high",
+                "notes": "marketing req to meera",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:38:52.377Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00052",
+                "thread_id": "th_0052",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00052",
+                    "thread_id": "th_0052",
+                    "title": "Sponsor deck attached - Bengaluru CX Forum",
+                    "description": "Event sponsorship invitation with an explicit package value.",
+                    "assignee_id": "u_meera",
+                    "category": "marketing",
+                    "priority": "medium",
+                    "due_date": "2026-08-10",
+                    "deal_value_inr": 600000,
+                    "company_name": "Crescent Auto",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0052",
+                "rationale": "Event sponsorship invitation with an explicit package value.",
+                "evidence": [
+                    "sponsor deck",
+                    "costs 6 lakh"
+                ],
+                "facets": {
+                    "topics": [
+                        "marketing_collaboration"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company",
+                    "marketing_subtype": "sponsorship"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00053",
+                "thread_id": "th_0053",
+                "message_index": 0,
+                "from_name": "Aditya Ghosh",
+                "from_email": "aditya.ghosh@cloudmintsoftware.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Co-host a webinar on AI operations?",
+                "body": "The community team at CloudMint Software would like to co-host a September webinar with your subject-matter experts. This is editorial collaboration, not a paid lead-gen service.",
+                "received_at": "2026-08-03T00:59:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_meera",
+                "category": "marketing",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "CloudMint Software",
+                "confidence_expectation": "high",
+                "notes": "meera handles marketing",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:39:13.836Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00053",
+                "thread_id": "th_0053",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00053",
+                    "thread_id": "th_0053",
+                    "title": "Co-host a webinar on AI operations?",
+                    "description": "Webinar collaboration belongs to Marketing.",
+                    "assignee_id": "u_meera",
+                    "category": "marketing",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "CloudMint Software",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0053",
+                "rationale": "Webinar collaboration belongs to Marketing.",
+                "evidence": [
+                    "co-host",
+                    "webinar",
+                    "not a paid lead-gen service"
+                ],
+                "facets": {
+                    "topics": [
+                        "marketing_collaboration"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company",
+                    "marketing_subtype": "webinar"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00059",
+                "thread_id": "th_0059",
+                "message_index": 0,
+                "from_name": "Ayesha Khan",
+                "from_email": "ayesha.khan@oakwellconsulting.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Conference partner invitation",
+                "body": "We invite your company to be the knowledge partner for Oakwell Consulting's annual conference. The partner package is Rs 2,50,000. Event is on 02 September; no confirmation deadline yet.",
+                "received_at": "2026-08-03T05:41:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_meera",
+                "category": "marketing",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": 250000,
+                "company_name": "Oakwell Consulting",
+                "confidence_expectation": "high",
+                "notes": "marketing collab meera",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:39:37.559Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00059",
+                "thread_id": "th_0059",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00059",
+                    "thread_id": "th_0059",
+                    "title": "Conference partner invitation",
+                    "description": "Conference partnership is marketing; the event date is not a due date.",
+                    "assignee_id": "u_meera",
+                    "category": "marketing",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": 250000,
+                    "company_name": "Oakwell Consulting",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0059",
+                "rationale": "Conference partnership is marketing; the event date is not a due date.",
+                "evidence": [
+                    "knowledge partner",
+                    "annual conference"
+                ],
+                "facets": {
+                    "topics": [
+                        "marketing_collaboration"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company",
+                    "marketing_subtype": "sponsorship"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00001",
+                "thread_id": "th_0001",
+                "message_index": 0,
+                "from_name": "Tanya Sen",
+                "from_email": "tanya.sen@mosaichotels.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Reseller partnership for the Middle East",
+                "body": "Mosaic Hotels is a Salesforce implementation partner with 40 enterprise clients. We want to resell your platform across MEA or pursue a technical integration. Who owns partnerships?",
+                "received_at": "2026-08-01T08:15:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_karan",
+                "category": "alliances",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "Mosaic Hotels",
+                "confidence_expectation": "high",
+                "notes": "alliances to karan",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:40:38.090Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00001",
+                "thread_id": "th_0001",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00001",
+                    "thread_id": "th_0001",
+                    "title": "Reseller partnership for the Middle East",
+                    "description": "Explicit reseller and integration proposal belongs to Alliances.",
+                    "assignee_id": "u_karan",
+                    "category": "alliances",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "Mosaic Hotels",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0001",
+                "rationale": "Explicit reseller and integration proposal belongs to Alliances.",
+                "evidence": [
+                    "resell your platform",
+                    "technical integration"
+                ],
+                "facets": {
+                    "topics": [
+                        "partnership"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company",
+                    "alliance_subtype": "reseller"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00004",
+                "thread_id": "th_0004",
+                "message_index": 0,
+                "from_name": "Manish Gupta",
+                "from_email": "manish.gupta@brightpathtravel.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Marketplace listing and OEM discussion",
+                "body": "Could we list your product in the BrightPath Travel marketplace and discuss an OEM bundle? Revenue share can be negotiated after technical validation.",
+                "received_at": "2026-08-01T10:36:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_karan",
+                "category": "alliances",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "BrightPath Travel",
+                "confidence_expectation": "high",
+                "notes": "alliances to karan",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:41:38.859Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00004",
+                "thread_id": "th_0004",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00004",
+                    "thread_id": "th_0004",
+                    "title": "Marketplace listing and OEM discussion",
+                    "description": "Marketplace and OEM proposal belongs to Alliances.",
+                    "assignee_id": "u_karan",
+                    "category": "alliances",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "BrightPath Travel",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0004",
+                "rationale": "Marketplace and OEM proposal belongs to Alliances.",
+                "evidence": [
+                    "OEM bundle",
+                    "Revenue share"
+                ],
+                "facets": {
+                    "topics": [
+                        "partnership"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company",
+                    "alliance_subtype": "oem_marketplace"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00009",
+                "thread_id": "th_0009",
+                "message_index": 0,
+                "from_name": "Maya Thomas",
+                "from_email": "maya.thomas@prismtelecom.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Referral partnership",
+                "body": "Prism Telecom occasionally refers customers needing your workflow product. Would you consider a simple referral agreement? No active deal is attached.",
+                "received_at": "2026-08-01T14:31:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_karan",
+                "category": "alliances",
+                "priority": "low",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "Prism Telecom",
+                "confidence_expectation": "high",
+                "notes": "karan handles alliances",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:42:11.601Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00009",
+                "thread_id": "th_0009",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00009",
+                    "thread_id": "th_0009",
+                    "title": "Referral partnership",
+                    "description": "Referral relationship proposal belongs to Alliances.",
+                    "assignee_id": "u_karan",
+                    "category": "alliances",
+                    "priority": "low",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "Prism Telecom",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0009",
+                "rationale": "Referral relationship proposal belongs to Alliances.",
+                "evidence": [
+                    "referral agreement"
+                ],
+                "facets": {
+                    "topics": [
+                        "partnership"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company",
+                    "alliance_subtype": "referral"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00017",
+                "thread_id": "th_0017",
+                "message_index": 0,
+                "from_name": "Shreya Das",
+                "from_email": "shreya.das@astermanufacturing.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Referral partnership",
+                "body": "Aster Manufacturing occasionally refers customers needing your workflow product. Would you consider a simple referral agreement? No active deal is attached.",
+                "received_at": "2026-08-01T20:47:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_karan",
+                "category": "alliances",
+                "priority": "low",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "Aster Manufacturing",
+                "confidence_expectation": "high",
+                "notes": "partnership - karan",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:42:28.056Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00017",
+                "thread_id": "th_0017",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00017",
+                    "thread_id": "th_0017",
+                    "title": "Referral partnership",
+                    "description": "Referral relationship proposal belongs to Alliances.",
+                    "assignee_id": "u_karan",
+                    "category": "alliances",
+                    "priority": "low",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "Aster Manufacturing",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0017",
+                "rationale": "Referral relationship proposal belongs to Alliances.",
+                "evidence": [
+                    "referral agreement"
+                ],
+                "facets": {
+                    "topics": [
+                        "partnership"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company",
+                    "alliance_subtype": "referral"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00033",
+                "thread_id": "th_0033",
+                "message_index": 0,
+                "from_name": "Rohan Deshmukh",
+                "from_email": "rohan.deshmukh@railyardlogistics.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Referral partnership",
+                "body": "Railyard Logistics occasionally refers customers needing your workflow product. Would you consider a simple referral agreement? No active deal is attached.",
+                "received_at": "2026-08-02T09:19:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_karan",
+                "category": "alliances",
+                "priority": "low",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "Railyard Logistics",
+                "confidence_expectation": "high",
+                "notes": "channel/partner karan",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:43:01.801Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00033",
+                "thread_id": "th_0033",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00033",
+                    "thread_id": "th_0033",
+                    "title": "Referral partnership",
+                    "description": "Referral relationship proposal belongs to Alliances.",
+                    "assignee_id": "u_karan",
+                    "category": "alliances",
+                    "priority": "low",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "Railyard Logistics",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0033",
+                "rationale": "Referral relationship proposal belongs to Alliances.",
+                "evidence": [
+                    "referral agreement"
+                ],
+                "facets": {
+                    "topics": [
+                        "partnership"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company",
+                    "alliance_subtype": "referral"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00043",
+                "thread_id": "th_0043",
+                "message_index": 0,
+                "from_name": "Divij Shah",
+                "from_email": "divij.shah@nimblecart.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Integration review slot expires Friday",
+                "body": "We have reserved an architecture-review slot for the NimbleCart integration. Please confirm the partnership review by 05 Aug 2026 05:09 IST.",
+                "received_at": "2026-08-02T17:09:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_karan",
+                "category": "alliances",
+                "priority": "high",
+                "skip_reason": "",
+                "due_date": "2026-08-05",
+                "deal_value_inr": null,
+                "company_name": "NimbleCart",
+                "confidence_expectation": "high",
+                "notes": "partnership - karan",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:43:43.885Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00043",
+                "thread_id": "th_0043",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00043",
+                    "thread_id": "th_0043",
+                    "title": "Integration review slot expires Friday",
+                    "description": "Integration proposal with a confirmation deadline inside 72 hours.",
+                    "assignee_id": "u_karan",
+                    "category": "alliances",
+                    "priority": "high",
+                    "due_date": "2026-08-05",
+                    "deal_value_inr": null,
+                    "company_name": "NimbleCart",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0043",
+                "rationale": "Integration proposal with a confirmation deadline inside 72 hours.",
+                "evidence": [
+                    "integration",
+                    "confirm the partnership review"
+                ],
+                "facets": {
+                    "topics": [
+                        "partnership"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company",
+                    "alliance_subtype": "technology_integration"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00055",
+                "thread_id": "th_0055",
+                "message_index": 0,
+                "from_name": "Vikram Iyer",
+                "from_email": "vikram.iyer@deltamarine.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Channel partner application",
+                "body": "Delta Marine serves 120 SMB customers in western India and wants to join your channel programme. Expected downstream pipeline is Rs 2 crore, but we are not buying licences ourselves.",
+                "received_at": "2026-08-03T02:33:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_karan",
+                "category": "alliances",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "Delta Marine",
+                "confidence_expectation": "high",
+                "notes": "alliance deal karan",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:44:21.399Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00055",
+                "thread_id": "th_0055",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00055",
+                    "thread_id": "th_0055",
+                    "title": "Channel partner application",
+                    "description": "Channel proposal remains Alliances despite mentioning a large pipeline.",
+                    "assignee_id": "u_karan",
+                    "category": "alliances",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "Delta Marine",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0055",
+                "rationale": "Channel proposal remains Alliances despite mentioning a large pipeline.",
+                "evidence": [
+                    "join your channel programme",
+                    "not buying licences"
+                ],
+                "facets": {
+                    "topics": [
+                        "partnership"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company",
+                    "alliance_subtype": "channel"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00005",
+                "thread_id": "th_0005",
+                "message_index": 0,
+                "from_name": "Meenal Patil",
+                "from_email": "meenal.patil@silverlinetextiles.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "GST invoice correction",
+                "body": "The GST rate on invoice VC-882 is shown as 12%, but our service should be billed at 18%. Kindly issue a corrected tax invoice for Silverline Textiles.",
+                "received_at": "2026-08-01T11:23:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_divya",
+                "category": "finance",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "Silverline Textiles",
+                "confidence_expectation": "high",
+                "notes": "send to divya",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:45:43.660Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00005",
+                "thread_id": "th_0005",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00005",
+                    "thread_id": "th_0005",
+                    "title": "GST invoice correction",
+                    "description": "GST invoice correction belongs to Finance.",
+                    "assignee_id": "u_divya",
+                    "category": "finance",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "Silverline Textiles",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0005",
+                "rationale": "GST invoice correction belongs to Finance.",
+                "evidence": [
+                    "corrected tax invoice"
+                ],
+                "facets": {
+                    "topics": [
+                        "gst_invoice_correction"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00007",
+                "thread_id": "th_0007",
+                "message_index": 0,
+                "from_name": "Divij Shah",
+                "from_email": "divij.shah@orbitfoods.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Credit note against duplicate billing",
+                "body": "Invoice 7712 was raised twice for Rs 42,000. Orbit Foods requests a credit note for the duplicate bill, not a refund of GST.",
+                "received_at": "2026-08-01T12:57:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_divya",
+                "category": "finance",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "Orbit Foods",
+                "confidence_expectation": "high",
+                "notes": "divya - finance req",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:46:36.389Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00007",
+                "thread_id": "th_0007",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00007",
+                    "thread_id": "th_0007",
+                    "title": "Credit note against duplicate billing",
+                    "description": "Duplicate billing and credit-note request belongs to Finance.",
+                    "assignee_id": "u_divya",
+                    "category": "finance",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "Orbit Foods",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0007",
+                "rationale": "Duplicate billing and credit-note request belongs to Finance.",
+                "evidence": [
+                    "credit note",
+                    "duplicate bill"
+                ],
+                "facets": {
+                    "topics": [
+                        "credit_note"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00008",
+                "thread_id": "th_0008",
+                "message_index": 0,
+                "from_name": "Rahul Bhat",
+                "from_email": "rahul.bhat@summitwarehousing.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Payment reminder - 7 days overdue",
+                "body": "This is a reminder that Summit Warehousing's invoice for INR 86,500 was due seven days ago. Please advise payment status.",
+                "received_at": "2026-08-01T13:44:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_divya",
+                "category": "finance",
+                "priority": "high",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "Summit Warehousing",
+                "confidence_expectation": "high",
+                "notes": "finance team divya",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:47:28.696Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00008",
+                "thread_id": "th_0008",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00008",
+                    "thread_id": "th_0008",
+                    "title": "Payment reminder - 7 days overdue",
+                    "description": "Overdue payment reminder is high-priority Finance work.",
+                    "assignee_id": "u_divya",
+                    "category": "finance",
+                    "priority": "high",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "Summit Warehousing",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0008",
+                "rationale": "Overdue payment reminder is high-priority Finance work.",
+                "evidence": [
+                    "due seven days ago"
+                ],
+                "facets": {
+                    "topics": [
+                        "finance_operations"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00016",
+                "thread_id": "th_0016",
+                "message_index": 0,
+                "from_name": "Siddharth Jain",
+                "from_email": "siddharth.jain@coralpay.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Payment due by Friday",
+                "body": "Under the PO terms, CoralPay's payment must be released by 04 Aug 2026 03:00 IST to avoid a late fee. Invoice amount is Rs 3,20,000.",
+                "received_at": "2026-08-01T20:00:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_divya",
+                "category": "finance",
+                "priority": "high",
+                "skip_reason": "",
+                "due_date": "2026-08-04",
+                "deal_value_inr": null,
+                "company_name": "CoralPay",
+                "confidence_expectation": "high",
+                "notes": "send to divya",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:48:14.633Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00016",
+                "thread_id": "th_0016",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00016",
+                    "thread_id": "th_0016",
+                    "title": "Payment due by Friday",
+                    "description": "Finance payment deadline is inside 72 hours; amount remains an invoice amount.",
+                    "assignee_id": "u_divya",
+                    "category": "finance",
+                    "priority": "high",
+                    "due_date": "2026-08-04",
+                    "deal_value_inr": null,
+                    "company_name": "CoralPay",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0016",
+                "rationale": "Finance payment deadline is inside 72 hours; amount remains an invoice amount.",
+                "evidence": [
+                    "payment must be released by"
+                ],
+                "facets": {
+                    "topics": [
+                        "finance_operations"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00019",
+                "thread_id": "th_0019",
+                "message_index": 0,
+                "from_name": "Sneha Pillai",
+                "from_email": "sneha.pillai@brightpathtravel.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Credit note against duplicate billing",
+                "body": "Invoice 7712 was raised twice for Rs 42,000. BrightPath Travel requests a credit note for the duplicate bill, not a refund of GST.",
+                "received_at": "2026-08-01T22:21:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_divya",
+                "category": "finance",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "BrightPath Travel",
+                "confidence_expectation": "high",
+                "notes": "divya pls",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:53:10.756Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00019",
+                "thread_id": "th_0019",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00019",
+                    "thread_id": "th_0019",
+                    "title": "Credit note against duplicate billing",
+                    "description": "Duplicate billing and credit-note request belongs to Finance.",
+                    "assignee_id": "u_divya",
+                    "category": "finance",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "BrightPath Travel",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0019",
+                "rationale": "Duplicate billing and credit-note request belongs to Finance.",
+                "evidence": [
+                    "credit note",
+                    "duplicate bill"
+                ],
+                "facets": {
+                    "topics": [
+                        "credit_note"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00022",
+                "thread_id": "th_0022",
+                "message_index": 0,
+                "from_name": "Ayesha Khan",
+                "from_email": "ayesha.khan@cloudmintsoftware.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Overdue invoice INV-2026-0331",
+                "body": "Please find invoice INV-2026-0331 for Rs. 1,18,000 including 18% GST against PO-88214. Net 30 payment is now 12 days overdue. CloudMint Software has updated its GSTIN.",
+                "received_at": "2026-08-02T00:42:00+05:30",
+                "attachments": [
+                    "INV-2026-0331.pdf",
+                    "GSTIN-update.pdf"
+                ],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_divya",
+                "category": "finance",
+                "priority": "high",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "CloudMint Software",
+                "confidence_expectation": "high",
+                "notes": "urgent - triage",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:53:55.483Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00022",
+                "thread_id": "th_0022",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00022",
+                    "thread_id": "th_0022",
+                    "title": "Overdue invoice INV-2026-0331",
+                    "description": "Overdue vendor invoice belongs to Finance; invoice amount is not deal value.",
+                    "assignee_id": "u_divya",
+                    "category": "finance",
+                    "priority": "high",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "CloudMint Software",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0022",
+                "rationale": "Overdue vendor invoice belongs to Finance; invoice amount is not deal value.",
+                "evidence": [
+                    "invoice",
+                    "payment is now 12 days overdue"
+                ],
+                "facets": {
+                    "topics": [
+                        "finance_operations"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00034",
+                "thread_id": "th_0034",
+                "message_index": 0,
+                "from_name": "Neha Kapoor",
+                "from_email": "neha.kapoor@orbitfoods.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "TDS certificate pending",
+                "body": "Could your finance team share the Q1 TDS certificate for payments made to Orbit Foods? Our auditors need the document, but no due date was specified.",
+                "received_at": "2026-08-02T10:06:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_divya",
+                "category": "finance",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "Orbit Foods",
+                "confidence_expectation": "high",
+                "notes": "divya handles finance",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:54:49.957Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00034",
+                "thread_id": "th_0034",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00034",
+                    "thread_id": "th_0034",
+                    "title": "TDS certificate pending",
+                    "description": "Tax-document request belongs to Finance.",
+                    "assignee_id": "u_divya",
+                    "category": "finance",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "Orbit Foods",
+                    "confidence": "high"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0034",
+                "rationale": "Tax-document request belongs to Finance.",
+                "evidence": [
+                    "TDS certificate"
+                ],
+                "facets": {
+                    "topics": [
+                        "finance_operations"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00002",
+                "thread_id": "th_0002",
+                "message_index": 0,
+                "from_name": "Abhishek Roy",
+                "from_email": "abhishek.roy@indigofreight.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Partnership or customer rollout?",
+                "body": "Indigo Freight may buy your platform for our team, or resell it to three clients if pricing works. We have not decided which model to pursue and have no budget yet.",
+                "received_at": "2026-08-01T09:02:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_triage",
+                "category": "triage",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "Indigo Freight",
+                "confidence_expectation": "low",
+                "notes": "needs clarification",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:57:03.234Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00002",
+                "thread_id": "th_0002",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00002",
+                    "thread_id": "th_0002",
+                    "title": "Partnership or customer rollout?",
+                    "description": "The email conflicts between direct purchase and reseller intent.",
+                    "assignee_id": "u_triage",
+                    "category": "triage",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "Indigo Freight",
+                    "confidence": "low"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0002",
+                "rationale": "The email conflicts between direct purchase and reseller intent.",
+                "evidence": [
+                    "buy your platform",
+                    "resell it"
+                ],
+                "facets": {
+                    "topics": [
+                        "ambiguous_multi_intent"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00013",
+                "thread_id": "th_0013",
+                "message_index": 0,
+                "from_name": "Manish Gupta",
+                "from_email": "manish.gupta@aquilasecurity.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "RE: your proposal - not sure who owns this",
+                "body": "Can someone at your company review the attached proposal from Aquila Security? It covers media exposure, software licences and referral fees in one commercial package.",
+                "received_at": "2026-08-01T17:39:00+05:30",
+                "attachments": [
+                    "combined-proposal.pdf"
+                ],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_triage",
+                "category": "triage",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "Aquila Security",
+                "confidence_expectation": "low",
+                "notes": "not sure, triage",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T15:59:21.873Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00013",
+                "thread_id": "th_0013",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00013",
+                    "thread_id": "th_0013",
+                    "title": "RE: your proposal - not sure who owns this",
+                    "description": "Bundled proposal spans Marketing, Sales and Alliances.",
+                    "assignee_id": "u_triage",
+                    "category": "triage",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "Aquila Security",
+                    "confidence": "low"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0013",
+                "rationale": "Bundled proposal spans Marketing, Sales and Alliances.",
+                "evidence": [
+                    "media exposure, software licences and referral fees"
+                ],
+                "facets": {
+                    "topics": [
+                        "ambiguous_multi_intent"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00031",
+                "thread_id": "th_0031",
+                "message_index": 0,
+                "from_name": "Rahul Bhat",
+                "from_email": "rahul.bhat@pixelcraftstudios.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Introduction from a mutual contact",
+                "body": "A mutual contact suggested we speak. PixelCraft Studios has something commercial to explore, but I cannot tell whether it is procurement, sponsorship or vendor work until NDA.",
+                "received_at": "2026-08-02T07:45:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_triage",
+                "category": "triage",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "PixelCraft Studios",
+                "confidence_expectation": "low",
+                "notes": "unclear - keep in triage",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:00:18.851Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00031",
+                "thread_id": "th_0031",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00031",
+                    "thread_id": "th_0031",
+                    "title": "Introduction from a mutual contact",
+                    "description": "The email is actionable but lacks enough information to select an owner.",
+                    "assignee_id": "u_triage",
+                    "category": "triage",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "PixelCraft Studios",
+                    "confidence": "low"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0031",
+                "rationale": "The email is actionable but lacks enough information to select an owner.",
+                "evidence": [
+                    "procurement, sponsorship or vendor work"
+                ],
+                "facets": {
+                    "topics": [
+                        "ambiguous_multi_intent"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00036",
+                "thread_id": "th_0036",
+                "message_index": 0,
+                "from_name": "Nandita Reddy",
+                "from_email": "nandita.reddy@gmail.com",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Proposal discussed with your team",
+                "body": "Following up on the proposal we discussed in Bengaluru. Please send the next version soon. I cannot share the company name or commercial scope on email.",
+                "received_at": "2026-08-02T11:40:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_triage",
+                "category": "triage",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": null,
+                "confidence_expectation": "low",
+                "notes": "ambiguous, triage for now",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:01:13.420Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00036",
+                "thread_id": "th_0036",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00036",
+                    "thread_id": "th_0036",
+                    "title": "Proposal discussed with your team",
+                    "description": "A proposal is referenced, but ownership, company and scope cannot be determined.",
+                    "assignee_id": "u_triage",
+                    "category": "triage",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": null,
+                    "confidence": "low"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0036",
+                "rationale": "A proposal is referenced, but ownership, company and scope cannot be determined.",
+                "evidence": [
+                    "proposal we discussed"
+                ],
+                "facets": {
+                    "topics": [
+                        "ambiguous_multi_intent"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00048",
+                "thread_id": "th_0048",
+                "message_index": 0,
+                "from_name": "Farhan Qureshi",
+                "from_email": "farhan.qureshi@halcyonretail.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Urgent: connect us to the correct team",
+                "body": "We need an answer within 50 hours. This may be an event sponsorship, a product procurement, or a joint offering; leadership has not aligned internally. - Halcyon Retail",
+                "received_at": "2026-08-02T21:04:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_triage",
+                "category": "triage",
+                "priority": "high",
+                "skip_reason": "",
+                "due_date": "2026-08-04",
+                "deal_value_inr": null,
+                "company_name": "Halcyon Retail",
+                "confidence_expectation": "low",
+                "notes": "not sure, triage",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:02:36.226Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00048",
+                "thread_id": "th_0048",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00048",
+                    "thread_id": "th_0048",
+                    "title": "Urgent: connect us to the correct team",
+                    "description": "Explicit near deadline but three unresolved business intents.",
+                    "assignee_id": "u_triage",
+                    "category": "triage",
+                    "priority": "high",
+                    "due_date": "2026-08-04",
+                    "deal_value_inr": null,
+                    "company_name": "Halcyon Retail",
+                    "confidence": "low"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0048",
+                "rationale": "Explicit near deadline but three unresolved business intents.",
+                "evidence": [
+                    "within 50 hours",
+                    "event sponsorship",
+                    "product procurement",
+                    "joint offering"
+                ],
+                "facets": {
+                    "topics": [
+                        "ambiguous_multi_intent"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00050",
+                "thread_id": "th_0050",
+                "message_index": 0,
+                "from_name": "Pranav Joshi",
+                "from_email": "pranav.joshi@kavericomponents.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Introduction from a mutual contact",
+                "body": "A mutual contact suggested we speak. Kaveri Components has something commercial to explore, but I cannot tell whether it is procurement, sponsorship or vendor work until NDA.",
+                "received_at": "2026-08-02T22:38:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_triage",
+                "category": "triage",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "Kaveri Components",
+                "confidence_expectation": "low",
+                "notes": "triage - unclear intent",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:04:39.227Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00050",
+                "thread_id": "th_0050",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00050",
+                    "thread_id": "th_0050",
+                    "title": "Introduction from a mutual contact",
+                    "description": "The email is actionable but lacks enough information to select an owner.",
+                    "assignee_id": "u_triage",
+                    "category": "triage",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "Kaveri Components",
+                    "confidence": "low"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0050",
+                "rationale": "The email is actionable but lacks enough information to select an owner.",
+                "evidence": [
+                    "procurement, sponsorship or vendor work"
+                ],
+                "facets": {
+                    "topics": [
+                        "ambiguous_multi_intent"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00051",
+                "thread_id": "th_0051",
+                "message_index": 0,
+                "from_name": "Suresh Kulkarni",
+                "from_email": "suresh.kulkarni@cloudmintsoftware.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Confidential public-sector opportunity",
+                "body": "We are advising an unnamed public entity on software procurement, but this is not yet an official tender. CloudMint Software may either prime the bid or purchase licences.",
+                "received_at": "2026-08-02T23:25:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "create",
+                "assignee_id": "u_triage",
+                "category": "triage",
+                "priority": "medium",
+                "skip_reason": "",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": "CloudMint Software",
+                "confidence_expectation": "low",
+                "notes": "ambiguous, triage for now",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:06:54.415Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00051",
+                "thread_id": "th_0051",
+                "message_index": 0,
+                "operation": "create",
+                "skip_reason": null,
+                "expected_task": {
+                    "source_email_id": "em_00051",
+                    "thread_id": "th_0051",
+                    "title": "Confidential public-sector opportunity",
+                    "description": "Potential government context is unconfirmed and the sender's role is ambiguous.",
+                    "assignee_id": "u_triage",
+                    "category": "triage",
+                    "priority": "medium",
+                    "due_date": null,
+                    "deal_value_inr": null,
+                    "company_name": "CloudMint Software",
+                    "confidence": "low"
+                },
+                "expected_patch": null,
+                "task_key": "task_th_0051",
+                "rationale": "Potential government context is unconfirmed and the sender's role is ambiguous.",
+                "evidence": [
+                    "not yet an official tender",
+                    "prime the bid or purchase"
+                ],
+                "facets": {
+                    "topics": [
+                        "ambiguous_multi_intent"
+                    ],
+                    "intent_direction": "buying_from_us",
+                    "organization_type": "private_company"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00201",
+                "thread_id": "th_0006",
+                "message_index": 1,
+                "from_name": "Arjun Rao",
+                "from_email": "arjun.rao@orbitfoods.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Re: RFP - Enterprise document management platform",
+                "body": "Commercial correction: the approved amount is INR 2,700,000, replacing the number in my earlier email. Everything else remains unchanged.\n\nOn the earlier message, Arjun Rao wrote:\n> Dear Team, Orbit Foods invites proposals for a DMS covering four plants and 1,200 users. Indicative budget is Rs. 25 lakhs. Proposals must reach us by 12 August 2026. Regards, Arjun Rao, Procurement.",
+                "received_at": "2026-08-03T13:10:00+05:30",
+                "attachments": [],
+                "is_reply": true
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "update",
+                "task_key": "task_th_0006",
+                "patch": {
+                    "deal_value_inr": 2700000
+                },
+                "skip_reason": "",
+                "confidence_expectation": "high",
+                "notes": "correction on earlier email",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:08:02.156Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00201",
+                "thread_id": "th_0006",
+                "message_index": 1,
+                "operation": "update",
+                "skip_reason": null,
+                "expected_task": null,
+                "expected_patch": {
+                    "deal_value_inr": 2700000,
+                    "confidence": "high"
+                },
+                "metadata_patch": {},
+                "task_key": "task_th_0006",
+                "rationale": "Latest reply explicitly replaces the earlier commercial value.",
+                "evidence": [
+                    "approved amount is INR 2,700,000"
+                ],
+                "facets": {
+                    "reply_type": "correction_or_clarification"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00202",
+                "thread_id": "th_0011",
+                "message_index": 1,
+                "from_name": "Sneha Pillai",
+                "from_email": "sneha.pillai@railyardlogistics.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Re: RFP - Enterprise document management platform",
+                "body": "Timeline update: please treat 05 August 2026 at 16:05 IST as the new response deadline. The earlier date in the quoted chain is cancelled.\n\nOn the earlier message, Sneha Pillai wrote:\n> Dear Team, Railyard Logistics invites proposals for a DMS covering four plants and 1,200 users. Indicative budget is Rs. 25 lakhs. Proposals must reach us by 12 August 2026. Regards, Sneha Pillai, Procurement.",
+                "received_at": "2026-08-03T18:05:00+05:30",
+                "attachments": [],
+                "is_reply": true
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "update",
+                "task_key": "task_th_0011",
+                "patch": {
+                    "due_date": "2026-08-05",
+                    "priority": "high"
+                },
+                "skip_reason": "",
+                "confidence_expectation": "high",
+                "notes": "update the record",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:08:43.262Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00202",
+                "thread_id": "th_0011",
+                "message_index": 1,
+                "operation": "update",
+                "skip_reason": null,
+                "expected_task": null,
+                "expected_patch": {
+                    "due_date": "2026-08-05",
+                    "priority": "high",
+                    "confidence": "high"
+                },
+                "metadata_patch": {},
+                "task_key": "task_th_0011",
+                "rationale": "A new explicit deadline inside 72 hours supersedes quoted history.",
+                "evidence": [
+                    "new response deadline",
+                    "earlier date ... is cancelled"
+                ],
+                "facets": {
+                    "reply_type": "correction_or_clarification"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00203",
+                "thread_id": "th_0014",
+                "message_index": 1,
+                "from_name": "Aditya Ghosh",
+                "from_email": "aditya.ghosh@cobaltfinserve.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Re: RFI: customer service transformation",
+                "body": "Please correct the customer name in your record to Cobalt Finserve Private Limited. This is the legal contracting entity.\n\nOn the earlier message, Aditya Ghosh wrote:\n> Cobalt Finserve is conducting an RFI for a customer-service transformation across 18 offices. Budget has not yet been approved. Please return the attached response sheet by 15 Aug 2026.",
+                "received_at": "2026-08-03T21:26:00+05:30",
+                "attachments": [],
+                "is_reply": true
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "update",
+                "task_key": "task_th_0014",
+                "patch": {
+                    "company_name": "Cobalt Finserve Private Limited"
+                },
+                "skip_reason": "",
+                "confidence_expectation": "high",
+                "notes": "correction on earlier email",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:09:46.279Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00203",
+                "thread_id": "th_0014",
+                "message_index": 1,
+                "operation": "update",
+                "skip_reason": null,
+                "expected_task": null,
+                "expected_patch": {
+                    "company_name": "Cobalt Finserve Private Limited",
+                    "confidence": "high"
+                },
+                "metadata_patch": {},
+                "task_key": "task_th_0014",
+                "rationale": "The reply explicitly corrects the contracting company name.",
+                "evidence": [
+                    "correct the customer name ... to Cobalt Finserve Private Limited"
+                ],
+                "facets": {
+                    "reply_type": "correction_or_clarification"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00204",
+                "thread_id": "th_0015",
+                "message_index": 1,
+                "from_name": "Gaurav Sethi",
+                "from_email": "gaurav.sethi@statebanktechnologyservices.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Re: Limited tender - records automation",
+                "body": "One more detail for the owner: our security team requires an India-region deployment and SSO review. The commercial request itself is unchanged.\n\nOn the earlier message, Gaurav Sethi wrote:\n> A public-sector banking subsidiary invites limited tender bids for records automation. Estimated procurement is Rs. 9 lakh. Closing time: 04-08-2026 20:13 IST.",
+                "received_at": "2026-08-03T23:13:00+05:30",
+                "attachments": [],
+                "is_reply": true
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "update",
+                "task_key": "task_th_0015",
+                "patch": {
+                    "description": "Public-sector tender routes to enterprise; the deadline is just outside 72 hours. Latest update adds India-region deployment and SSO review requirements."
+                },
+                "skip_reason": "",
+                "confidence_expectation": "high",
+                "notes": "patch existing",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:10:49.929Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00204",
+                "thread_id": "th_0015",
+                "message_index": 1,
+                "operation": "update",
+                "skip_reason": null,
+                "expected_task": null,
+                "expected_patch": {
+                    "description": "Public-sector tender routes to enterprise; the deadline is just outside 72 hours. Latest update adds India-region deployment and SSO review requirements."
+                },
+                "metadata_patch": {},
+                "task_key": "task_th_0015",
+                "rationale": "The reply adds material scope to the existing task without changing ownership.",
+                "evidence": [
+                    "India-region deployment and SSO review"
+                ],
+                "facets": {
+                    "reply_type": "correction_or_clarification"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00205",
+                "thread_id": "th_0023",
+                "message_index": 1,
+                "from_name": "Rohan Deshmukh",
+                "from_email": "rohan.deshmukh@vertexdiagnostics.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Re: Proposal confirmation needed tomorrow",
+                "body": "Commercial correction: the approved amount is INR 1,800,000, replacing the number in my earlier email. Everything else remains unchanged.\n\nOn the earlier message, Rohan Deshmukh wrote:\n> Our sourcing committee at Vertex Diagnostics needs your final enterprise proposal by tomorrow EOD. Commercial value will be decided after the technical evaluation.",
+                "received_at": "2026-08-04T06:29:00+05:30",
+                "attachments": [],
+                "is_reply": true
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "update",
+                "task_key": "task_th_0023",
+                "patch": {
+                    "deal_value_inr": 1800000
+                },
+                "skip_reason": "",
+                "confidence_expectation": "high",
+                "notes": "follow up - update task",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:11:52.380Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00205",
+                "thread_id": "th_0023",
+                "message_index": 1,
+                "operation": "update",
+                "skip_reason": null,
+                "expected_task": null,
+                "expected_patch": {
+                    "deal_value_inr": 1800000,
+                    "confidence": "high"
+                },
+                "metadata_patch": {},
+                "task_key": "task_th_0023",
+                "rationale": "Latest reply explicitly replaces the earlier commercial value.",
+                "evidence": [
+                    "approved amount is INR 1,800,000"
+                ],
+                "facets": {
+                    "reply_type": "correction_or_clarification"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00206",
+                "thread_id": "th_0027",
+                "message_index": 1,
+                "from_name": "Tanya Sen",
+                "from_email": "tanya.sen@redwoodagritech.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Re: RFI: customer service transformation",
+                "body": "Timeline update: please treat 06 August 2026 at 08:37 IST as the new response deadline. The earlier date in the quoted chain is cancelled.\n\nOn the earlier message, Tanya Sen wrote:\n> Redwood Agritech is conducting an RFI for a customer-service transformation across 18 offices. Budget has not yet been approved. Please return the attached response sheet by 16 Aug 2026.",
+                "received_at": "2026-08-04T10:37:00+05:30",
+                "attachments": [],
+                "is_reply": true
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "update",
+                "task_key": "task_th_0027",
+                "patch": {
+                    "due_date": "2026-08-06",
+                    "priority": "high"
+                },
+                "skip_reason": "",
+                "confidence_expectation": "high",
+                "notes": "update the record",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:12:31.531Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00206",
+                "thread_id": "th_0027",
+                "message_index": 1,
+                "operation": "update",
+                "skip_reason": null,
+                "expected_task": null,
+                "expected_patch": {
+                    "due_date": "2026-08-06",
+                    "priority": "high",
+                    "confidence": "high"
+                },
+                "metadata_patch": {},
+                "task_key": "task_th_0027",
+                "rationale": "A new explicit deadline inside 72 hours supersedes quoted history.",
+                "evidence": [
+                    "new response deadline",
+                    "earlier date ... is cancelled"
+                ],
+                "facets": {
+                    "reply_type": "correction_or_clarification"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00207",
+                "thread_id": "th_0029",
+                "message_index": 1,
+                "from_name": "Kavya Nair",
+                "from_email": "kavya.nair@nationalthermalpowercorporationlimited.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Re: eProcurement tender for workflow automation",
+                "body": "Please correct the customer name in your record to NTPC Limited. This is the legal contracting entity.\n\nOn the earlier message, Kavya Nair wrote:\n> NTPC Limited, a Government of India PSU, seeks sealed technical and commercial bids for workflow automation. Tender value is about 8 lakh. Bid closes on 12/08/2026.",
+                "received_at": "2026-08-04T07:11:00+05:30",
+                "attachments": [],
+                "is_reply": true
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "update",
+                "task_key": "task_th_0029",
+                "patch": {
+                    "company_name": "NTPC Limited"
+                },
+                "skip_reason": "",
+                "confidence_expectation": "high",
+                "notes": "patch existing",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:13:26.783Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00207",
+                "thread_id": "th_0029",
+                "message_index": 1,
+                "operation": "update",
+                "skip_reason": null,
+                "expected_task": null,
+                "expected_patch": {
+                    "company_name": "NTPC Limited",
+                    "confidence": "high"
+                },
+                "metadata_patch": {},
+                "task_key": "task_th_0029",
+                "rationale": "The reply explicitly corrects the contracting company name.",
+                "evidence": [
+                    "correct the customer name ... to NTPC Limited"
+                ],
+                "facets": {
+                    "reply_type": "correction_or_clarification"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00208",
+                "thread_id": "th_0010",
+                "message_index": 1,
+                "from_name": "Vikram Iyer",
+                "from_email": "vikram.iyer@deltamarine.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Re: Quote needed before internal approval",
+                "body": "Update: our board approved a revised purchase budget of Rs 33 lakh. This is a direct deployment, not a reseller arrangement. Please move us to the enterprise owner.\n\nOn the earlier message, Vikram Iyer wrote:\n> We need a quote for 20 seats, expected spend Rs 2 lakh. Please send it before 04 Aug 2026 14:18 IST for our approval meeting.",
+                "received_at": "2026-08-03T17:18:00+05:30",
+                "attachments": [],
+                "is_reply": true
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "update",
+                "task_key": "task_th_0010",
+                "patch": {
+                    "assignee_id": "u_aarti",
+                    "category": "enterprise_rfp",
+                    "deal_value_inr": 3300000
+                },
+                "skip_reason": "",
+                "confidence_expectation": "high",
+                "notes": "follow up - update task",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:16:02.652Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00208",
+                "thread_id": "th_0010",
+                "message_index": 1,
+                "operation": "update",
+                "skip_reason": null,
+                "expected_task": null,
+                "expected_patch": {
+                    "assignee_id": "u_aarti",
+                    "category": "enterprise_rfp",
+                    "deal_value_inr": 3300000,
+                    "confidence": "high"
+                },
+                "metadata_patch": {},
+                "task_key": "task_th_0010",
+                "rationale": "New explicit value moves the inbound deal above the enterprise threshold.",
+                "evidence": [
+                    "revised purchase budget of Rs 33 lakh"
+                ],
+                "facets": {
+                    "reply_type": "correction_or_clarification"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00024",
+                "thread_id": "th_0024",
+                "message_index": 0,
+                "from_name": "Kavya Nair",
+                "from_email": "kavya.nair@cloudmintsoftware.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Automatic reply: annual leave",
+                "body": "Automatic reply: Kavya Nair is on annual leave. Your message will not be forwarded.",
+                "received_at": "2026-08-02T02:16:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "skip",
+                "assignee_id": null,
+                "category": null,
+                "priority": null,
+                "skip_reason": "out_of_office",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": null,
+                "confidence_expectation": "high",
+                "notes": "ignore",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:16:10.620Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00024",
+                "thread_id": "th_0024",
+                "message_index": 0,
+                "operation": "skip",
+                "skip_reason": "out_of_office",
+                "expected_task": null,
+                "expected_patch": null,
+                "task_key": null,
+                "rationale": "Policy-excluded out of office; no task should be created.",
+                "evidence": [
+                    "Automatic reply"
+                ],
+                "facets": {
+                    "topics": [
+                        "auto_reply"
+                    ],
+                    "intent_direction": "automated",
+                    "marketing_lookalike": false
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00026",
+                "thread_id": "th_0026",
+                "message_index": 0,
+                "from_name": "Ishita Bansal",
+                "from_email": "ishita.bansal@mapleleafeducation.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "OOO until next week",
+                "body": "Namaste, main agle hafte tak office se bahar hoon. Zaroori kaam ke liye ops@mapleleafeducation.in ko mail karein.",
+                "received_at": "2026-08-02T03:50:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "skip",
+                "assignee_id": null,
+                "category": null,
+                "priority": null,
+                "skip_reason": "out_of_office",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": null,
+                "confidence_expectation": "high",
+                "notes": "skip",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:16:17.400Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00026",
+                "thread_id": "th_0026",
+                "message_index": 0,
+                "operation": "skip",
+                "skip_reason": "out_of_office",
+                "expected_task": null,
+                "expected_patch": null,
+                "task_key": null,
+                "rationale": "Policy-excluded out of office; no task should be created.",
+                "evidence": [
+                    "Automatic reply"
+                ],
+                "facets": {
+                    "topics": [
+                        "auto_reply"
+                    ],
+                    "intent_direction": "automated",
+                    "marketing_lookalike": false
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00003",
+                "thread_id": "th_0003",
+                "message_index": 0,
+                "from_name": "Meenal Patil",
+                "from_email": "meenal.patil@vertexdiagnostics.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "B2B Growth Weekly - Issue #212",
+                "body": "The B2B Growth Weekly. In this edition: pricing experiments, PLG metrics and a teardown of onboarding. Manage preferences | Unsubscribe",
+                "received_at": "2026-08-01T09:49:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "skip",
+                "assignee_id": null,
+                "category": null,
+                "priority": null,
+                "skip_reason": "newsletter",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": null,
+                "confidence_expectation": "high",
+                "notes": "spam/newsletter skip",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:16:32.551Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00003",
+                "thread_id": "th_0003",
+                "message_index": 0,
+                "operation": "skip",
+                "skip_reason": "newsletter",
+                "expected_task": null,
+                "expected_patch": null,
+                "task_key": null,
+                "rationale": "Policy-excluded newsletter; no task should be created.",
+                "evidence": [
+                    "Unsubscribe"
+                ],
+                "facets": {
+                    "topics": [
+                        "newsletter"
+                    ],
+                    "intent_direction": "broadcast",
+                    "marketing_lookalike": false
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00012",
+                "thread_id": "th_0012",
+                "message_index": 0,
+                "from_name": "Ayesha Khan",
+                "from_email": "ayesha.khan@ironwoodmining.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "The Revenue Loop newsletter",
+                "body": "Read online | Forward to a friend | This week's revenue headlines and three conference recaps. Unsubscribe from this list.",
+                "received_at": "2026-08-01T16:52:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "skip",
+                "assignee_id": null,
+                "category": null,
+                "priority": null,
+                "skip_reason": "newsletter",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": null,
+                "confidence_expectation": "high",
+                "notes": "not relevant",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:16:43.891Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00012",
+                "thread_id": "th_0012",
+                "message_index": 0,
+                "operation": "skip",
+                "skip_reason": "newsletter",
+                "expected_task": null,
+                "expected_patch": null,
+                "task_key": null,
+                "rationale": "Policy-excluded newsletter; no task should be created.",
+                "evidence": [
+                    "Unsubscribe"
+                ],
+                "facets": {
+                    "topics": [
+                        "newsletter"
+                    ],
+                    "intent_direction": "broadcast",
+                    "marketing_lookalike": false
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00021",
+                "thread_id": "th_0021",
+                "message_index": 0,
+                "from_name": "Shreya Das",
+                "from_email": "shreya.das@alturaenergy.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Guaranteed webinar leads",
+                "body": "Our agency will fill your next webinar with 1,000 verified leads. Reply YES for pricing or click the calendar link below.",
+                "received_at": "2026-08-01T23:55:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "skip",
+                "assignee_id": null,
+                "category": null,
+                "priority": null,
+                "skip_reason": "vendor_spam",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": null,
+                "confidence_expectation": "high",
+                "notes": "ignore",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:16:47.708Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00021",
+                "thread_id": "th_0021",
+                "message_index": 0,
+                "operation": "skip",
+                "skip_reason": "vendor_spam",
+                "expected_task": null,
+                "expected_patch": null,
+                "task_key": null,
+                "rationale": "Policy-excluded vendor spam; no task should be created.",
+                "evidence": [
+                    "Book a sales call"
+                ],
+                "facets": {
+                    "topics": [
+                        "unsolicited_vendor_offer"
+                    ],
+                    "intent_direction": "selling_to_us",
+                    "marketing_lookalike": true
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00025",
+                "thread_id": "th_0025",
+                "message_index": 0,
+                "from_name": "Vikram Iyer",
+                "from_email": "vikram.iyer@terrapumps.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Guaranteed webinar leads",
+                "body": "Our agency will fill your next webinar with 1,000 verified leads. Reply YES for pricing or click the calendar link below.",
+                "received_at": "2026-08-02T03:03:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "skip",
+                "assignee_id": null,
+                "category": null,
+                "priority": null,
+                "skip_reason": "vendor_spam",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": null,
+                "confidence_expectation": "high",
+                "notes": "spam/newsletter skip",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:16:59.797Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00025",
+                "thread_id": "th_0025",
+                "message_index": 0,
+                "operation": "skip",
+                "skip_reason": "vendor_spam",
+                "expected_task": null,
+                "expected_patch": null,
+                "task_key": null,
+                "rationale": "Policy-excluded vendor spam; no task should be created.",
+                "evidence": [
+                    "Book a sales call"
+                ],
+                "facets": {
+                    "topics": [
+                        "unsolicited_vendor_offer"
+                    ],
+                    "intent_direction": "selling_to_us",
+                    "marketing_lookalike": true
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00030",
+                "thread_id": "th_0030",
+                "message_index": 0,
+                "from_name": "Vikram Iyer",
+                "from_email": "vikram.iyer@redwoodagritech.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Guest post and PR opportunity",
+                "body": "We can publish sponsored guest posts on 500 high-DA websites and secure PR backlinks. Buy our placement package this week for a 30% discount.",
+                "received_at": "2026-08-02T06:58:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "skip",
+                "assignee_id": null,
+                "category": null,
+                "priority": null,
+                "skip_reason": "vendor_spam",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": null,
+                "confidence_expectation": "high",
+                "notes": "skip - not actionable",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:17:14.124Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00030",
+                "thread_id": "th_0030",
+                "message_index": 0,
+                "operation": "skip",
+                "skip_reason": "vendor_spam",
+                "expected_task": null,
+                "expected_patch": null,
+                "task_key": null,
+                "rationale": "Policy-excluded vendor spam; no task should be created.",
+                "evidence": [
+                    "Book a sales call"
+                ],
+                "facets": {
+                    "topics": [
+                        "unsolicited_vendor_offer"
+                    ],
+                    "intent_direction": "selling_to_us",
+                    "marketing_lookalike": true
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00054",
+                "thread_id": "th_0054",
+                "message_index": 0,
+                "from_name": "Mail Delivery Subsystem",
+                "from_email": "mailer-daemon@mx.example.net",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Undeliverable: proposal",
+                "body": "This is an automatically generated Delivery Status Notification. Delivery to contact1@invalid-domain.example failed with status 5.1.1. Original subject may have mentioned invoice or RFP.",
+                "received_at": "2026-08-03T01:46:00+05:30",
+                "attachments": [],
+                "is_reply": false
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "skip",
+                "assignee_id": null,
+                "category": null,
+                "priority": null,
+                "skip_reason": "automated_bounce",
+                "due_date": null,
+                "deal_value_inr": null,
+                "company_name": null,
+                "confidence_expectation": "high",
+                "notes": "skip - not actionable",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:17:23.171Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00054",
+                "thread_id": "th_0054",
+                "message_index": 0,
+                "operation": "skip",
+                "skip_reason": "automated_bounce",
+                "expected_task": null,
+                "expected_patch": null,
+                "task_key": null,
+                "rationale": "Policy-excluded automated bounce; no task should be created.",
+                "evidence": [
+                    "automatically generated Delivery Status Notification"
+                ],
+                "facets": {
+                    "topics": [
+                        "delivery_failure"
+                    ],
+                    "intent_direction": "automated",
+                    "marketing_lookalike": false
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00243",
+                "thread_id": "th_0022",
+                "message_index": 1,
+                "from_name": "Ayesha Khan",
+                "from_email": "ayesha.khan@cloudmintsoftware.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Re: Overdue invoice INV-2026-0331",
+                "body": "Thanks, received.\n\nOn the earlier message:\n> Please find invoice INV-2026-0331 for Rs. 1,18,000 including 18% GST against PO-88214. Net 30 payment is now 12 days overdue. CloudMint Software has updated its GSTIN.",
+                "received_at": "2026-08-05T01:42:00+05:30",
+                "attachments": [],
+                "is_reply": true
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "noop",
+                "task_key": "task_th_0022",
+                "skip_reason": "",
+                "confidence_expectation": "high",
+                "notes": "just acknowledgement",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:17:36.986Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00243",
+                "thread_id": "th_0022",
+                "message_index": 1,
+                "operation": "noop",
+                "skip_reason": null,
+                "expected_task": null,
+                "expected_patch": null,
+                "task_key": "task_th_0022",
+                "rationale": "Acknowledgement adds no new actionable facts, so no remote PATCH is required.",
+                "evidence": [
+                    "Thanks, received"
+                ],
+                "facets": {
+                    "reply_type": "acknowledgement"
+                }
+            }
+        },
+        {
+            "email": {
+                "email_id": "em_00244",
+                "thread_id": "th_0033",
+                "message_index": 1,
+                "from_name": "Rohan Deshmukh",
+                "from_email": "rohan.deshmukh@railyardlogistics.in",
+                "to": "sales@company.com",
+                "cc": [],
+                "subject": "Re: Referral partnership",
+                "body": "Thanks, received.\n\nOn the earlier message:\n> Railyard Logistics occasionally refers customers needing your workflow product. Would you consider a simple referral agreement? No active deal is attached.",
+                "received_at": "2026-08-05T10:19:00+05:30",
+                "attachments": [],
+                "is_reply": true
+            },
+            "review_status": "human_reviewed",
+            "human_label": {
+                "operation": "noop",
+                "task_key": "task_th_0033",
+                "skip_reason": "",
+                "confidence_expectation": "high",
+                "notes": "just acknowledgement",
+                "reviewed": true,
+                "reviewed_at": "2026-08-09T16:17:55.522Z"
+            },
+            "generated_suggestion": {
+                "email_id": "em_00244",
+                "thread_id": "th_0033",
+                "message_index": 1,
+                "operation": "noop",
+                "skip_reason": null,
+                "expected_task": null,
+                "expected_patch": null,
+                "task_key": "task_th_0033",
+                "rationale": "Acknowledgement adds no new actionable facts, so no remote PATCH is required.",
+                "evidence": [
+                    "Thanks, received"
+                ],
+                "facets": {
+                    "reply_type": "acknowledgement"
+                }
+            }
+        }
+    ],
+    "evaluator": "manual_review",
+    "completed_at": "2026-08-09T16:18:34.000Z"
+}

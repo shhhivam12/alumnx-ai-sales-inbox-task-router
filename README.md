@@ -1,4 +1,4 @@
-# Alumnx AI Sales inbox task router
+# Alumnx AI Sales Inbox Task Router
 
 - **Candidate ID:** `mahendrushivam123@gmail.com`
 - **Backend URL:** https://alumnx-ai-sales-inbox-task-router.onrender.com
@@ -6,24 +6,40 @@
 - **Repository URL:** https://github.com/shhhivam12/alumnx-ai-sales-inbox-task-router
 - **Video URL:** _add after recording_
 
-The application converts a messy sales inbox into correctly assigned tasks, updates
-one task per email thread, records everything it intentionally skips, and exposes a
-grounded analytics chat whose numbers come from stored processing data.
+This app reads a mixed sales inbox, ignores noise, creates the right task, and updates
+the same task when a thread gets a reply. The frontend shows the raw emails before
+routing, every persisted decision after routing, team analytics, and a read-only chat
+whose answers are backed by stored data.
+
+## What it handles
+
+- Enterprise RFPs, RFIs, tenders, and deals above Rs. 10 lakh
+- SMB enquiries, demos, trials, and deals at or below Rs. 10 lakh
+- Marketing, alliances, finance, and genuinely ambiguous triage items
+- Deadlines inside 72 hours, including timezone-aware relative dates
+- Thread replies as updates instead of duplicate tasks
+- Newsletters, out-of-office replies, bounces, and unsolicited vendor spam
+- Hinglish, HTML, forwarded messages, quoted history, and degraded LLM calls
 
 ## Architecture
 
 ```text
-Vercel (React preview/results/chat)
-                    |
-                    v
-Render (one FastAPI base URL)
-  |-- grader Task API: /tasks, /users
-  |-- app API: /ingest, /api/tasks, /api/stats, /api/chat
-  |-- Gemini structured extraction
-  `-- Supabase Postgres (tasks plus processing/audit history)
+React on Vercel
+  -> FastAPI on Render
+       -> Gemini for structured extraction
+       -> deterministic routing and safety rules
+       -> Supabase Postgres for tasks, threads, decisions, and chat facts
 ```
 
+Gemini extracts facts from messy email text. Python owns rule precedence, exact enums,
+thresholds, priority, suppression, confidence, idempotency, and thread reconciliation.
+The database is the source of truth. Chat queries stored facts and never asks Gemini to
+recalculate counts.
+
 ## Setup
+
+Python 3.12 and Node.js are required. Copy `.env.example` to `.env`, then add the
+Supabase session-pooler connection string and Gemini API key.
 
 ```bash
 python scripts/bootstrap.py
@@ -31,68 +47,61 @@ python scripts/migrate.py
 python scripts/dev.py
 ```
 
-Database-only verification commands:
+`SUPABASE_DB_URL` must be a Postgres connection string from **Supabase Dashboard ->
+Connect -> Session pooler** with TLS enabled. It is not the public Supabase project URL.
+Docker and a local database are not required.
+
+## Main API routes
+
+- `POST /ingest` routes 1-100 emails synchronously.
+- `POST /tasks`, `PATCH /tasks/{id}`, `GET /tasks`, and `DELETE /tasks/{id}` implement
+  the grader-facing Task API.
+- `GET /users` returns the exact team roster.
+- `GET /api/tasks` and `GET /api/stats` return persisted decisions and analytics.
+- `POST /api/chat` answers allowlisted, read-only questions with `supporting_data`.
+- `GET /api/sample-emails?count=250` returns sample email data without labels.
+- `GET /health` and `GET /ready` expose liveness and dependency readiness.
+
+## Verification
 
 ```bash
-python scripts/verify_database.py
-python -m scripts.supabase_smoke_test
-```
-
-After bootstrap and before migration, fill `.env` with the hosted Supabase connection
-and Gemini key. This project uses one Supabase project; automated tests either stay
-in memory or use unique IDs with exact cleanup.
-
-`SUPABASE_DB_URL` means the Postgres connection string from **Supabase Dashboard →
-Connect → Session pooler**, not the `https://PROJECT.supabase.co` project URL. Choose
-session mode on port `5432` and keep `sslmode=require`. For development,
-`SUPABASE_MIGRATION_DB_URL` may be blank; the migration script then uses the same DB
-connection string.
-
-Docker and a local database are not required. The backend implements the Task API
-itself; its task rows and processing history both persist in hosted Supabase.
-
-## Tests
-
-```bash
-python scripts/validate_dataset.py
-.venv/Scripts/python -m pytest backend/tests
+.venv/Scripts/python -m pytest backend/tests -q
+.venv/Scripts/ruff check backend/app backend/tests scripts
 npm --prefix frontend test
 npm --prefix frontend run build
 ```
 
-See `DECISIONS.md` for the required technical tradeoffs and `EVALS.md` for the
-honest evaluation protocol and recorded failure cases.
+Current local result: **162 passed, 1 skipped** in the backend, Ruff clean, dataset
+validation passed, and the frontend test/build checks pass. The skipped test is the
+opt-in hosted Supabase concurrency test.
 
-Current verified baseline: 153 backend tests pass (one hosted test is opt-in), all
-frontend tests/build checks pass, all 12 official examples pass publicly, and the
-eight-group public API matrix passes with exact cleanup. Human-reviewed evaluation and
-the submission video are intentionally still marked as user work rather than fabricated.
-
-## Environment and API
-
-Only the backend owns `SUPABASE_DB_URL` and `GEMINI_API_KEY`. Production requires TLS
-Postgres, Gemini, the production project reference, and exact non-wildcard CORS origins.
-
-- `POST /ingest`: synchronously routes 1–100 emails.
-- `POST /tasks`, `PATCH /tasks/{id}`, `GET /tasks`, `DELETE /tasks/{id}`: exact
-  grader-facing persistent Task API.
-- `GET /users`: exact team roster.
-- `GET /api/tasks`: current persistent tasks plus decision evidence.
-- `GET /api/stats`: exact run, batch, or all-history aggregates.
-- `POST /api/chat`: allowlisted grounded analytics.
-- `GET /api/sample-emails?count=250`: email data without labels.
-- `GET /health` and `GET /ready`: liveness and dependency readiness.
+Production checks cover health/readiness, the 12 official examples, request limits,
+idempotent replay, thread updates, grounded chat, CORS, and exact cleanup of test rows.
 
 ## Deployment
 
-Render uses `render.yaml` and serves the FastAPI backend. Vercel builds `frontend/`
-with the Vite preset, `frontend` as its root directory, and `dist` as its output.
-Set Vercel's public `VITE_API_BASE_URL` to the backend URL above without a trailing
-slash. Render's `FRONTEND_ORIGINS` must be the exact Vercel origin above; never use a
-wildcard. Apply the tested production migration immediately before deploying the
-matching backend revision with `python scripts/migrate.py --production`.
+`render.yaml` deploys the backend. Vercel uses `frontend/` as the project root and
+publishes `dist/`. Production secrets stay on Render; the browser only receives
+`VITE_API_BASE_URL`.
+
+Required production values:
+
+- Render `CANDIDATE_ID`: `mahendrushivam123@gmail.com`
+- Render `FRONTEND_ORIGINS`: `https://alumnx-ai-sales-inbox-task-router.vercel.app`
+- Vercel `VITE_API_BASE_URL`: `https://alumnx-ai-sales-inbox-task-router.onrender.com`
+
+Run `python scripts/migrate.py --production` before deploying a backend revision that
+depends on a new migration.
+
+## Submission notes
+
+See `DECISIONS.md` for the five engineering tradeoffs and `EVALS.md` for the frozen
+manual evaluation. The video URL remains intentionally blank until the final recording
+is uploaded.
 
 ## Known limitation
 
-A multi-owner email produces one triage task rather than coordinated subtasks because
-the required Task API has one assignee and no parent-child relationship.
+If one email contains independent asks for several owners, the app creates one triage
+task instead of several linked subtasks. The required Task API has one assignee and no
+parent-child task model, so this is safer than creating tasks that cannot be reconciled
+reliably when replies arrive.

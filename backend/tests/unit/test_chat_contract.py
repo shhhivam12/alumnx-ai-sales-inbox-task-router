@@ -1,9 +1,10 @@
 from types import SimpleNamespace
 
 import pytest
+from pydantic import ValidationError
 
 from backend.app.config import Settings
-from backend.app.domain.chat_models import ChatPlan, ChatScope
+from backend.app.domain.chat_models import AnalyticsFilter, AnalyticsQuery, ChatPlan, ChatScope
 from backend.app.repositories.store import MemoryStore
 from backend.app.services.answer_renderer import format_inr, render_answer
 from backend.app.services.chat_answer_service import ChatAnswerService
@@ -22,6 +23,8 @@ from backend.app.services.chat_planner import plan_question
         ("How many alliances emails came from resellers versus tech integration partners?", "count_subtypes"),
         ("How many GST refund requests were there?", "count_topic"),
         ("Send an email to all RFP prospects.", "out_of_scope"),
+        ("Assign all finance tasks to Divya.", "out_of_scope"),
+        ("Reassign Divya's tasks to Aarti.", "out_of_scope"),
         ("What's the total deal value of all open RFPs?", "sum_deal_value"),
         ("Which threads were updated more than once?", "threads_with_updates"),
     ],
@@ -159,3 +162,128 @@ def test_gemini_can_only_rephrase_without_changing_numbers() -> None:
 
     service._client = SimpleNamespace(models=SimpleNamespace(generate_content=lambda **_: SimpleNamespace(parsed={"answer": "This scope contains 4 enterprise RFP decisions."})))
     assert service.phrase(plan, {"enterprise_rfp": 3}, draft) == draft
+
+
+def _add_assignees(store: MemoryStore) -> None:
+    owners = {
+        "t-rfp-valued": "u_aarti",
+        "t-rfp-null": "u_aarti",
+        "t-marketing": "u_meera",
+        "t-triage": "u_divya",
+        "t-reseller": "u_karan",
+        "t-integration": "u_karan",
+    }
+    for thread_id, owner in owners.items():
+        store.threads[thread_id]["current_task_snapshot"]["assignee_id"] = owner
+    for decision in store.decisions.values():
+        if decision.get("task"):
+            decision["task"]["assignee_id"] = owners[decision["thread_id"]]
+
+
+def test_owner_count_question_uses_current_tasks_and_answers_divya() -> None:
+    store, scope = seeded_store()
+    _add_assignees(store)
+    plan = plan_question("How many tasks are assigned to Divya?")
+    assert plan.intent == "analytics"
+    assert plan.analytics.dataset == "current_tasks"
+    assert plan.analytics.filters == [AnalyticsFilter(field="assignee_id", value="u_divya")]
+    data = execute_plan(store, plan, scope)
+    answer, status = render_answer(plan, data)
+    assert data["count"] == 1
+    assert status == "answered"
+    assert answer == "There is 1 current task assigned to Divya in this scope."
+
+    short_plan = plan_question("total tasks for Divya")
+    assert short_plan.analytics.operation == "count"
+    assert execute_plan(store, short_plan, scope)["count"] == 1
+
+
+def test_owner_query_keeps_compound_priority_and_confidence_filters() -> None:
+    store, scope = seeded_store()
+    _add_assignees(store)
+    store.threads["t-triage"]["current_task_snapshot"].update(priority="high", confidence=0.42)
+    store.decisions["e-triage"]["task"].update(priority="high", confidence=0.42)
+    plan = plan_question("Show high-priority low-confidence tasks assigned to Divya")
+    assert plan.intent == "analytics"
+    assert {(item.field, item.operator, item.value) for item in plan.analytics.filters} == {
+        ("assignee_id", "eq", "u_divya"),
+        ("priority", "eq", "high"),
+        ("confidence", "lte", 0.54),
+    }
+    data = execute_plan(store, plan, scope)
+    assert data["count"] == 1
+    assert data["items"][0]["assignee_id"] == "u_divya"
+
+
+def test_general_query_groups_current_tasks_by_owner() -> None:
+    store, scope = seeded_store()
+    _add_assignees(store)
+    plan = plan_question("Count current tasks by owner")
+    data = execute_plan(store, plan, scope)
+    assert plan.intent == "analytics"
+    assert data["groups"] == {"u_aarti": 2, "u_divya": 1, "u_karan": 2, "u_meera": 1}
+    answer, _ = render_answer(plan, data)
+    assert "Aarti: 2" in answer
+    assert "Divya: 1" in answer
+
+
+def test_general_query_counts_skipped_newsletters_from_decisions() -> None:
+    store, scope = seeded_store()
+    store.decisions["e-spam"]["skip_reason"] = "newsletter"
+    plan = plan_question("How many emails were newsletters?")
+    data = execute_plan(store, plan, scope)
+    assert plan.analytics.dataset == "decisions"
+    assert data["count"] == 1
+
+
+def test_general_query_handles_nulls_and_numeric_aggregates() -> None:
+    store, scope = seeded_store()
+    missing_plan = plan_question("How many tasks have no deal value?")
+    missing_data = execute_plan(store, missing_plan, scope)
+    assert missing_data["count"] == 5
+
+    average_plan = plan_question("What is the average confidence of tasks?")
+    average_data = execute_plan(store, average_plan, scope)
+    assert average_plan.analytics.operation == "average"
+    assert average_data["values_used"] == 6
+    assert average_data["missing_values"] == 0
+    assert average_data["value"] == pytest.approx(0.7183333333)
+
+
+def test_analytics_plan_rejects_cross_dataset_and_non_numeric_fields() -> None:
+    with pytest.raises(ValidationError):
+        AnalyticsQuery(dataset="feedback", operation="count", filters=[AnalyticsFilter(field="assignee_id", value="u_divya")])
+    with pytest.raises(ValidationError):
+        AnalyticsQuery(dataset="current_tasks", operation="sum", metric="company_name")
+    with pytest.raises(ValidationError):
+        AnalyticsQuery(dataset="current_tasks", operation="list")
+    with pytest.raises(ValidationError):
+        AnalyticsQuery(dataset="current_tasks", operation="count", group_by="category")
+
+
+def test_gemini_planner_can_only_return_a_validated_analytics_plan() -> None:
+    service = ChatAnswerService(Settings())
+    fallback = ChatPlan(intent="unsupported")
+    service._client = SimpleNamespace(models=SimpleNamespace(generate_content=lambda **_: SimpleNamespace(parsed={
+        "intent": "analytics",
+        "analytics": {
+            "dataset": "current_tasks",
+            "operation": "count",
+            "filters": [{"field": "company_name", "operator": "contains", "value": "Meridian"}],
+            "fields": [],
+            "limit": 20,
+        },
+    })))
+    plan = service.plan("How many current tasks concern Meridian?", fallback)
+    assert plan.intent == "analytics"
+    assert plan.analytics.filters[0].field == "company_name"
+
+    service._client = SimpleNamespace(models=SimpleNamespace(generate_content=lambda **_: SimpleNamespace(parsed={
+        "intent": "analytics",
+        "analytics": {
+            "dataset": "feedback",
+            "operation": "count",
+            "filters": [{"field": "assignee_id", "operator": "eq", "value": "u_divya"}],
+        },
+    })))
+    assert service.plan("invalid cross-dataset query", fallback) == fallback

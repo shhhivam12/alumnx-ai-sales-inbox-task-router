@@ -3,6 +3,99 @@ from __future__ import annotations
 from backend.app.domain.chat_models import ChatPlan
 
 
+ASSIGNEE_LABELS = {
+    "u_aarti": "Aarti", "u_rohit": "Rohit", "u_meera": "Meera",
+    "u_karan": "Karan", "u_divya": "Divya", "u_triage": "Triage Queue",
+}
+DATASET_LABELS = {
+    "current_tasks": "current tasks", "decisions": "email decisions", "threads": "threads",
+    "events": "task events", "feedback": "feedback records", "runs": "ingestion runs",
+}
+SINGULAR_DATASET_LABELS = {
+    "current_tasks": "current task", "decisions": "email decision", "threads": "thread",
+    "events": "task event", "feedback": "feedback record", "runs": "ingestion run",
+}
+
+
+def _dataset_label(dataset: str, count: int) -> str:
+    return SINGULAR_DATASET_LABELS[dataset] if count == 1 else DATASET_LABELS[dataset]
+
+
+def _display_value(field: str, value: object) -> str:
+    if field == "assignee_id":
+        return ASSIGNEE_LABELS.get(str(value), str(value))
+    if isinstance(value, bool):
+        return "yes" if value else "no"
+    return str(value).replace("_", " ")
+
+
+def _filter_summary(filters: list[dict]) -> str:
+    parts = []
+    for item in filters:
+        field, operator, value = item["field"], item["operator"], item.get("value")
+        label = field.replace("_", " ")
+        if field == "assignee_id" and operator == "eq":
+            parts.append(f"assigned to {_display_value(field, value)}")
+        elif operator == "eq":
+            parts.append(f"with {label} {_display_value(field, value)}")
+        elif operator == "is_null":
+            parts.append(f"with no {label}")
+        elif operator == "not_null":
+            parts.append(f"with a {label}")
+        elif operator == "contains":
+            parts.append(f"whose {label} contains {_display_value(field, value)}")
+        elif operator == "in":
+            values = ", ".join(_display_value(field, entry) for entry in (value or []))
+            parts.append(f"with {label} in {values}")
+        else:
+            words = {"gte": "at or above", "lte": "at or below", "gt": "above", "lt": "below", "neq": "not"}
+            parts.append(f"with {label} {words.get(operator, operator)} {_display_value(field, value)}")
+    return " " + " and ".join(parts) if parts else ""
+
+
+def _render_analytics(plan: ChatPlan, data: dict) -> tuple[str, str]:
+    query = plan.analytics
+    dataset = DATASET_LABELS[query.dataset]
+    filters = _filter_summary(data.get("filters", []))
+    if query.operation == "count":
+        noun = _dataset_label(query.dataset, data["count"])
+        verb = "is" if data["count"] == 1 else "are"
+        return f"There {verb} {data['count']} {noun}{filters} in this scope.", "answered"
+    if query.operation == "group_count":
+        groups = data.get("groups", {})
+        details = ", ".join(
+            f"{_display_value(str(query.group_by), name)}: {count}" for name, count in groups.items()
+        )
+        return f"The {data['total_matches']} matching {dataset} group as follows: {details or 'no groups'}.", "answered"
+    if query.operation == "list":
+        details = "; ".join(
+            ", ".join(f"{field.replace('_', ' ')}={_display_value(field, value)}" for field, value in item.items())
+            for item in data.get("items", [])
+        )
+        if not details:
+            return f"There are no {dataset}{filters} in this scope.", "answered"
+        suffix = f" Showing {data['shown']} of {data['count']}: {details}."
+        noun = _dataset_label(query.dataset, data["count"])
+        return f"I found {data['count']} {noun}{filters}.{suffix}", "answered"
+
+    metric = str(data.get("metric", "value")).replace("_", " ")
+    value = data.get("value")
+    if value is None:
+        return f"The matching {dataset} have no stored numeric values for {metric}.", "answered"
+    if query.metric == "deal_value_inr":
+        rendered_value = f"INR {format_inr(int(value))}"
+    elif query.metric == "confidence":
+        rendered_value = f"{float(value):.3f}"
+    else:
+        rendered_value = str(value)
+    operation = {"sum": "total", "average": "average", "minimum": "minimum", "maximum": "maximum"}[query.operation]
+    return (
+        f"The {operation} {metric} is {rendered_value}, using {data['values_used']} matching records; "
+        f"{data['missing_values']} records had no numeric value.",
+        "answered",
+    )
+
+
 def format_inr(value: int) -> str:
     digits = str(abs(value))
     if len(digits) <= 3:
@@ -18,6 +111,8 @@ def format_inr(value: int) -> str:
 
 
 def render_answer(plan: ChatPlan, data: dict) -> tuple[str, str]:
+    if plan.intent == "analytics":
+        return _render_analytics(plan, data)
     if plan.intent == "out_of_scope":
         return "I can analyze stored routing data, but this read-only product cannot send email or perform actions.", "refused"
     if plan.intent == "unsupported":

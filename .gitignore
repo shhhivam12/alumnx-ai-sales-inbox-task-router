@@ -17,6 +17,9 @@ test-results/
 playwright-report/
 artifacts/*
 !artifacts/.gitkeep
+!artifacts/manual_eval.json
+!artifacts/evaluation_report.json
+!artifacts/live_eval_predictions.json
 *.log
 .DS_Store
 Thumbs.db
