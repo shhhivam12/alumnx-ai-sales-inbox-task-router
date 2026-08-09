@@ -22,11 +22,18 @@ from backend.app.services.suppression import deterministic_suppression
 RECEIVED = datetime(2026, 8, 9, 9, tzinfo=timezone.utc)
 
 
-def email(body: str, *, subject: str = "Request", index: int = 0, reply: bool = False) -> EmailMessage:
+def email(
+    body: str,
+    *,
+    subject: str = "Request",
+    index: int = 0,
+    reply: bool = False,
+    received: datetime = RECEIVED,
+) -> EmailMessage:
     return EmailMessage(
         email_id=f"edge-{uuid4().hex}", thread_id=f"thread-{uuid4().hex}", message_index=index,
         from_name="Buyer", from_email="buyer@example.com", to="sales@example.com", cc=[],
-        subject=subject, body=body, received_at=RECEIVED, attachments=[], is_reply=reply,
+        subject=subject, body=body, received_at=received, attachments=[], is_reply=reply,
     )
 
 
@@ -155,6 +162,54 @@ def test_deterministic_deadline_and_low_priority_phrases_override_model_omission
     meeting_task = route_email(meeting_message, extraction(Intent.DEMO_REQUEST)).task
     assert meeting_task.priority.value == "low"
     assert meeting_task.due_date is None
+
+
+def test_explicit_ist_delivery_time_overrides_model_timezone_error() -> None:
+    ist = timezone(timedelta(hours=5, minutes=30))
+    received = datetime(2026, 8, 1, 15, 18, tzinfo=ist)
+    message = normalize_email(email(
+        "Please send it before 04 Aug 2026 14:18 IST for our approval meeting.",
+        subject="Quote needed before internal approval",
+        received=received,
+    ))
+    noisy = ExtractionResult(
+        email_id=message.email.email_id,
+        actionability=Actionability.ACTIONABLE,
+        primary_intents=[Intent.DIRECT_PURCHASE],
+        amounts=[AmountMention(
+            value_inr=200_000,
+            original_currency="INR",
+            original_text="Rs 2 lakh",
+            role="deal_budget",
+            evidence="Rs 2 lakh",
+        )],
+        deadlines=[DeadlineMention(
+            resolved_at=datetime(2026, 8, 4, 14, 18, tzinfo=timezone.utc),
+            role="meeting_preference",
+            evidence="04 Aug 2026 14:18 IST",
+        )],
+        reasoning_summary="Model used UTC for an explicit IST deadline.",
+    )
+    task = route_email(message, noisy).task
+    assert task.priority.value == "high"
+    assert task.due_date.isoformat() == "2026-08-04"
+
+
+def test_award_nomination_rescues_incorrect_model_skip_reason() -> None:
+    message = normalize_email(email(
+        "We would like to nominate your company for our SaaS awards. Please approve the profile by 07 Aug 2026 14:43 IST.",
+        subject="Award nomination closes soon",
+    ))
+    noisy = ExtractionResult(
+        email_id=message.email.email_id,
+        actionability=Actionability.NON_ACTIONABLE,
+        skip_reason=SkipReason.NEWSLETTER,
+        reasoning_summary="Model incorrectly treated the direct nomination as broadcast content.",
+    )
+    decision = route_email(message, noisy)
+    assert decision.operation == Operation.CREATE
+    assert decision.task.assignee_id == AssigneeId.MEERA
+    assert decision.task.category == Category.MARKETING
 
 
 def test_hinglish_product_budget_cannot_be_misread_as_dealer_alliance() -> None:

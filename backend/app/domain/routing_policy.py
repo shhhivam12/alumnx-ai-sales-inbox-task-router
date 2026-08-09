@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import re
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 from backend.app.config import LOCKED_CANDIDATE_ID
 from backend.app.domain.confidence import calculate_confidence
@@ -176,10 +176,10 @@ def _normalize_extraction_policy(message: NormalizedEmail, extraction: Extractio
         normalized.reasoning_summary = "Direct invitation for spokesperson participation in a media roundtable"
     if (
         normalized.actionability == Actionability.NON_ACTIONABLE
-        and normalized.skip_reason is None
         and award_nomination
     ):
         normalized.actionability = Actionability.ACTIONABLE
+        normalized.skip_reason = None
         if Intent.PR_MEDIA not in normalized.primary_intents:
             normalized.primary_intents.append(Intent.PR_MEDIA)
         normalized.intent_direction = "collaboration"
@@ -223,6 +223,31 @@ def _normalize_extraction_policy(message: NormalizedEmail, extraction: Extractio
                 role="confirmation",
                 evidence="tomorrow EOD",
             ))
+
+    explicit_ist = re.search(
+        r"(?i)\b(\d{1,2}\s+(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|"
+        r"jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:tember)?|oct(?:ober)?|nov(?:ember)?|"
+        r"dec(?:ember)?)\s+\d{4})\s+(\d{1,2}):(\d{2})\s+IST\b",
+        current,
+    )
+    explicit_delivery = any(token in current for token in (
+        "send it before", "send this before", "submit it before", "approve the profile by",
+    ))
+    if explicit_ist and explicit_delivery:
+        try:
+            parsed_date = datetime.strptime(explicit_ist.group(1), "%d %b %Y")
+        except ValueError:
+            parsed_date = datetime.strptime(explicit_ist.group(1), "%d %B %Y")
+        resolved = parsed_date.replace(
+            hour=int(explicit_ist.group(2)),
+            minute=int(explicit_ist.group(3)),
+            tzinfo=timezone(timedelta(hours=5, minutes=30)),
+        )
+        normalized.deadlines.append(DeadlineMention(
+            resolved_at=resolved,
+            role="confirmation",
+            evidence=explicit_ist.group(0),
+        ))
 
     actionable_deadline = any(
         item.resolved_at and item.role in ACTIONABLE_DEADLINE_ROLES for item in normalized.deadlines
