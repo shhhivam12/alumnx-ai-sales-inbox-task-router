@@ -151,6 +151,19 @@ class PostgresStore:
                 raise AppError("thread_index_conflict", "thread/message_index already belongs to another email", status_code=409)
         return "new"
 
+    def record_delivery(self, run_id: str, message: NormalizedEmail, outcome: str) -> None:
+        """Link this HTTP delivery to the one immutable email/decision record."""
+        with self._connection() as (conn, owns_connection), conn.cursor() as cur:
+            cur.execute(
+                """INSERT INTO app_private.ingest_deliveries(
+                    id,run_id,candidate_id,email_id,thread_id,outcome,created_at
+                ) VALUES(%s,%s,%s,%s,%s,%s,now())
+                ON CONFLICT(candidate_id,run_id,email_id) DO NOTHING""",
+                (uuid4(), run_id, LOCKED_CANDIDATE_ID, message.email.email_id, message.email.thread_id, outcome),
+            )
+            if owns_connection:
+                conn.commit()
+
     @contextmanager
     def thread_lock(self, thread_id: str) -> Iterator[None]:
         with self.pool.connection() as conn, conn.transaction(), conn.cursor() as cur:
@@ -183,6 +196,11 @@ class PostgresStore:
             cur.execute("INSERT INTO app_private.emails(id,candidate_id,email_id,thread_id,message_index,raw_email,content_hash,normalized_body,latest_reply_body,received_at,first_seen_run_id,created_at) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,now())", (email_row_id, LOCKED_CANDIDATE_ID, message.email.email_id, message.email.thread_id, message.email.message_index, Jsonb(message.email.model_dump(mode="json")), message.content_hash, message.normalized_body, message.latest_reply_body, message.email.received_at, run_id))
             cur.execute("""INSERT INTO app_private.decisions(id,email_row_id,candidate_id,email_id,thread_id,operation,decision_status,actionability,skip_reason,assignee_id,category,priority,deadline_at,due_date,deal_value_inr,company_name,confidence,primary_intents,topics,intent_direction,organization_type,alliance_subtype,marketing_subtype,amount_mentions,deadline_mentions,reasoning,evidence,degraded_mode,model_name,prompt_version,remote_task_id,created_at)
                 VALUES(%s,%s,%s,%s,%s,%s,'reconciled',%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,now())""", (decision_id,email_row_id,LOCKED_CANDIDATE_ID,decision.email_id,decision.thread_id,decision.operation.value,decision.actionability.value,decision.skip_reason.value if decision.skip_reason else None,task.get("assignee_id"),task.get("category"),task.get("priority"),decision.deadline_at,task.get("due_date"),task.get("deal_value_inr"),task.get("company_name"),decision.confidence,Jsonb(decision.primary_intents),decision.topics,decision.intent_direction,decision.organization_type,decision.alliance_subtype,decision.marketing_subtype,Jsonb(decision.amount_mentions),Jsonb(decision.deadline_mentions),decision.reasoning,Jsonb(decision.evidence),decision.degraded_mode,decision.model_name,decision.prompt_version,remote_task_id))
+            cur.execute("""INSERT INTO app_private.ingest_deliveries(
+                id,run_id,candidate_id,email_id,thread_id,outcome,created_at
+            ) VALUES(%s,%s,%s,%s,%s,%s,now())
+            ON CONFLICT(candidate_id,run_id,email_id) DO NOTHING""",
+                (uuid4(),run_id,LOCKED_CANDIDATE_ID,message.email.email_id,message.email.thread_id,decision.operation.value))
             cur.execute("""INSERT INTO app_private.threads(id,candidate_id,thread_id,remote_task_id,source_email_id,current_task_snapshot,last_message_index,message_count,update_count,reconciliation_status,created_at,updated_at)
                 VALUES(%s,%s,%s,%s,%s,%s,%s,1,%s,%s,now(),now()) ON CONFLICT(candidate_id,thread_id) DO UPDATE SET remote_task_id=COALESCE(EXCLUDED.remote_task_id,app_private.threads.remote_task_id),source_email_id=COALESCE(app_private.threads.source_email_id,EXCLUDED.source_email_id),current_task_snapshot=COALESCE(EXCLUDED.current_task_snapshot,app_private.threads.current_task_snapshot),last_message_index=GREATEST(app_private.threads.last_message_index,EXCLUDED.last_message_index),message_count=app_private.threads.message_count+1,update_count=app_private.threads.update_count+EXCLUDED.update_count,reconciliation_status=EXCLUDED.reconciliation_status,updated_at=now()""", (uuid4(),LOCKED_CANDIDATE_ID,message.email.thread_id,remote_task_id,(remote or {}).get("source_email_id"),Jsonb(remote) if remote else None,message.email.message_index,1 if decision.operation.value=="update" and event else 0,"mapped" if remote else "empty"))
             if event:
@@ -192,9 +210,28 @@ class PostgresStore:
 
     def list_decisions(self, scope_type: str = "all", scope_id: str | None = None) -> list[dict[str, Any]]:
         where, params = ["d.candidate_id=%s"], [LOCKED_CANDIDATE_ID]
-        if scope_type == "run": where.append("e.first_seen_run_id=%s"); params.append(scope_id)
-        if scope_type == "batch": where.append("g.client_batch_id=%s"); params.append(scope_id)
-        sql = """SELECT d.*,e.first_seen_run_id AS run_id,g.client_batch_id FROM app_private.decisions d JOIN app_private.emails e ON e.id=d.email_row_id JOIN app_private.ingest_runs r ON r.id=e.first_seen_run_id LEFT JOIN app_private.ingest_groups g ON g.id=r.group_id WHERE """ + " AND ".join(where) + " ORDER BY e.thread_id,e.message_index,d.created_at"
+        if scope_type == "all":
+            sql = """SELECT d.*,e.first_seen_run_id AS run_id,g.client_batch_id,
+                NULL::text AS delivery_outcome,NULL::text AS original_operation
+                FROM app_private.decisions d
+                JOIN app_private.emails e ON e.id=d.email_row_id
+                JOIN app_private.ingest_runs r ON r.id=e.first_seen_run_id
+                LEFT JOIN app_private.ingest_groups g ON g.id=r.group_id
+                WHERE d.candidate_id=%s
+                ORDER BY e.thread_id,e.message_index,d.created_at"""
+        else:
+            where = ["dl.candidate_id=%s"]
+            if scope_type == "run": where.append("dl.run_id=%s"); params.append(scope_id)
+            if scope_type == "batch": where.append("g.client_batch_id=%s"); params.append(scope_id)
+            sql = """SELECT d.*,dl.run_id,g.client_batch_id,dl.outcome AS delivery_outcome,
+                d.operation AS original_operation,e.message_index
+                FROM app_private.ingest_deliveries dl
+                JOIN app_private.ingest_runs r ON r.id=dl.run_id
+                LEFT JOIN app_private.ingest_groups g ON g.id=r.group_id
+                JOIN app_private.decisions d
+                  ON d.candidate_id=dl.candidate_id AND d.email_id=dl.email_id
+                JOIN app_private.emails e ON e.id=d.email_row_id
+                WHERE """ + " AND ".join(where) + " ORDER BY e.thread_id,e.message_index,dl.created_at"
         with self.pool.connection() as conn, conn.cursor() as cur: cur.execute(sql, params); rows=cur.fetchall()
         result=[]
         for r in rows:
@@ -204,6 +241,10 @@ class PostgresStore:
             if row.get("category"): task={k:row.get(k) for k in ("assignee_id","category","priority","due_date","deal_value_inr","company_name","confidence")} | {"source_email_id": row["email_id"], "thread_id":row["thread_id"]}
             row["task"],row["run_id"],row["client_batch_id"]=task,str(row["run_id"]),str(row["client_batch_id"]) if row.get("client_batch_id") else None
             result.append(row)
+        if scope_type != "all":
+            # A logical batch can contain multiple HTTP runs and even a manual
+            # replay. Its audit surface is still one row per unique email.
+            result = list({row["email_id"]: row for row in result}.values())
         return result
 
     def list_threads(self) -> list[dict[str, Any]]:

@@ -11,6 +11,7 @@ EXPECTED_TABLES = {
     "decisions",
     "emails",
     "ingest_groups",
+    "ingest_deliveries",
     "ingest_runs",
     "quality_feedback",
     "task_events",
@@ -72,7 +73,7 @@ def main() -> None:
         "all_application_tables_empty": all(count == 0 for count in row_counts.values()),
     }
     print(result)
-    if result["revision"] != "0002_local_task_api" or not result["tables_match"] or not result["all_rls_enabled"]:
+    if result["revision"] != "0003_ingest_deliveries" or not result["tables_match"] or not result["all_rls_enabled"]:
         raise SystemExit("Database verification failed")
     if args.require_empty and not result["all_application_tables_empty"]:
         raise SystemExit("Database is initialized but application tables are not empty")

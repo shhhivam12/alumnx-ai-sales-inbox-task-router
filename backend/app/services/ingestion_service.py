@@ -49,6 +49,7 @@ class IngestionService:
                     self._handle_error(exc, email, run_id, counters, errors)
                     continue
                 if state == "unchanged":
+                    self.store.record_delivery(run_id, normalized, "unchanged")
                     counters["processed"] += 1
                     counters["unchanged"] += 1
                     continue
@@ -69,6 +70,10 @@ class IngestionService:
                     degraded = not bool(self.extractor._client) or extraction.reasoning_summary.startswith("Degraded")
                     decision = route_email(normalized, extraction, prior_task=prior.get("current_task_snapshot") if prior else None, degraded=degraded, prompt_version=self.settings.routing_prompt_version, model_name=self.settings.gemini_model if self.extractor._client else None)
                     outcome = self.reconciler.reconcile(normalized, decision, run_id)
+                    if outcome == "unchanged":
+                        # Another request may have persisted this email after the
+                        # optimistic pre-check but before the thread lock.
+                        self.store.record_delivery(run_id, normalized, "unchanged")
                     counters["processed"] += 1
                     if outcome == "created": counters["tasks_created"] += 1
                     elif outcome == "updated": counters["tasks_updated"] += 1

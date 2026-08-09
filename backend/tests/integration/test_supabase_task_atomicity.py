@@ -68,13 +68,28 @@ def test_concurrent_identical_ingest_creates_one_atomic_task() -> None:
 
     def reconcile(run_id: str) -> str:
         decision = RoutingDecision.model_validate(template.model_dump(mode="python"))
-        return Reconciler(store).reconcile(message, decision, run_id)
+        outcome = Reconciler(store).reconcile(message, decision, run_id)
+        if outcome == "unchanged":
+            # This mirrors IngestionService: a concurrent loser still records
+            # that this run delivered the already-persisted immutable email.
+            store.record_delivery(run_id, message, "unchanged")
+        return outcome
 
     try:
         with ThreadPoolExecutor(max_workers=2) as executor:
             outcomes = list(executor.map(reconcile, run_ids))
         assert sorted(outcomes) == ["created", "unchanged"]
         assert len(store.list_tasks(LOCKED_CANDIDATE_ID, thread_id=thread_id)) == 1
+        created_run = run_ids[outcomes.index("created")]
+        replay_run = run_ids[outcomes.index("unchanged")]
+        created_rows = store.list_decisions("run", created_run)
+        replay_rows = store.list_decisions("run", replay_run)
+        assert len(created_rows) == len(replay_rows) == 1
+        assert created_rows[0]["operation"] == "create"
+        assert created_rows[0]["delivery_outcome"] == "create"
+        assert replay_rows[0]["operation"] == "create"
+        assert replay_rows[0]["original_operation"] == "create"
+        assert replay_rows[0]["delivery_outcome"] == "unchanged"
     finally:
         with pool.connection() as connection:
             connection.execute("DELETE FROM app_private.task_events WHERE candidate_id=%s AND email_id=%s", (LOCKED_CANDIDATE_ID, email_id))

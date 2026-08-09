@@ -7,6 +7,7 @@ linked to that marker/batch and then proves that no matching rows remain.
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 from typing import Any
 from uuid import uuid4
@@ -17,7 +18,8 @@ from dotenv import dotenv_values
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BASE_URL = "http://127.0.0.1:8000"
+BASE_URL = os.environ.get("BACKEND_URL", "http://127.0.0.1:8000").rstrip("/")
+FRONTEND_ORIGIN = os.environ.get("FRONTEND_ORIGIN", "http://localhost:5173").rstrip("/")
 CANDIDATE_ID = "mahendrushivam123@gmail.com"
 
 
@@ -269,6 +271,12 @@ def main() -> None:
                 client.get(f"/api/batches/{batch_id}/decisions"), 200, "batch decisions"
             )
             assert decisions["total"] == 3
+            initial_decision = next(
+                item for item in decisions["items"] if item["email_id"] == initial["email_id"]
+            )
+            assert initial_decision["operation"] == "create"
+            assert initial_decision["delivery_outcome"] == "unchanged"
+            assert initial_decision["original_operation"] == "create"
             app_tasks = assert_status(
                 client.get("/api/tasks", params={"batch_id": batch_id}), 200, "app tasks"
             )
@@ -459,12 +467,12 @@ def main() -> None:
             cors = client.options(
                 "/api/config",
                 headers={
-                    "Origin": "http://localhost:5173",
+                    "Origin": FRONTEND_ORIGIN,
                     "Access-Control-Request-Method": "GET",
                 },
             )
             assert cors.status_code == 200
-            assert cors.headers.get("access-control-allow-origin") == "http://localhost:5173"
+            assert cors.headers.get("access-control-allow-origin") == FRONTEND_ORIGIN
             foreign_cors = client.options(
                 "/api/config",
                 headers={
@@ -479,6 +487,7 @@ def main() -> None:
 
     report = {
         "base_url": BASE_URL,
+        "frontend_origin": FRONTEND_ORIGIN,
         "candidate_id": CANDIDATE_ID,
         "checks_passed": checks,
         "check_group_count": len(checks),

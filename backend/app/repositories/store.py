@@ -23,6 +23,7 @@ class MemoryStore:
         self.events: list[dict[str, Any]] = []
         self.runs: dict[str, dict[str, Any]] = {}
         self.groups: dict[str, dict[str, Any]] = {}
+        self.deliveries: list[dict[str, Any]] = []
         self.feedback: dict[str, dict[str, Any]] = {}
         self.chat_audit: list[dict[str, Any]] = []
         self.tasks: dict[str, dict[str, Any]] = {}
@@ -112,6 +113,21 @@ class MemoryStore:
                 raise AppError("thread_index_conflict", "thread/message_index already belongs to another email", status_code=409)
             return "new"
 
+    def record_delivery(self, run_id: str, message: NormalizedEmail, outcome: str) -> None:
+        """Associate a delivery attempt with its immutable email decision."""
+        with self._global:
+            if any(row["run_id"] == run_id and row["email_id"] == message.email.email_id for row in self.deliveries):
+                return
+            run = self.runs[run_id]
+            self.deliveries.append({
+                "run_id": run_id,
+                "client_batch_id": run.get("client_batch_id"),
+                "email_id": message.email.email_id,
+                "thread_id": message.email.thread_id,
+                "outcome": outcome,
+                "created_at": datetime.now(timezone.utc).isoformat(),
+            })
+
     def thread_lock(self, thread_id: str) -> RLock:
         return self._locks[thread_id]
 
@@ -127,6 +143,7 @@ class MemoryStore:
             task_id = (remote or {}).get("task_id") or (remote or {}).get("id")
             record = decision.model_dump(mode="json") | {"run_id": run_id, "group_id": run.get("group_id"), "client_batch_id": run.get("client_batch_id"), "created_at": now, "remote_task_id": task_id}
             self.decisions[message.email.email_id] = record
+            self.record_delivery(run_id, message, decision.operation.value)
             prior = self.threads.get(message.email.thread_id, {})
             update_count = prior.get("update_count", 0) + (1 if decision.operation.value == "update" and event else 0)
             self.threads[message.email.thread_id] = {"thread_id": message.email.thread_id, "remote_task_id": task_id or prior.get("remote_task_id"), "source_email_id": (remote or prior).get("source_email_id"), "current_task_snapshot": deepcopy(remote or prior.get("current_task_snapshot")), "last_message_index": max(message.email.message_index, prior.get("last_message_index", -1)), "message_count": prior.get("message_count", 0) + 1, "update_count": update_count, "updated_at": now}
@@ -134,12 +151,28 @@ class MemoryStore:
                 self.events.append(event | {"created_at": now, "run_id": run_id})
 
     def list_decisions(self, scope_type: str = "all", scope_id: str | None = None) -> list[dict[str, Any]]:
-        rows = list(self.decisions.values())
+        if scope_type == "all":
+            return deepcopy(list(self.decisions.values()))
+        deliveries = self.deliveries
         if scope_type == "run":
-            rows = [r for r in rows if r["run_id"] == scope_id]
+            deliveries = [row for row in deliveries if row["run_id"] == scope_id]
         elif scope_type == "batch":
-            rows = [r for r in rows if r.get("client_batch_id") == scope_id]
-        return deepcopy(rows)
+            deliveries = [row for row in deliveries if row.get("client_batch_id") == scope_id]
+        latest_by_email = {row["email_id"]: row for row in deliveries}
+        rows = []
+        for delivery in latest_by_email.values():
+            decision = self.decisions.get(delivery["email_id"])
+            if not decision:
+                continue
+            row = deepcopy(decision)
+            row.update(
+                original_operation=row["operation"],
+                delivery_outcome=delivery["outcome"],
+                run_id=delivery["run_id"],
+                client_batch_id=delivery.get("client_batch_id"),
+            )
+            rows.append(row)
+        return rows
 
     def list_threads(self) -> list[dict[str, Any]]:
         return deepcopy(list(self.threads.values()))

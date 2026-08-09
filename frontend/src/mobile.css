@@ -1,3 +1,53 @@
+.scope-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 500 0.72rem DM Mono, monospace;
+}
+
+.scope-control select {
+  padding: 0.5rem;
+  background: var(--cream);
+  border: 1px solid var(--ink);
+}
+
+.chat-hint,
+.answer-scope {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.answer-scope {
+  font: 500 0.68rem DM Mono, monospace;
+  text-transform: uppercase;
+}
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.question-chip {
+  background: transparent;
+  color: var(--ink);
+  box-shadow: none;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.75rem;
+  text-align: left;
+}
+
+.question-chip:hover {
+  box-shadow: 2px 2px 0 #95a08f;
+}
+
+.chat-error {
+  color: #912e14;
+  background: #ffe2d7;
+  border-left: 4px solid var(--orange);
+  padding: 10px;
+}
+
 @media (max-width: 800px) {
   h1 {
     font-size: 2rem;
